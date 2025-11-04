@@ -1,0 +1,140 @@
+<article class="lesson-content">
+    <h1>Clase 6: Razonamiento y Lógica en IA</h1>
+
+    <h2>6.1 Fundamentos del Razonamiento Automatizado</h2>
+    <p>
+        El razonamiento automatizado constituye la capacidad de sistemas computacionales para derivar conclusiones válidas a partir de premisas mediante aplicación sistemática de reglas de inferencia. Esta capacidad fundamental permite a sistemas de IA realizar tareas que requieren pensamiento lógico: demostración de teoremas matemáticos, verificación de corrección de software, planificación de acciones, diagnóstico de fallos, y respuesta a consultas complejas sobre bases de conocimiento. El razonamiento deductivo garantiza que conclusiones derivadas son necesariamente verdaderas si las premisas son verdaderas, proporcionando garantías lógicas rigurosas sobre inferencias.
+    </p>
+    <p>
+        Los sistemas de deducción natural formalizan reglas de inferencia que reflejan patrones de razonamiento intuitivo. Modus ponens, regla fundamental, establece que de "A" y "A implica B" puede inferirse "B". La eliminación de la conjunción permite inferir A de "A y B". La introducción de la disyunción permite inferir "A o B" de A. Estas reglas, aunque simples individualmente, pueden encadenarse para construir derivaciones arbitrariamente complejas. Los cálculos de secuentes y tableaux semánticos proporcionan métodos alternativos, cada uno con ventajas pedagógicas y computacionales distintivas.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Razonamiento Automatizado] --> B[Deductivo]
+        A --> C[Inductivo]
+        A --> D[Abductivo]
+        B --> E[Demostración de Teoremas]
+        B --> F[Verificación Formal]
+        C --> G[Aprendizaje de Reglas]
+        C --> H[Generalización]
+        D --> I[Diagnóstico]
+        D --> J[Explicación]
+        style A fill:#8B1538,stroke:#333,stroke-width:4px,color:#fff
+    </div>
+
+    <h2>6.2 Resolución y Unificación</h2>
+    <p>
+        El principio de resolución, desarrollado por J.A. Robinson en 1965, proporciona un método de inferencia uniforme y completo para lógica de primer orden. La resolución opera mediante refutación: para demostrar que una fórmula φ es consecuencia lógica de una base de conocimiento KB, se añade ¬φ a KB y se intenta derivar una contradicción. Si se logra, φ debe ser verdadera en todos los modelos de KB. El algoritmo de resolución trabaja sobre cláusulas (disyunciones de literales), combinando pares de cláusulas que contienen literales complementarios para generar resolventes que eliminan esos literales.
+    </p>
+    <p>
+        La unificación, procedimiento fundamental que subyace a la resolución en lógica de primer orden, determina si dos expresiones pueden hacerse idénticas mediante sustitución consistente de variables por términos. Por ejemplo, P(x, Juan) y P(María, y) unifican con sustitución {x/María, y/Juan}. El algoritmo de unificación de Robinson computa el unificador más general (MGU), sustitución mínima que hace iguales las expresiones. La complejidad del algoritmo de unificación es casi lineal, permitiendo resolución eficiente incluso en bases de conocimiento sustanciales.
+    </p>
+    <p>
+        Las estrategias de resolución controlan el orden y selección de cláusulas a resolver, crítico para eficiencia práctica. La resolución por conjunto de soporte restringe resoluciones involucrando al menos una cláusula del conjunto de soporte (típicamente la negación del objetivo), evitando derivaciones irrelevantes. La resolución lineal forma cadenas donde cada resolvente se usa en la próxima resolución, reduciendo ramificación del espacio de búsqueda. La resolución SLD (Selective Linear Definite clause), base de Prolog, especializa resolución lineal para cláusulas de Horn, permitiendo ejecución eficiente de programas lógicos.
+    </p>
+
+    <h2>6.3 Prolog y Programación Lógica</h2>
+    <p>
+        Prolog (Programming in Logic) representa un paradigma de programación declarativo donde programas especifican qué computar en lugar de cómo computarlo. Un programa Prolog consiste en cláusulas de Horn: hechos (proposiciones incondicionalmente verdaderas) y reglas (implicaciones donde la cabeza se implica si todas las subcondiciones del cuerpo son satisfechas). La ejecución procede mediante consultas que disparan búsqueda de demostraciones mediante resolución SLD con backtracking, explorando sistemáticamente el espacio de derivaciones posibles.
+    </p>
+    <p>
+        La semántica declarativa de Prolog interpreta programas como bases de conocimiento lógicas, mientras que la semántica procedimental los interpreta como especificaciones ejecutables de búsqueda. Esta dualidad permite razonar sobre corrección de programas usando lógica mientras se mantiene eficiencia computacional. El orden de cláusulas y literales, irrelevante para semántica declarativa, afecta críticamente eficiencia procedimental, requiriendo que programadores consideren estrategias de búsqueda implícitas.
+    </p>
+    <p>
+        Las meta-predicados de Prolog, que manipulan términos como datos, habilitan meta-programación sofisticada. El predicado `findall/3` colecta todas las soluciones de una consulta. El predicado `assert/1` añade dinámicamente cláusulas a la base de conocimiento. La negación por fallo implementa razonamiento no-monótono: ¬P se asume verdadero si falla toda intento de demostrar P. Aunque no corresponde a negación lógica clásica, facilita expresión pragmática de información negativa en contextos de mundo cerrado.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Programa Prolog] --> B[Hechos]
+        A --> C[Reglas]
+        D[Consulta] --> E[Motor de Inferencia]
+        B --> E
+        C --> E
+        E --> F[Resolución SLD]
+        F --> G[Backtracking]
+        G --> H{Solución?}
+        H -->|Sí| I[Retornar]
+        H -->|No| J[Fallar]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style I fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>6.4 Razonamiento con Incertidumbre</h2>
+    <p>
+        El mundo real se caracteriza por incertidumbre omnipresente: información incompleta, sensores ruidosos, conocimiento aproximado. Los sistemas lógicos clásicos, comprometidos con verdad o falsedad binarias, resultan inadecuados para modelar esta incertidumbre. Las aproximaciones probabilísticas formalizan incertidumbre mediante distribuciones de probabilidad sobre posibles estados del mundo. El teorema de Bayes proporciona el mecanismo fundamental para actualizar creencias: P(h|e) = P(e|h)P(h)/P(e), donde h representa una hipótesis y e evidencia observada.
+    </p>
+    <p>
+        Las redes bayesianas representan dependencias probabilísticas entre variables mediante grafos acíclicos dirigidos donde nodos simbolizan variables y aristas representan dependencias probabilísticas directas. Las distribuciones de probabilidad condicional en cada nodo especifican P(Variable|Padres). Esta representación estructurada explota independencias condicionales para factorizar distribuciones conjuntas de manera compacta, haciendo tratable el razonamiento probabilístico en dominios complejos que serían intratable representar con tablas de probabilidad conjunta completas.
+    </p>
+    <p>
+        Los algoritmos de inferencia en redes bayesianas calculan distribuciones de probabilidad de variables de interés dados valores observados de otras variables. La inferencia exacta mediante eliminación de variables suma sistemáticamente sobre variables ocultas, pero enfrenta complejidad exponencial en el peor caso. Los métodos de inferencia aproximada, especialmente muestreo de Monte Carlo por cadenas de Markov (MCMC) y muestreo de importancia, generan muestras estocásticas que aproximan distribuciones posteriores, balanceando precisión con eficiencia computacional.
+    </p>
+
+    <h2>6.5 Lógicas Modales y Temporales</h2>
+    <p>
+        Las lógicas modales extienden lógica clásica con operadores que expresan modalidades: necesidad (□φ: φ es necesariamente verdadero), posibilidad (◊φ: φ es posiblemente verdadero), conocimiento (Kᵢφ: el agente i sabe φ), creencia (Bᵢφ: el agente i cree φ). La semántica de mundos posibles interpreta estos operadores mediante relaciones de accesibilidad entre mundos: □φ es verdadero en un mundo si φ es verdadero en todos los mundos accesibles. Las propiedades de la relación de accesibilidad (reflexividad, transitividad, simetría) caracterizan diferentes sistemas de lógica modal (K, T, S4, S5).
+    </p>
+    <p>
+        La lógica epistémica formaliza razonamiento sobre conocimiento y creencia de agentes racionales. Los axiomas capturan propiedades intuitivas del conocimiento: el axioma de conocimiento (Kᵢφ → φ) establece que el conocimiento implica verdad; el axioma de introspección positiva (Kᵢφ → KᵢKᵢφ) que los agentes saben lo que saben. En sistemas multiagente, la lógica epistémica formaliza conocimiento común: todos saben φ, todos saben que todos saben φ, ad infinitum, crucial para coordinación y protocolo en agentes cooperativos.
+    </p>
+    <p>
+        Las lógicas temporales incorporan operadores para razonar sobre secuencias temporales de estados. Los operadores de Linear Temporal Logic (LTL) incluyen: ◊φ (eventualmente φ), □φ (siempre φ), Xφ (φ en el próximo estado), φ U ψ (φ hasta que ψ). Computation Tree Logic (CTL) añade cuantificación sobre caminos: Aφ (φ en todos los caminos), Eφ (φ en algún camino). Estas lógicas fundamentan la verificación formal de sistemas reactivos y concurrentes, especificando propiedades de seguridad (nada malo ocurre) y vivacidad (algo bueno eventualmente ocurre).
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Lógicas Avanzadas))
+            Modal
+                Necesidad
+                Posibilidad
+                Multimodal
+            Epistémica
+                Conocimiento
+                Creencia
+                Conocimiento Común
+            Temporal
+                LTL
+                CTL
+                CTL*
+            Doxástica
+                Revisión de Creencias
+                Dinámica de Actitudes
+    </div>
+
+    <h2>6.6 Razonamiento No-Monótono y por Defecto</h2>
+    <p>
+        El razonamiento no-monótono caracteriza inferencias donde conclusiones previas pueden invalidarse al adquirir nueva información, contrario a la monotonicidad de lógica clásica donde el conjunto de conclusiones solo crece con premisas adicionales. Este tipo de razonamiento resulta esencial para modelar sentido común: típicamente asumimos que las aves vuelan, pero retractamos esta conclusión al conocer que Tweety es un pingüino. La formalización de razonamiento no-monótono ha generado múltiples sistemas lógicos con semánticas y propiedades computacionales distintivas.
+    </p>
+    <p>
+        La lógica default de Reiter formaliza reglas de inferencia con excepciones. Una regla default tiene forma α:β₁,...,βₙ/γ, interpretada como "si α es derivable, y es consistente asumir β₁,...,βₙ, entonces inferir γ". Por ejemplo, Ave(x):VuelaDefaultamente(x)/Vuela(x) expresa que las aves por defecto vuelan. Las extensiones default, conjuntos de creencias consistentes obtenidas aplicando reglas default, pueden ser múltiples, requiriendo criterios para selección de extensiones preferidas.
+    </p>
+    <p>
+        La circunscripción de McCarthy formaliza razonamiento de mundo cerrado minimizando la extensión de predicados especificados. Intuitivamente, se asume que solo los objetos que deben satisfacer un predicado (según axiomas) lo satisfacen; todo lo demás no. Esta forma de default permite razonamiento eficiente sobre excepciones sin enumerar exhaustivamente todos los casos negativos. La circunscripción prioritizada permite especificar que ciertos predicados varían mientras otros permanecen fijos, controlando granularmente qué se minimiza.
+    </p>
+    <p>
+        La revisión de creencias formaliza cómo agentes racionales deben modificar sus sistemas de creencias al recibir información nueva potencialmente contradictoria. Los postulados AGM de Alchourrón, Gärdenfors y Makinson especifican criterios normativos: la expansión añade nueva información; la contracción elimina una creencia preservando máxima información; la revisión incorpora nueva información posiblemente contradictoria, eliminando creencias mínimamente. Operadores de revisión concretos, como el de Grove basado en sistemas de esferas, implementan estos postulados mediante órdenes de plausibilidad sobre mundos posibles.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>El razonamiento automatizado deriva conclusiones válidas mediante reglas de inferencia formales</li>
+            <li>La resolución con unificación proporciona un método completo para inferencia en lógica de primer orden</li>
+            <li>Prolog materializa programación lógica, uniendo razonamiento declarativo y ejecución procedimental</li>
+            <li>El razonamiento probabilístico formaliza incertidumbre, con redes bayesianas como representación estructurada</li>
+            <li>Las lógicas modales y temporales extienden expresividad para conocimiento, tiempo y modalidades</li>
+            <li>El razonamiento no-monótono captura aspectos del sentido común que elude lógica clásica</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Chang, C. L., & Lee, R. C. T. (1973). <em>Symbolic Logic and Mechanical Theorem Proving</em>. Academic Press.</li>
+        <li>Sterling, L., & Shapiro, E. (1994). <em>The Art of Prolog</em> (2nd ed.). MIT Press.</li>
+        <li>Pearl, J. (1988). <em>Probabilistic Reasoning in Intelligent Systems</em>. Morgan Kaufmann.</li>
+        <li>Fagin, R., Halpern, J. Y., Moses, Y., & Vardi, M. Y. (1995). <em>Reasoning about Knowledge</em>. MIT Press.</li>
+        <li>Antoniou, G. (1997). <em>Nonmonotonic Reasoning</em>. MIT Press.</li>
+    </ul>
+</article>

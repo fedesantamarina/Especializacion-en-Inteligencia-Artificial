@@ -1,0 +1,100 @@
+<article class="lesson-content">
+    <h1>Clase 8: Introducción al Machine Learning</h1>
+
+    <h2>8.1 Conceptos Fundamentales del Aprendizaje Automatizado</h2>
+    <p>
+        El aprendizaje automatizado (Machine Learning, ML) constituye el subcampo de la inteligencia artificial dedicado al desarrollo de algoritmos y modelos estadísticos que permiten a sistemas computacionales mejorar su desempeño en tareas específicas mediante experiencia, sin ser explícitamente programados para cada escenario. Esta capacidad de generalización a partir de datos observados representa un cambio paradigmático desde la programación tradicional, donde reglas explícitas codifican comportamiento, hacia sistemas que infieren patrones automáticamente de ejemplos.
+    </p>
+    <p>
+        El proceso de aprendizaje puede formalizarse como la optimización de una función de hipótesis h: X → Y que mapea entradas X a salidas Y, minimizando una función de pérdida L que cuantifica discrepancias entre predicciones y valores verdaderos. El espacio de hipótesis H, determinado por la clase de modelo seleccionada, define las funciones candidatas consideradas. El algoritmo de aprendizaje explora este espacio buscando la hipótesis que mejor explica los datos de entrenamiento, balanceando ajuste a datos observados (minimizar error empírico) con capacidad de generalización a datos no vistos.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Datos de Entrenamiento] --> B[Algoritmo de Aprendizaje]
+        B --> C[Modelo]
+        D[Nuevos Datos] --> C
+        C --> E[Predicciones]
+        F[Función de Pérdida] --> B
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style C fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>8.2 Tipos de Aprendizaje: Supervisado, No Supervisado y por Refuerzo</h2>
+    <p>
+        El aprendizaje supervisado opera con conjuntos de datos etiquetados donde cada ejemplo de entrenamiento consiste en un par (x, y) de entrada x y salida deseada y. El objetivo es aprender una función f: X → Y que mapee correctamente entradas a salidas, generalizando más allá de ejemplos de entrenamiento. Las tareas de clasificación predicen etiquetas categóricas discretas (diagnosticar enfermedad, clasificar emails), mientras que las tareas de regresión predicen valores continuos (precio de vivienda, temperatura). La disponibilidad de supervisión explícita facilita el aprendizaje pero requiere datos etiquetados costosos de obtener.
+    </p>
+    <p>
+        El aprendizaje no supervisado trabaja con datos sin etiquetar, buscando descubrir estructura latente sin supervisión explícita. El clustering agrupa datos en conjuntos de objetos similares (segmentación de clientes, agrupación de documentos). La reducción de dimensionalidad proyecta datos de alta dimensión en espacios de menor dimensión preservando estructura relevante (visualización, preprocesamiento). La detección de anomalías identifica patrones que se desvían significativamente de la norma (fraude, fallos). Aunque carece de supervisión, el aprendizaje no supervisado es valioso para exploración de datos y extracción de características.
+    </p>
+    <p>
+        El aprendizaje por refuerzo modela el problema de un agente que interactúa con un entorno, tomando acciones que influyen el estado del sistema y recibiendo recompensas. El objetivo es aprender una política óptima que maximice recompensa acumulada esperada a largo plazo. A diferencia del aprendizaje supervisado, no hay ejemplos correctos explícitos; el agente debe explorar el espacio de acciones, balanceando exploración (probar acciones nuevas) y explotación (elegir acciones conocidas como buenas). Esta formulación es natural para control robótico, juegos, y optimización secuencial de decisiones.
+    </p>
+
+    <h2>8.3 El Dilema Sesgo-Varianza y Generalización</h2>
+    <p>
+        El éxito de un modelo de machine learning se mide por su capacidad de generalización: desempeño en datos nuevos no vistos durante entrenamiento, no memorización de datos de entrenamiento. El sobreajuste (overfitting) ocurre cuando un modelo aprende ruido y peculiaridades específicas de datos de entrenamiento, exhibiendo error bajo en entrenamiento pero alto en validación. El subajuste (underfitting) resulta cuando un modelo es demasiado simple para capturar patrones subyacentes, con error alto tanto en entrenamiento como validación.
+    </p>
+    <p>
+        La descomposición sesgo-varianza formaliza este compromiso. El error esperado de predicción se descompone en: sesgo cuadrado (error sistemático debido a suposiciones simplificadoras del modelo), varianza (sensibilidad a fluctuaciones en datos de entrenamiento), y error irreducible (ruido intrínseco). Modelos simples tienen alto sesgo pero baja varianza; modelos complejos tienen bajo sesgo pero alta varianza. El objetivo es encontrar el punto óptimo que minimiza el error total, típicamente mediante validación cruzada para estimar desempeño de generalización.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Complejidad del Modelo] --> B[Modelos Simples]
+        A --> C[Modelos Complejos]
+        B --> D[Alto Sesgo - Underfitting]
+        C --> E[Alta Varianza - Overfitting]
+        F[Complejidad Óptima] --> G[Equilibrio Sesgo-Varianza]
+        style D fill:#E74C3C,stroke:#333,stroke-width:2px,color:#fff
+        style E fill:#E74C3C,stroke:#333,stroke-width:2px,color:#fff
+        style G fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>8.4 Evaluación de Modelos y Métricas de Desempeño</h2>
+    <p>
+        La evaluación rigurosa de modelos requiere métricas apropiadas y metodologías de validación robustas. Para clasificación binaria, la matriz de confusión tabula verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP), y falsos negativos (FN). De esta matriz derivan múltiples métricas: accuracy = (TP+TN)/(TP+TN+FP+FN), precision = TP/(TP+FP), recall = TP/(TP+FN), y F1-score = 2·(precision·recall)/(precision+recall). La selección de métrica depende del problema: en detección de fraude, el recall (capturar todos los fraudes) puede ser más crítico que precision (minimizar falsas alarmas).
+    </p>
+    <p>
+        Para regresión, métricas comunes incluyen: error cuadrático medio (MSE) = (1/n)Σ(y_i - ŷ_i)², error absoluto medio (MAE) = (1/n)Σ|y_i - ŷ_i|, y coeficiente de determinación R² que mide proporción de varianza explicada por el modelo. La validación cruzada k-fold particiona datos en k subconjuntos, entrenando en k-1 folds y validando en el fold restante, repitiendo k veces. Este procedimiento proporciona estimaciones más robustas de desempeño que una única partición entrenamiento-validación, reduciendo sensibilidad a particularidades de la partición.
+    </p>
+
+    <h2>8.5 Preprocesamiento de Datos y Ingeniería de Características</h2>
+    <p>
+        La calidad y representación de datos influencian críticamente el desempeño de modelos de machine learning. El preprocesamiento transforma datos crudos en formatos apropiados para algoritmos: manejo de valores faltantes mediante imputación (media, mediana, interpolación) o eliminación; codificación de variables categóricas mediante one-hot encoding (crear variables binarias para cada categoría) o label encoding (mapear categorías a enteros); normalización o estandarización para escalar características a rangos comparables, crucial para algoritmos sensibles a magnitudes como redes neuronales y SVM.
+    </p>
+    <p>
+        La ingeniería de características crea nuevas representaciones que facilitan aprendizaje. Las transformaciones polinómicas generan términos de interacción y potencias, incrementando expresividad de modelos lineales. La discretización convierte variables continuas en categóricas, capturando relaciones no lineales. La extracción de características de dominio específico aprovecha conocimiento experto: en procesamiento de señales, transformadas de Fourier extraen componentes frecuenciales; en visión computacional, descriptores SIFT y HOG capturan patrones visuales locales. El aprendizaje de representaciones mediante deep learning automatiza ingeniería de características, descubriendo jerarquías de abstracciones directamente de datos crudos.
+    </p>
+
+    <h2>8.6 Teoría del Aprendizaje Estadístico</h2>
+    <p>
+        La teoría del aprendizaje estadístico proporciona fundamentos matemáticos rigurosos para comprender capacidades y limitaciones del aprendizaje automatizado. La teoría PAC (Probably Approximately Correct) de Valiant formaliza condiciones bajo las cuales el aprendizaje es posible: un concepto es PAC-learnable si existe algoritmo que, con probabilidad al menos 1-δ, aprende hipótesis con error menor que ε, usando número polinomial de ejemplos y tiempo computacional. Esta formulación caracteriza clases de conceptos aprendibles eficientemente.
+    </p>
+    <p>
+        La dimensión VC (Vapnik-Chervonenkis) cuantifica la capacidad o complejidad de una clase de hipótesis: el número máximo de puntos que pueden ser shattering (clasificados arbitrariamente) por la clase. La teoría establece cotas sobre tamaño de muestra requerido para generalización en función de dimensión VC: m ≥ (1/ε)(d·log(1/ε) + log(1/δ)), donde d es dimensión VC. Clases con dimensión VC finita son PAC-learnable; dimensión VC infinita implica que ningún tamaño de muestra garantiza generalización uniforme.
+    </p>
+    <p>
+        La minimización del riesgo empírico (ERM) constituye el principio fundamental: seleccionar hipótesis que minimiza error en datos de entrenamiento. Sin embargo, ERM puro puede conducir a overfitting. La minimización del riesgo estructural (SRM) de Vapnik añade término de penalización por complejidad del modelo, implementando la navaja de Occam: entre hipótesis con similar ajuste a datos, preferir la más simple. Este principio fundamenta técnicas de regularización que controlan complejidad, mejorando generalización mediante restricción del espacio de hipótesis.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>El machine learning aprende patrones de datos sin programación explícita de reglas</li>
+            <li>Los tres paradigmas principales son aprendizaje supervisado, no supervisado y por refuerzo</li>
+            <li>El dilema sesgo-varianza caracteriza el compromiso entre complejidad y generalización</li>
+            <li>Métricas apropiadas y validación cruzada son esenciales para evaluación robusta</li>
+            <li>El preprocesamiento y la ingeniería de características mejoran significativamente desempeño</li>
+            <li>La teoría del aprendizaje estadístico formaliza condiciones para aprendizaje exitoso</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Hastie, T., Tibshirani, R., & Friedman, J. (2009). <em>The Elements of Statistical Learning</em> (2nd ed.). Springer.</li>
+        <li>Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning</em>. Springer.</li>
+        <li>Vapnik, V. N. (1998). <em>Statistical Learning Theory</em>. Wiley-Interscience.</li>
+        <li>Murphy, K. P. (2012). <em>Machine Learning: A Probabilistic Perspective</em>. MIT Press.</li>
+    </ul>
+</article>
