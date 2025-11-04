@@ -1,0 +1,158 @@
+<article class="lesson-content">
+    <h1>Clase 5: Representación de Conocimiento</h1>
+
+    <h2>5.1 Fundamentos de la Representación del Conocimiento</h2>
+    <p>
+        La representación del conocimiento constituye uno de los pilares fundamentales de la inteligencia artificial, abordando el desafío de codificar información sobre el mundo de manera que sistemas computacionales puedan razonar efectivamente. Una representación del conocimiento efectiva debe balancear expresividad (capacidad de capturar información compleja), tratabilidad computacional (eficiencia en razonamiento), y adquisición práctica (facilidad para construcción y mantenimiento).
+    </p>
+    <p>
+        Los sistemas de representación del conocimiento difieren en sus compromisos epistémicos y ontológicos. El compromiso epistémico especifica qué se puede saber en el mundo, mientras que el compromiso ontológico determina qué tipos de entidades se asume existen. Por ejemplo, la lógica proposicional asume que el mundo consiste en hechos que son verdaderos o falsos, mientras que la lógica de primer orden postula la existencia de objetos, propiedades y relaciones.
+    </p>
+    <p>
+        Un esquema de representación exitoso debe facilitar la captura de conocimiento general y específico de dominio, soportar razonamiento tanto deductivo (derivar conclusiones necesariamente verdaderas de premisas) como no deductivo (inferencias plausibles pero no garantizadas), y permitir actualizaciones eficientes cuando se adquiere nueva información. Además, debe manejar incertidumbre y conocimiento incompleto, características ubicuas en problemas del mundo real.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Representación del Conocimiento))
+            Simbólica
+                Lógicas Formales
+                Reglas de Producción
+                Frames
+                Scripts
+            Estructurada
+                Redes Semánticas
+                Ontologías
+                Grafos de Conocimiento
+            Procedimental
+                Código Ejecutable
+                Demostradores de Teoremas
+            Subsimbólica
+                Redes Neuronales
+                Embeddings
+                Representaciones Distribuidas
+    </div>
+
+    <h2>5.2 Lógicas para Representación del Conocimiento</h2>
+    <p>
+        La lógica proposicional, aunque limitada en expresividad, proporciona fundamentos claros para representación y razonamiento. Los átomos proposicionales representan hechos elementales, y fórmulas complejas se construyen mediante conectivos lógicos. La semántica se define mediante modelos (asignaciones de verdad a proposiciones), y la deducción procede mediante reglas de inferencia como modus ponens y resolución. Sistemas de IA basados en lógica proposicional pueden codificar conocimiento factual y derivar consecuencias lógicas, pero carecen de mecanismos para expresar generalidades sobre categorías de objetos.
+    </p>
+    <p>
+        La lógica de primer orden (FOL) extiende expresividad mediante variables, cuantificadores y predicados, permitiendo afirmaciones generales como "∀x (Ave(x) ∧ ¬Pingüino(x) → PuedeVolar(x))". Esta capacidad resulta crucial para codificar conocimiento de sentido común y específico de dominio. Los sistemas de demostración automática de teoremas aplican estrategias de inferencia como resolución con unificación para derivar conclusiones de bases de conocimiento en FOL. Sin embargo, la indecidibilidad de FOL (no existe algoritmo que determine en tiempo finito si una fórmula arbitraria es válida) impone límites fundamentales.
+    </p>
+    <p>
+        Las lógicas de descripción (Description Logics, DL) constituyen subfamilias decidibles de FOL optimizadas para representación terminológica. DLs distinguen entre conocimiento conceptual (TBox), que define jerarquías de clases y propiedades, y conocimiento asertivo (ABox), que especifica individuos concretos y sus relaciones. Esta separación facilita razonamiento eficiente sobre taxonomías complejas, fundamentando ontologías formales y la Web Semántica. Razonadores DL pueden verificar consistencia de ontologías, clasificar conceptos en jerarquías, y responder consultas sofisticadas.
+    </p>
+    <p>
+        Las lógicas no-monótonas formalizan razonamiento con información incompleta, permitiendo retractar conclusiones cuando emerge evidencia contradictoria. La lógica default introduce reglas con excepciones: "Las aves típicamente vuelan, a menos que se conozca lo contrario". La circunscripción formaliza razonamiento de mundo cerrado, asumiendo que lo no explícitamente afirmado es falso. Estos formalismos capturan aspectos del razonamiento de sentido común humano que elude lógicas clásicas monótonas.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Lógica Proposicional] --> B[Lógica de Primer Orden]
+        B --> C[Lógicas de Descripción]
+        B --> D[Lógicas No-Monótonas]
+        C --> E[Web Semántica]
+        C --> F[Ontologías]
+        D --> G[Razonamiento por Defecto]
+        D --> H[Circunscripción]
+        A --> I[Limitada Expresividad]
+        B --> J[Indecidible]
+        C --> K[Decidible y Tratable]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style B fill:#2C3E50,stroke:#333,stroke-width:2px,color:#fff
+        style C fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>5.3 Redes Semánticas y Grafos de Conocimiento</h2>
+    <p>
+        Las redes semánticas representan conocimiento mediante grafos donde nodos simbolizan conceptos y aristas denotan relaciones entre ellos. Esta representación estructural captura intuitivamente conocimiento taxonómico (jerarquías "es-un") y mereológico (relaciones "parte-de"), facilitando razonamiento mediante propagación de información a través de la red. Las relaciones de herencia permiten inferir propiedades de entidades a partir de sus categorías: si "Tweety es un canario" y "los canarios son aves" y "las aves pueden volar", podemos inferir que Tweety puede volar.
+    </p>
+    <p>
+        Los frames, desarrollados por Marvin Minsky, extienden redes semánticas proporcionando estructuras de datos sofisticadas para representar conocimiento estereotípico. Un frame para "habitación" especificaría slots (paredes, piso, techo, puertas) con valores default, rangos permisibles, y procedimientos asociados. Los frames facilitan razonamiento basado en prototipos y manejo de excepciones mediante herencia con sobre-escritura. Los scripts, relacionados, capturan conocimiento sobre secuencias estereotípicas de eventos, como el script de "restaurante" que especifica roles y acciones típicas.
+    </p>
+    <p>
+        Los grafos de conocimiento han emergido como paradigma dominante para representación a gran escala del conocimiento del mundo. Google Knowledge Graph, DBpedia, YAGO y Wikidata contienen cientos de millones de entidades y miles de millones de relaciones, extraídas de fuentes estructuradas y semi-estructuradas. Estos recursos masivos fundamentan aplicaciones como búsqueda semántica, pregunta-respuesta, y sistemas de recomendación. La representación en grafos facilita consultas flexibles mediante lenguajes como SPARQL y navegación exploratoria de información relacionada.
+    </p>
+    <p>
+        El razonamiento sobre grafos de conocimiento combina inferencia lógica con métodos estadísticos. Las reglas de inferencia pueden derivar relaciones implícitas: si "X es hijo de Y" y "Y es hijo de Z", entonces "X es nieto de Z". Los métodos de embedding de grafos de conocimiento (TransE, DistMult, ComplEx) aprenden representaciones vectoriales de entidades y relaciones que preservan estructura del grafo, facilitando predicción de enlaces faltantes mediante similitud en espacio embedding. Esta hibridación de métodos simbólicos y subsimbólicos representa una tendencia significativa en IA moderna.
+    </p>
+
+    <h2>5.4 Ontologías y Web Semántica</h2>
+    <p>
+        Una ontología, en el contexto de ciencias de la computación, constituye una especificación explícita y formal de una conceptualización compartida. Las ontologías formalizan vocabularios de dominio, especificando clases de entidades, propiedades, y restricciones que gobiernan su uso. Mediante la provisión de semántica formal compartida, las ontologías facilitan interoperabilidad entre sistemas heterogéneos, integración de datos, y razonamiento automatizado sobre información distribuida.
+    </p>
+    <p>
+        El stack tecnológico de la Web Semántica, iniciativa del W3C para convertir la Web en una base de conocimiento global procesable por máquinas, se fundamenta en ontologías. RDF (Resource Description Framework) proporciona un modelo de datos basado en triples sujeto-predicado-objeto para representar afirmaciones. RDFS (RDF Schema) añade primitivas para definir jerarquías de clases y propiedades. OWL (Web Ontology Language), basado en lógicas de descripción, proporciona expresividad adicional para especificar equivalencias, disjunciones, cardinalidades y restricciones complejas sobre propiedades.
+    </p>
+    <p>
+        El desarrollo de ontologías enfrenta desafíos metodológicos y sociales significativos. Metodologías como METHONTOLOGY, ON-TO-KNOWLEDGE, y NeOn proporcionan guías estructuradas para ingeniería de ontologías, abordando especificación de requisitos, conceptualización, formalización, implementación, y mantenimiento evolutivo. La reutilización de ontologías existentes, mediante importación o alineamiento, maximiza economía de esfuerzo y promueve estandarización. Sin embargo, el logro de consenso sobre conceptualizaciones en comunidades heterogéneas permanece desafiante.
+    </p>
+    <p>
+        Las ontologías fundamentan numerosas aplicaciones de IA: búsqueda semántica que explota relaciones entre conceptos para mejorar relevancia; sistemas de pregunta-respuesta que mapean lenguaje natural a consultas estructuradas sobre bases de conocimiento; integración de datos que reconcilia esquemas heterogéneos mediante alineamiento ontológico; y asistentes inteligentes que razonan sobre contextos y preferencias de usuarios. La Gene Ontology, por ejemplo, estandariza terminología en biología molecular, facilitando análisis de datos genómicos; SNOMED CT formaliza terminología médica clínica para registros de salud electrónicos interoperables.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Datos] --> B[RDF: Triples]
+        B --> C[RDFS: Vocabulario]
+        C --> D[OWL: Ontología]
+        D --> E[Lógica de Descripción]
+        E --> F[Razonamiento]
+        B --> G[SPARQL: Consultas]
+        D --> H[Aplicaciones]
+        H --> I[Búsqueda Semántica]
+        H --> J[Integración de Datos]
+        H --> K[Pregunta-Respuesta]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style F fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>5.5 Representaciones Híbridas y Neurosimbólicas</h2>
+    <p>
+        La tensión entre enfoques simbólicos (representaciones explícitas, razonamiento interpretable) y subsimbólicos (embeddings neuronales, aprendizaje de extremo a extremo) ha motivado investigación en sistemas híbridos que combinan sus fortalezas complementarias. Los sistemas simbólicos excelen en razonamiento lógico, composicionalidad y explicabilidad, pero enfrentan dificultades con ambigüedad, ruido y adquisición de conocimiento. Los sistemas neuronales manejan robustamente incertidumbre y aprenden de datos, pero carecen de interpretabilidad y garantías lógicas.
+    </p>
+    <p>
+        Las arquitecturas neurosimbólicas integran componentes simbólicos y neuronales mediante diversos mecanismos. Los sistemas de razonamiento guiado por conocimiento aumentan redes neuronales con restricciones lógicas durante entrenamiento o inferencia, asegurando que predicciones respeten conocimiento de dominio. Por ejemplo, sistemas de reconocimiento visual pueden incorporar restricciones de coherencia espacial: si un modelo detecta un volante en una imagen, debe también detectar un automóvil. Los métodos de inyección de conocimiento traducen grafos de conocimiento a representaciones neuronales mediante embeddings, enriqueciendo modelos con conocimiento estructurado.
+    </p>
+    <p>
+        Los programas neuronales (Neural Programs) aprenden algoritmos compositivos mediante arquitecturas que imitan estructuras de programación como bucles, condicionales y funciones. Las Neural Turing Machines y Differentiable Neural Computers equipan redes neuronales con memorias externas direccionables, permitiendo razonamiento algorítmico sobre secuencias complejas. El razonamiento relacional en redes neuronales de grafos (GNNs) procesa información estructurada preservando invarianzas y equivarianzas relevantes, uniendo representaciones vectoriales con estructura explícita.
+    </p>
+    <p>
+        Los modelos de lenguaje grandes (LLMs) como GPT-4 exhiben capacidades emergentes que desafían la dicotomía simbólico-subsimbólico. Aunque implementados como transformadores neuronales entrenados en texto masivo, estos modelos demuestran razonamiento lógico, manejo de conocimiento factual, y generación compositiva. Sin embargo, permanecen debates sobre si LLMs verdaderamente "comprenden" o meramente exhiben correlaciones estadísticas sofisticadas, y sobre su capacidad para razonamiento sistemático y generalización composicional robusta.
+    </p>
+
+    <h2>5.6 Adquisición y Mantenimiento de Conocimiento</h2>
+    <p>
+        La adquisición de conocimiento, proceso mediante el cual sistemas de IA obtienen conocimiento necesario para su dominio de aplicación, constituye un cuello de botella histórico en desarrollo de sistemas basados en conocimiento. La ingeniería de conocimiento tradicional involucra expertos de dominio articulando su conocimiento a ingenieros de conocimiento que lo formalizan en representaciones apropiadas. Este proceso laborioso, costoso y propenso a errores limitó la escalabilidad de sistemas expertos en los años 1980.
+    </p>
+    <p>
+        Los métodos automáticos y semi-automáticos de adquisición han emergido como alternativas escalables. La extracción de información identifica entidades, relaciones y eventos en texto no estructurado, poblando bases de conocimiento automáticamente. Las técnicas de distant supervision aprovechan bases de conocimiento existentes para generar datos de entrenamiento anotados automáticamente, entrenando extractores sin anotación manual exhaustiva. El aprendizaje de ontologías induce conceptualizaciones estructuradas de córpora textuales mediante análisis estadístico y lingüístico.
+    </p>
+    <p>
+        El mantenimiento evolutivo de bases de conocimiento enfrenta desafíos de consistencia, completitud y relevancia temporal. Los sistemas de gestión de versiones rastrean cambios, permitiendo auditoría y reversión. Los mecanismos de verificación de consistencia detectan contradicciones introducidas por actualizaciones, alertando a curadores. La depuración de bases de conocimiento identifica y corrige errores mediante técnicas que combinan inferencia lógica con análisis estadístico de patrones de uso.
+    </p>
+    <p>
+        El crowdsourcing ha democratizado la construcción de recursos de conocimiento a gran escala. Wikipedia representa el ejemplo paradigmático: millones de contribuyentes han creado la enciclopedia más comprehensiva de la historia humana. Proyectos como Wikidata estructuran este conocimiento en formato procesable por máquinas. Los juegos con propósito (games with a purpose) gamifican tareas de anotación, motivando contribuciones mediante mecánicas lúdicas. Cyc, proyecto de más de 35 años, ha construido manualmente una vasta ontología de conocimiento de sentido común mediante esfuerzo sistemático de ingenieros de conocimiento.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>La representación del conocimiento balancea expresividad, tratabilidad y practicidad de adquisición</li>
+            <li>Las lógicas formales proporcionan semántica precisa pero enfrentan límites de decidibilidad</li>
+            <li>Los grafos de conocimiento han emergido como paradigma para representación a gran escala</li>
+            <li>Las ontologías formalizan conceptualizaciones compartidas, facilitando interoperabilidad</li>
+            <li>Los enfoques neurosimbólicos combinan fortalezas de métodos simbólicos y subsimbólicos</li>
+            <li>La adquisición automática de conocimiento es crucial para escalabilidad de sistemas basados en conocimiento</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Sowa, J. F. (2000). <em>Knowledge Representation: Logical, Philosophical, and Computational Foundations</em>. Brooks/Cole.</li>
+        <li>Baader, F., et al. (2003). <em>The Description Logic Handbook: Theory, Implementation, and Applications</em>. Cambridge University Press.</li>
+        <li>Hogan, A., et al. (2021). Knowledge Graphs. <em>ACM Computing Surveys</em>, 54(4), 1-37.</li>
+        <li>Garcez, A. d'Avila, et al. (2019). Neural-Symbolic Learning and Reasoning: A Survey and Interpretation. <em>arXiv preprint arXiv:1711.03902</em>.</li>
+    </ul>
+</article>

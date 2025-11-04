@@ -1,0 +1,19 @@
+<article class="lesson-content">
+    <h1>Clase 12: Procesamiento de Lenguaje Natural</h1>
+    <h2>12.1 Fundamentos del NLP</h2>
+    <p>El Procesamiento de Lenguaje Natural permite a computadoras comprender, interpretar y generar lenguaje humano. Los desafíos incluyen ambigüedad (palabras con múltiples significados), dependencias a larga distancia, conocimiento de mundo implícito, y variabilidad lingüística. El preprocesamiento típico incluye tokenización (segmentar texto en palabras), normalización (lowercase, eliminar puntuación), stemming/lemmatization (reducir palabras a raíces), y remoción de stopwords.</p>
+    <h2>12.2 Representaciones de Texto</h2>
+    <p>Bag-of-Words representa documentos como vectores de conteos de palabras, ignorando orden. TF-IDF (Term Frequency-Inverse Document Frequency) pondera términos por importancia relativa. Word embeddings (Word2Vec, GloVe) mapean palabras a vectores densos capturando similaridad semántica: palabras similares tienen vectores cercanos. Embeddings contextuales (ELMo, BERT) generan representaciones dependientes del contexto, capturando polisemia.</p>
+    <h2>12.3 Modelos de Lenguaje</h2>
+    <p>Los modelos de lenguaje aprenden distribuciones de probabilidad sobre secuencias de palabras. Los n-gramas modelan P(wₜ|wₜ₋ₙ₊₁,...,wₜ₋₁) usando estadísticas de corpus. Los modelos neuronales (RNN, LSTM) capturan dependencias más largas. Los modelos basados en Transformers (GPT, T5) escalan a billones de parámetros entrenados en vastos córpora, exhibiendo capacidades emergentes de razonamiento y generación.</p>
+    <h2>12.4 Tareas de NLP</h2>
+    <p>Clasificación de texto (análisis de sentimiento, detección de spam). Named Entity Recognition identifica entidades (personas, organizaciones, ubicaciones). Part-of-Speech Tagging etiqueta categorías gramaticales. Parsing sintáctico construye árboles de derivación. Machine Translation traduce entre idiomas. Question Answering responde preguntas sobre textos. Summarización condensa documentos preservando información clave. Text Generation produce texto coherente.</p>
+    <h2>12.5 Transformers para NLP</h2>
+    <p>BERT (Bidirectional Encoder Representations from Transformers) pre-entrena en grandes córpora con objetivos de masked language modeling y next sentence prediction, luego se afina para tareas específicas. GPT (Generative Pre-trained Transformer) entrena autoregresivamente para predecir siguiente palabra, escalando a GPT-3 (175B parámetros) y GPT-4 con capacidades de few-shot learning impresionantes. T5 (Text-to-Text Transfer Transformer) formula todas las tareas como text-to-text.</p>
+    <h2>12.6 Aplicaciones Avanzadas</h2>
+    <p>Los chatbots y asistentes conversacionales (ChatGPT, Claude) mantienen diálogos coherentes. Los sistemas de pregunta-respuesta (Watson, Google Search) extraen información de bases de conocimiento. La generación de código (Copilot, AlphaCode) asiste programación. La traducción automática (Google Translate, DeepL) alcanza calidad casi humana. El análisis de sentimiento monitorea opiniones en redes sociales. El text-to-speech y speech-to-text facilitan interfaces de voz.</p>
+    <div class="info-box">
+        <h3>Puntos Clave</h3>
+        <ul><li>El NLP permite procesamiento computacional del lenguaje humano</li><li>Las representaciones evolucionaron desde bag-of-words hasta embeddings contextuales</li><li>Los modelos de lenguaje capturan distribuciones probabilísticas sobre texto</li><li>Las tareas de NLP incluyen clasificación, traducción, QA y generación</li><li>BERT y GPT representan paradigmas de pre-entrenamiento y fine-tuning</li><li>Las aplicaciones impactan chatbots, búsqueda, traducción y asistencia</li></ul>
+    </div>
+</article>

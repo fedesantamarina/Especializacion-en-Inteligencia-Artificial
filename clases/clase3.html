@@ -1,0 +1,175 @@
+<article class="lesson-content">
+    <h1>Clase 3: Fundamentos Matemáticos para Inteligencia Artificial</h1>
+
+    <h2>3.1 Álgebra Lineal: El Lenguaje de los Datos de Alta Dimensión</h2>
+    <p>
+        El álgebra lineal constituye el fundamento matemático indispensable para comprender y desarrollar sistemas de inteligencia artificial modernos. La representación de datos en espacios vectoriales de alta dimensión permite la manipulación eficiente de información compleja mediante operaciones matriciales. Un vector puede conceptualizarse como un punto o dirección en un espacio multidimensional, donde cada componente representa una característica o atributo relevante del objeto representado.
+    </p>
+    <p>
+        Las matrices emergen naturalmente en múltiples contextos de IA: como colecciones de vectores de características (donde cada fila representa una observación), como operadores de transformación lineal que mapean vectores de un espacio a otro, y como representaciones de relaciones entre entidades. Las operaciones matriciales fundamentales —suma, multiplicación, transposición e inversión— posibilitan manipulaciones sofisticadas de datos que subyacen a prácticamente todos los algoritmos de machine learning.
+    </p>
+    <p>
+        La descomposición de matrices revela estructura latente en datos complejos. La Descomposición en Valores Singulares (SVD) factoriza una matriz en el producto de tres matrices con propiedades especiales, permitiendo compresión de datos, reducción de dimensionalidad y descubrimiento de patrones fundamentales. En el contexto de sistemas de recomendación, por ejemplo, SVD puede descomponer una matriz usuario-producto en factores latentes que capturan preferencias subyacentes y características de ítems. La Descomposición Espectral de matrices simétricas proporciona eigenvalores y eigenvectores que caracterizan transformaciones fundamentales del espacio.
+    </p>
+    <p>
+        Los espacios vectoriales dotados de productos internos permiten definir nociones de similitud, distancia y ortogonalidad, conceptos cruciales para algoritmos de clustering, clasificación y recuperación de información. La similaridad coseno, derivada del producto interno, mide la alineación angular entre vectores independientemente de sus magnitudes, resultando particularmente útil para comparar documentos de texto o embeddings de palabras en procesamiento de lenguaje natural.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Álgebra Lineal en IA] --> B[Vectores y Matrices]
+        A --> C[Transformaciones]
+        A --> D[Descomposiciones]
+        B --> E[Representación de Datos]
+        B --> F[Espacios de Características]
+        C --> G[Proyecciones]
+        C --> H[Rotaciones]
+        D --> I[SVD - Reducción de Dimensionalidad]
+        D --> J[Eigenvalores - PCA]
+        D --> K[Factorización - Recomendaciones]
+        style A fill:#8B1538,stroke:#333,stroke-width:4px,color:#fff
+    </div>
+
+    <h2>3.2 Cálculo y Optimización: Encontrando los Mínimos Óptimos</h2>
+    <p>
+        El cálculo diferencial proporciona las herramientas matemáticas esenciales para el entrenamiento de modelos de machine learning mediante optimización. El aprendizaje automático puede formularse fundamentalmente como un problema de optimización: encontrar los parámetros de un modelo que minimicen una función de costo que cuantifica la discrepancia entre predicciones y observaciones reales. La derivada, concepto central del cálculo, indica la dirección de mayor incremento de una función, información que permite navegar sistemáticamente hacia mínimos de funciones de costo.
+    </p>
+    <p>
+        El descenso por gradiente constituye el algoritmo de optimización fundamental en machine learning. Partiendo de una inicialización aleatoria de parámetros, el algoritmo calcula iterativamente el gradiente (vector de derivadas parciales) de la función de costo respecto a los parámetros, y actualiza estos últimos moviéndose en la dirección opuesta al gradiente, es decir, en la dirección de mayor descenso. La tasa de aprendizaje, hiperparámetro crucial, controla la magnitud de cada actualización, requiriendo un equilibrio delicado: valores demasiado grandes pueden provocar divergencia, mientras que valores excesivamente pequeños ralentizan la convergencia.
+    </p>
+    <p>
+        El algoritmo de backpropagation, piedra angular del entrenamiento de redes neuronales, aplica ingeniosamente la regla de la cadena del cálculo para computar eficientemente gradientes en redes multicapa. Propagando el error desde la salida hacia capas anteriores, backpropagation determina cómo cada peso contribuye al error total, posibilitando su ajuste mediante descenso por gradiente. La complejidad computacional de este proceso escala linealmente con el número de parámetros, haciéndolo factible incluso para redes con millones de parámetros.
+    </p>
+    <p>
+        Variantes avanzadas del descenso por gradiente incorporan mecanismos de momentum (acumulando gradientes de iteraciones previas para acelerar convergencia), tasas de aprendizaje adaptativas (ajustando automáticamente la magnitud de actualizaciones para cada parámetro), y mini-batch processing (computando gradientes en subconjuntos aleatorios de datos para combinar eficiencia computacional con buenas propiedades de convergencia). Algoritmos como Adam, RMSprop y AdaGrad implementan estas sofisticaciones, representando el estado del arte en optimización para deep learning.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Función de Costo J] --> B[Calcular Gradiente ∇J]
+        B --> C[Actualizar Parámetros]
+        C --> D{Convergencia?}
+        D -->|No| A
+        D -->|Sí| E[Modelo Óptimo]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style E fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>3.3 Probabilidad y Estadística: Razonamiento bajo Incertidumbre</h2>
+    <p>
+        La teoría de probabilidades proporciona el marco matemático riguroso para razonar sobre incertidumbre, característica ubicua en problemas del mundo real donde la información es incompleta, ruidosa o ambigua. Una probabilidad cuantifica el grado de creencia en la ocurrencia de un evento, con valores entre 0 (imposible) y 1 (cierto). Las distribuciones de probabilidad caracterizan la incertidumbre sobre variables aleatorias, especificando las probabilidades relativas de diferentes resultados posibles.
+    </p>
+    <p>
+        El teorema de Bayes constituye uno de los resultados más profundos y aplicados de la teoría de probabilidades, formalizando cómo actualizar racionalmente creencias en función de evidencia nueva. Expresado formalmente, P(H|E) = P(E|H)P(H)/P(E), donde H representa una hipótesis, E evidencia observada, P(H) la probabilidad a priori de la hipótesis, P(E|H) la verosimilitud de observar la evidencia asumiendo la hipótesis, y P(H|E) la probabilidad a posteriori actualizada. Esta formulación subyace a innumerables aplicaciones de IA, desde filtros de spam hasta diagnóstico médico y visión por computadora.
+    </p>
+    <p>
+        Las distribuciones de probabilidad canónicas modelan diferentes tipos de incertidumbre. La distribución Gaussiana (normal), completamente especificada por su media y varianza, describe fenómenos donde los valores extremos son exponencialmente improbables y predominan valores cercanos a la media. Su ubicuidad se debe al Teorema del Límite Central, que establece que sumas de variables aleatorias independientes convergen a distribuciones gaussianas. La distribución de Bernoulli modela ensayos binarios, mientras que su generalización multivariada, la distribución categórica, representa variables discretas con múltiples resultados posibles.
+    </p>
+    <p>
+        La inferencia estadística permite extraer conclusiones sobre poblaciones a partir de muestras limitadas. La estimación máximo-verosímil identifica los parámetros de un modelo estadístico que maximizan la probabilidad de observar los datos disponibles. La estimación Bayesiana, alternativamente, especifica distribuciones de probabilidad sobre parámetros, capturando explícitamente la incertidumbre sobre valores verdaderos. El testeo de hipótesis proporciona procedimientos formales para decidir entre hipótesis competidoras basándose en evidencia estadística, controlando rigurosamente tasas de error.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Probabilidad en IA))
+            Teorema de Bayes
+                Actualización de Creencias
+                Clasificadores Bayesianos
+                Redes Bayesianas
+            Distribuciones
+                Gaussiana
+                Bernoulli
+                Categórica
+                Exponencial
+            Inferencia
+                Máxima Verosimilitud
+                MAP Maximum A Posteriori
+                Inferencia Variacional
+            Aplicaciones
+                Clasificación
+                Regresión
+                Clustering Probabilístico
+                Filtrado de Spam
+    </div>
+
+    <h2>3.4 Teoría de la Información: Cuantificando la Información y la Sorpresa</h2>
+    <p>
+        La teoría de la información, desarrollada por Claude Shannon en 1948, proporciona un marco matemático para cuantificar información, entropía y complejidad. La información puede conceptualizarse como reducción de incertidumbre: eventos altamente improbables, cuando ocurren, comunican más información que eventos esperados. Shannon formalizó esta intuición definiendo el contenido de información de un evento con probabilidad p como -log₂(p), medido en bits. Eventos ciertos (p=1) comunican cero información, mientras que eventos improbables comunican información sustancial.
+    </p>
+    <p>
+        La entropía de Shannon generaliza este concepto a distribuciones de probabilidad completas, cuantificando la incertidumbre promedio asociada con una variable aleatoria. Formalmente, H(X) = -Σ p(x) log₂ p(x), donde la suma recorre todos los valores posibles de X. Distribuciones uniformes, donde todos los resultados son equiprobables, exhiben máxima entropía, mientras que distribuciones concentradas en pocos valores tienen baja entropía. La entropía establece límites fundamentales sobre compresión de datos: ningún esquema de codificación puede representar sistemáticamente una fuente de información usando menos bits que su entropía.
+    </p>
+    <p>
+        La entropía cruzada y la divergencia de Kullback-Leibler (KL) cuantifican la discrepancia entre distribuciones de probabilidad, emergiendo naturalmente como funciones de costo en problemas de clasificación. La entropía cruzada H(p,q) = -Σ p(x) log q(x) mide el número promedio de bits necesarios para codificar datos de distribución p usando un código optimizado para distribución q. La divergencia KL, D_KL(p||q) = H(p,q) - H(p), cuantifica la información adicional requerida cuando se aproxima p con q, y aunque no es una métrica (no es simétrica), proporciona una medida natural de discrepancia entre distribuciones.
+    </p>
+    <p>
+        La información mutua cuantifica la dependencia estadística entre variables, midiendo cuánta información sobre una variable se obtiene observando otra. Variables independientes tienen información mutua cero, mientras que variables perfectamente relacionadas exhiben máxima información mutua. Este concepto fundamenta algoritmos de selección de características, donde se priorizan atributos con alta información mutua con la variable objetivo.
+    </p>
+
+    <h2>3.5 Teoría de Grafos: Modelando Relaciones y Estructuras</h2>
+    <p>
+        La teoría de grafos proporciona el formalismo matemático para representar y analizar sistemas de entidades relacionadas. Un grafo G = (V, E) consiste en un conjunto de vértices V y un conjunto de aristas E que conectan pares de vértices. Los grafos pueden ser dirigidos (donde las aristas tienen dirección) o no dirigidos, y pueden asignar pesos a aristas para representar costos, distancias o intensidades de relación. Esta estructura simple pero expresiva permite modelar redes sociales, redes de conocimiento, mapas de calles, circuitos electrónicos, y numerosos otros sistemas complejos.
+    </p>
+    <p>
+        Algoritmos de recorrido de grafos, como búsqueda en profundidad (DFS) y búsqueda en amplitud (BFS), proporcionan métodos sistemáticos para explorar estructuras de grafos, encontrando aplicaciones en navegación, análisis de conectividad y detección de ciclos. Algoritmos de camino más corto, como el algoritmo de Dijkstra y el algoritmo de Bellman-Ford, determinan rutas óptimas entre nodos, fundamentando aplicaciones de navegación y ruteo de redes. El algoritmo A*, combinando búsqueda de camino más corto con heurísticas que guían la exploración, representa un pilar de la planificación en IA.
+    </p>
+    <p>
+        Las medidas de centralidad identifican nodos importantes en redes: centralidad de grado cuantifica el número de conexiones directas; centralidad de intermediación identifica nodos que frecuentemente aparecen en caminos más cortos entre otros nodos, actuando como "puentes"; centralidad de eigenvector (y su variante PageRank) asigna importancia proporcional a la importancia de vecinos, capturando influencia recursiva. Estas métricas fundamentan algoritmos de ranking en motores de búsqueda y análisis de redes sociales.
+    </p>
+    <p>
+        Los grafos de conocimiento estructuran información como redes de entidades relacionadas, donde nodos representan conceptos y aristas representan relaciones semánticas. Ontologías formalizan estas estructuras, proporcionando vocabularios compartidos y esquemas de inferencia. Las redes bayesianas representan dependencias probabilísticas entre variables mediante grafos acíclicos dirigidos, facilitando razonamiento eficiente bajo incertidumbre. Las redes neuronales de grafos (GNNs) generalizan arquitecturas de deep learning a datos estructurados en grafos, aprendiendo representaciones de nodos que incorporan información de su vecindad topológica.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Teoría de Grafos en IA] --> B[Representación]
+        A --> C[Algoritmos]
+        A --> D[Aplicaciones]
+        B --> E[Grafos de Conocimiento]
+        B --> F[Redes Bayesianas]
+        B --> G[Redes Neuronales]
+        C --> H[Búsqueda]
+        C --> I[Camino Más Corto]
+        C --> J[Centralidad]
+        D --> K[Sistemas de Recomendación]
+        D --> L[Análisis de Redes Sociales]
+        D --> M[Planificación]
+        style A fill:#8B1538,stroke:#333,stroke-width:4px,color:#fff
+    </div>
+
+    <h2>3.6 Lógica Matemática: Fundamentos del Razonamiento Formal</h2>
+    <p>
+        La lógica matemática formaliza el razonamiento válido mediante sistemas de símbolos y reglas de inferencia precisas. La lógica proposicional, el sistema lógico más fundamental, opera sobre proposiciones que pueden ser verdaderas o falsas, combinándolas mediante conectivos lógicos (AND, OR, NOT, IMPLIES). Las tablas de verdad especifican completamente la semántica de estos conectivos, mientras que sistemas de deducción, como la resolución, proporcionan procedimientos automáticos para derivar conclusiones válidas de premisas.
+    </p>
+    <p>
+        La lógica de primer orden (o lógica de predicados) extiende la lógica proposicional incorporando cuantificadores (∀ universal, ∃ existencial) y predicados que expresan propiedades y relaciones sobre dominios de objetos. Esta mayor expresividad permite representar conocimiento complejo sobre el mundo: "∀x (Humano(x) → Mortal(x))" afirma que todos los humanos son mortales. Los sistemas de demostración automática de teoremas aplican reglas de inferencia para derivar automáticamente teoremas de axiomas, con aplicaciones que van desde verificación formal de software hasta planificación automatizada.
+    </p>
+    <p>
+        La lógica modal extiende sistemas lógicos clásicos con operadores que expresan modalidades como necesidad, posibilidad, conocimiento y creencia. La lógica epistémica, rama de la lógica modal, formaliza el razonamiento sobre conocimiento y creencia de agentes, proporcionando fundamentos para sistemas multiagente donde agentes deben razonar sobre el conocimiento de otros agentes. La lógica temporal incorpora operadores para razonar sobre secuencias temporales de eventos, fundamentando la verificación de sistemas concurrentes y reactivos.
+    </p>
+    <p>
+        Las lógicas no-monótonas formalizan tipos de razonamiento donde conclusiones previas pueden retractarse a la luz de nueva información, característica del razonamiento de sentido común que contrasta con la monotonicidad de la lógica clásica. La lógica default, la circunscripción y la lógica autoepistémica proporcionan formalismos para razonar con información incompleta, defaults plausibles pero derrotables, y excepciones. Estos sistemas lógicos fundamentan la representación de conocimiento en IA, permitiendo modelar el razonamiento flexible y pragmático característico de la inteligencia humana.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>Álgebra lineal proporciona el lenguaje fundamental para representar y manipular datos de alta dimensión</li>
+            <li>Cálculo y optimización, especialmente descenso por gradiente, subyacen al entrenamiento de modelos</li>
+            <li>Teoría de probabilidades formaliza razonamiento bajo incertidumbre, con el Teorema de Bayes como resultado central</li>
+            <li>Teoría de la información cuantifica información, entropía y similitud entre distribuciones</li>
+            <li>Teoría de grafos modela sistemas relacionales y fundamenta algoritmos de búsqueda y análisis de redes</li>
+            <li>Lógica matemática formaliza el razonamiento válido, desde lógica proposicional hasta sistemas no-monótonos</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Strang, G. (2016). <em>Introduction to Linear Algebra</em> (5th ed.). Wellesley-Cambridge Press.</li>
+        <li>Boyd, S., & Vandenberghe, L. (2004). <em>Convex Optimization</em>. Cambridge University Press.</li>
+        <li>Wasserman, L. (2004). <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer.</li>
+        <li>MacKay, D. J. C. (2003). <em>Information Theory, Inference, and Learning Algorithms</em>. Cambridge University Press.</li>
+        <li>Diestel, R. (2017). <em>Graph Theory</em> (5th ed.). Springer.</li>
+        <li>Russell, S., & Norvig, P. (2021). Capítulos sobre lógica en <em>Artificial Intelligence: A Modern Approach</em>. Pearson.</li>
+    </ul>
+</article>

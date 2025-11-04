@@ -1,0 +1,19 @@
+<article class="lesson-content">
+    <h1>Clase 13: Visión por Computadora</h1>
+    <h2>13.1 Fundamentos de Visión Computacional</h2>
+    <p>La visión por computadora permite a sistemas extraer comprensión de imágenes y videos. Los desafíos incluyen variaciones de iluminación, oclusiones, cambios de perspectiva, y la brecha semántica entre píxeles y conceptos de alto nivel. Las representaciones progresan desde píxeles crudos hasta características engineered (SIFT, HOG) y actualmente embeddings neuronales aprendidos. Las tareas fundamentales incluyen clasificación, detección, segmentación, tracking y generación de imágenes.</p>
+    <h2>13.2 Clasificación y Detección de Objetos</h2>
+    <p>La clasificación asigna etiqueta global a imagen completa. Las CNNs dominan con arquitecturas como VGG, ResNet, EfficientNet. La detección localiza y clasifica múltiples objetos mediante bounding boxes. R-CNN genera region proposals, extrae características CNN y clasifica. Fast R-CNN y Faster R-CNN mejoran eficiencia. YOLO (You Only Look Once) y SSD realizan detección en single forward pass, alcanzando tiempo real. Detectores modernos usan Feature Pyramid Networks y NMS (Non-Maximum Suppression).</p>
+    <h2>13.3 Segmentación de Imágenes</h2>
+    <p>La segmentación semántica asigna etiqueta de clase a cada píxel. FCN (Fully Convolutional Networks) reemplaza capas densas con convolucionales para salida espacial. U-Net usa arquitectura encoder-decoder con skip connections, popular en imágenes médicas. DeepLab emplea atrous convolutions para receptive fields grandes. La segmentación de instancias (Mask R-CNN) distingue individuos de misma clase. Segmentación panóptica combina semántica (stuff) e instancias (things).</p>
+    <h2>13.4 Generación de Imágenes</h2>
+    <p>Las GANs generan imágenes fotorealistas. DCGAN usa CNNs. StyleGAN controla atributos mediante style vectors en múltiples escalas. BigGAN escala a ImageNet con fidelidad impresionante. Los modelos de difusión (DDPM, Stable Diffusion) aprenden invertir corrupciones graduales, generando mediante denoising iterativo. DALL-E y Midjourney generan imágenes desde descripciones textuales mediante cross-modal learning. Image-to-image translation (pix2pix, CycleGAN) transforma entre dominios.</p>
+    <h2>13.5 Vision Transformers</h2>
+    <p>Los Vision Transformers (ViT) aplican arquitectura Transformer a imágenes, dividiendo en patches tratados como tokens. ViT alcanza state-of-the-art en clasificación cuando pre-entrenado en datasets grandes. CLIP (Contrastive Language-Image Pre-training) aprende embeddings conjuntos de imagen-texto, permitiendo zero-shot classification. DINO (self-DIstillation with NO labels) aprende representaciones mediante self-supervised learning. Los transformers superan CNNs en muchas tareas con datos suficientes.</p>
+    <h2>13.6 Aplicaciones de Visión Computacional</h2>
+    <p>Reconocimiento facial (Face ID, seguridad). Vehículos autónomos (detección de peatones, señales, lanes). Imagen médica (detección de tumores, diagnóstico asistido). Realidad aumentada (pose estimation, scene understanding). Agricultura (monitoreo de cultivos, detección de enfermedades). Retail (checkout automático, análisis de comportamiento). Manufactura (inspección de calidad, control robótico). Deportes (análisis de jugadas, estadísticas automáticas).</p>
+    <div class="info-box">
+        <h3>Puntos Clave</h3>
+        <ul><li>La visión computacional extrae comprensión de datos visuales</li><li>Las CNNs dominaron clasificación y detección de objetos</li><li>La segmentación asigna etiquetas a nivel de píxel</li><li>Las GANs y difusión generan imágenes realistas</li><li>Los Vision Transformers superan CNNs con datos suficientes</li><li>Las aplicaciones impactan múltiples industrias y dominios</li></ul>
+    </div>
+</article>

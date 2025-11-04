@@ -1,0 +1,19 @@
+<article class="lesson-content">
+    <h1>Clase 11: Deep Learning y Redes Neuronales</h1>
+    <h2>11.1 Arquitectura de Redes Neuronales</h2>
+    <p>Las redes neuronales artificiales se inspiran en neuronas biológicas. Una neurona artificial computa suma ponderada de entradas más bias, aplicando función de activación no lineal: a = σ(Σwᵢxᵢ + b). Las redes feedforward apilan capas: entrada → ocultas → salida. La profundidad (múltiples capas ocultas) permite aprender jerarquías de abstracciones: características simples en capas tempranas, conceptos complejos en profundas.</p>
+    <h2>11.2 Backpropagation y Optimización</h2>
+    <p>Backpropagation calcula eficientemente gradientes de función de pérdida respecto a pesos mediante regla de la cadena, propagando errores desde salida hacia entrada. Los optimizadores modernos (Adam, RMSprop, AdaGrad) adaptan tasas de aprendizaje por parámetro. Las técnicas de regularización (dropout, batch normalization, weight decay) previenen overfitting y estabilizan entrenamiento.</p>
+    <h2>11.3 Redes Convolucionales (CNN)</h2>
+    <p>Las CNN explotan estructura espacial en imágenes mediante capas convolucionales que aplican filtros aprendidos detectando características locales. Pooling reduce dimensionalidad preservando características salientes. Arquitecturas icónicas: LeNet (reconocimiento de dígitos), AlexNet (ImageNet 2012), VGG (profundidad con filtros pequeños), ResNet (conexiones residuales permitiendo redes muy profundas), y Transformers de visión.</p>
+    <h2>11.4 Redes Recurrentes (RNN) y LSTM</h2>
+    <p>Las RNN procesan secuencias manteniendo estado oculto que captura contexto temporal: hₜ = σ(Wₕhₜ₋₁ + Wₓxₜ + b). Las LSTM (Long Short-Term Memory) mitigan vanishing gradients mediante puertas que controlan flujo de información, recordando dependencias a largo plazo. Las GRU simplifican LSTM con menos parámetros. Bidirectional RNNs procesan secuencias en ambas direcciones.</p>
+    <h2>11.5 Transformers y Attention</h2>
+    <p>Los mecanismos de atención permiten que modelos enfoquen dinámicamente partes relevantes de entrada. Self-attention computa representaciones pesando importancia de cada posición respecto a todas las demás. Los Transformers, basados enteramente en attention sin recurrencia, procesan secuencias en paralelo. BERT usa transformers bidireccionales para comprensión; GPT usa transformers autoregresivos para generación.</p>
+    <h2>11.6 Modelos Generativos: GANs y Diffusion</h2>
+    <p>Las GANs (Generative Adversarial Networks) entrenan simultáneamente generador (crea muestras sintéticas) y discriminador (distingue reales de sintéticas) en juego adversarial. El generador aprende la distribución de datos reales. StyleGAN genera imágenes fotorealistas. Los modelos de difusión aprenden invertir proceso de corrupción gradual, generando muestras mediante denoising iterativo. Stable Diffusion permite generación de imágenes desde texto.</p>
+    <div class="info-box">
+        <h3>Puntos Clave</h3>
+        <ul><li>Las redes neuronales profundas aprenden jerarquías de representaciones</li><li>Backpropagation y optimizadores adaptativos entrenan redes eficientemente</li><li>Las CNN explotan estructura espacial para visión computacional</li><li>Las RNN y LSTM procesan secuencias capturando dependencias temporales</li><li>Los Transformers dominan NLP mediante mecanismos de atención</li><li>Los modelos generativos crean datos sintéticos realistas</li></ul>
+    </div>
+</article>

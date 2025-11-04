@@ -1,0 +1,51 @@
+<article class="lesson-content">
+    <h1>Clase 9: Aprendizaje Supervisado - Algoritmos Clásicos</h1>
+
+    <h2>9.1 Regresión Lineal y Logística</h2>
+    <p>
+        La regresión lineal constituye uno de los algoritmos de machine learning más fundamentales, modelando relaciones entre variables predictoras y una variable respuesta continua mediante combinación lineal: y = β₀ + β₁x₁ + ... + βₙxₙ + ε. Los coeficientes β se estiman minimizando el error cuadrático medio entre predicciones y valores observados, problema con solución analítica mediante ecuaciones normales o métodos iterativos como descenso por gradiente. La regresión lineal múltiple maneja múltiples predictores, mientras que regresión polinómica captura relaciones no lineales mediante términos de orden superior.
+    </p>
+    <p>
+        La regresión logística extiende estas ideas a clasificación binaria, modelando la probabilidad de pertenencia a una clase mediante la función logística (sigmoide): P(y=1|x) = 1/(1 + e^(-z)), donde z = β₀ + β₁x₁ + ... + βₙxₙ. La estimación de parámetros procede mediante máxima verosimilitud, optimizada típicamente mediante descenso por gradiente. Regresión logística multinomial generaliza a clasificación multiclase mediante función softmax que normaliza scores en distribución de probabilidad sobre clases.
+    </p>
+
+    <h2>9.2 K-Nearest Neighbors (k-NN)</h2>
+    <p>
+        El algoritmo k-NN constituye un método de aprendizaje basado en instancias que no construye modelo explícito durante entrenamiento, sino que memoriza datos y difiere computación hasta predicción. Para clasificar una nueva instancia, k-NN identifica los k vecinos más cercanos en el conjunto de entrenamiento según alguna métrica de distancia (típicamente euclidiana), y asigna la clase mayoritaria entre esos vecinos. Para regresión, predice el promedio de valores de vecinos. La selección de k balancea suavidad de decisiones: k pequeño produce fronteras de decisión complejas susceptibles a ruido; k grande suaviza decisiones pero puede perder detalle.
+    </p>
+
+    <h2>9.3 Support Vector Machines (SVM)</h2>
+    <p>
+        Las Support Vector Machines buscan el hiperplano que separa clases con margen máximo, donde el margen es la distancia mínima de cualquier punto de entrenamiento al hiperplano. Esta formulación maximiza la separación entre clases, teóricamente mejorando generalización. Los vectores de soporte, subconjunto de puntos de entrenamiento que definen el margen, son los únicos que influencian el modelo. La formulación dual permite el kernel trick: computar productos internos en espacios de alta dimensión implícitamente mediante funciones kernel (polinomial, RBF, sigmoide), permitiendo fronteras de decisión no lineales sin computación explícita en espacios transformados.
+    </p>
+
+    <h2>9.4 Árboles de Decisión</h2>
+    <p>
+        Los árboles de decisión aprenden jerarquías de reglas de decisión que particionan recursivamente el espacio de características, representando modelos interpretables mediante estructura de árbol donde nodos internos representan tests sobre atributos y hojas representan predicciones. El algoritmo ID3 construye árboles seleccionando en cada nodo el atributo que maximiza ganancia de información (reducción de entropía). C4.5 maneja atributos continuos mediante thresholds y realiza poda para prevenir overfitting. CART (Classification and Regression Trees) soporta tanto clasificación como regresión, optimizando índice Gini o error cuadrático.
+    </p>
+
+    <h2>9.5 Naive Bayes</h2>
+    <p>
+        Los clasificadores Naive Bayes aplican el teorema de Bayes con la suposición "naive" de independencia condicional entre características dado la clase: P(C|x₁,...,xₙ) ∝ P(C)∏P(xᵢ|C). Esta simplificación, aunque frecuentemente violada en práctica, permite estimación eficiente de probabilidades de datos limitados y predicción rápida. Variantes incluyen Gaussian Naive Bayes (características continuas modeladas con gaussianas), Multinomial Naive Bayes (conteos de características, común en clasificación de texto), y Bernoulli Naive Bayes (características binarias).
+    </p>
+
+    <h2>9.6 Ensemble Methods: Bagging y Boosting</h2>
+    <p>
+        Los métodos ensemble combinan múltiples modelos base para mejorar desempeño y robustez. Bagging (Bootstrap Aggregating) entrena modelos independientes en muestras bootstrap (remuestreo con reemplazo) de datos de entrenamiento, agregando predicciones mediante votación (clasificación) o promediado (regresión). Random Forests extiende bagging a árboles de decisión, añadiendo aleatorización adicional mediante selección de subconjuntos aleatorios de características en cada split, reduciendo correlación entre árboles y mejorando generalización.
+    </p>
+    <p>
+        Boosting entrena secuencialmente modelos débiles, cada uno enfocándose en instancias mal clasificadas por predecesores. AdaBoost ajusta pesos de instancias, incrementando peso de ejemplos difíciles. Gradient Boosting optimiza aditivamente un conjunto de árboles para minimizar función de pérdida diferenciable, construyendo cada árbol para predecir el gradiente negativo de la pérdida. XGBoost, LightGBM y CatBoost implementan gradient boosting con optimizaciones de eficiencia y regularización, dominando competencias de machine learning en problemas tabulares.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>La regresión lineal y logística constituyen fundamentos para regresión y clasificación</li>
+            <li>k-NN es un método simple basado en instancias sin fase explícita de entrenamiento</li>
+            <li>SVM maximiza el margen, usando kernel trick para fronteras no lineales</li>
+            <li>Los árboles de decisión proporcionan modelos interpretables mediante reglas jerárquicas</li>
+            <li>Naive Bayes aplica teorema de Bayes con suposición de independencia condicional</li>
+            <li>Los ensemble methods combinan múltiples modelos para mejorar desempeño y robustez</li>
+        </ul>
+    </div>
+</article>

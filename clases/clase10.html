@@ -1,0 +1,19 @@
+<article class="lesson-content">
+    <h1>Clase 10: Aprendizaje No Supervisado</h1>
+    <h2>10.1 Clustering: K-Means y Jerárquico</h2>
+    <p>El clustering agrupa datos en conjuntos de objetos similares sin etiquetas previas. K-means particiona datos en k clusters minimizando varianza intra-cluster, iterando entre asignación de puntos a centroides más cercanos y actualización de centroides como medias de clusters. DBSCAN identifica clusters de densidad arbitraria, resistente a ruido y outliers. Clustering jerárquico construye dendrogramas mediante aglomeración bottom-up o división top-down.</p>
+    <h2>10.2 Reducción de Dimensionalidad: PCA</h2>
+    <p>Principal Component Analysis (PCA) proyecta datos en direcciones de máxima varianza mediante descomposición espectral de matriz de covarianza. Los componentes principales son combinaciones lineales ortogonales de variables originales que capturan varianza decreciente. PCA facilita visualización, reduce ruido, y acelera algoritmos al trabajar en espacios de menor dimensión preservando información relevante.</p>
+    <h2>10.3 Aprendizaje de Manifolds</h2>
+    <p>Los métodos de aprendizaje de manifolds asumen que datos de alta dimensión residen en manifolds de baja dimensión incrustados. t-SNE (t-Distributed Stochastic Neighbor Embedding) preserva similaridades locales, popular para visualización. UMAP (Uniform Manifold Approximation and Projection) preserva estructura global y local, escalando mejor que t-SNE. Isomap y LLE capturan geometría geodésica de manifolds.</p>
+    <h2>10.4 Autoencoders</h2>
+    <p>Los autoencoders son redes neuronales entrenadas para reconstruir su entrada, con capa intermedia de menor dimensión forzando compresión. El encoder mapea entrada a representación latente; el decoder reconstruye desde representación. Los autoencoders variacionales (VAE) aprenden distribuciones probabilísticas en espacio latente, generando nuevas muestras mediante muestreo y decodificación.</p>
+    <h2>10.5 Detección de Anomalías</h2>
+    <p>La detección de anomalías identifica patrones que se desvían significativamente de la norma. Los métodos estadísticos modelan distribución normal, identificando outliers con baja probabilidad. Isolation Forest aísla anomalías mediante particiones aleatorias recursivas. One-Class SVM aprende frontera que engloba datos normales. Autoencoders detectan anomalías mediante alto error de reconstrucción.</p>
+    <h2>10.6 Aprendizaje de Asociaciones</h2>
+    <p>El aprendizaje de reglas de asociación descubre relaciones interesantes en transacciones. El algoritmo Apriori identifica conjuntos frecuentes de ítems eficientemente, generando reglas con soporte y confianza satisfactorios. FP-Growth mejora eficiencia usando estructuras de árbol compactas. Las aplicaciones incluyen análisis de canasta de mercado, recomendaciones y descubrimiento de patrones en bases de datos.</p>
+    <div class="info-box">
+        <h3>Puntos Clave</h3>
+        <ul><li>El clustering agrupa datos por similitud sin supervisión explícita</li><li>PCA reduce dimensionalidad preservando máxima varianza</li><li>Los manifolds capturan estructura geométrica de datos complejos</li><li>Los autoencoders aprenden representaciones comprimidas mediante reconstrucción</li><li>La detección de anomalías identifica patrones atípicos</li><li>Las reglas de asociación descubren relaciones en datos transaccionales</li></ul>
+    </div>
+</article>

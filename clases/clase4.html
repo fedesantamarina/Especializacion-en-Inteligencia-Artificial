@@ -1,0 +1,182 @@
+<article class="lesson-content">
+    <h1>Clase 4: Algoritmos y Estructuras de Datos en Inteligencia Artificial</h1>
+
+    <h2>4.1 Complejidad Algorítmica y Análisis Asintótico</h2>
+    <p>
+        El análisis de complejidad algorítmica constituye una competencia fundamental para el desarrollo de sistemas de inteligencia artificial eficientes y escalables. La notación Big-O proporciona un formalismo para caracterizar cómo el tiempo de ejecución o el uso de memoria de un algoritmo escala en función del tamaño de la entrada. Un algoritmo con complejidad O(n) exhibe crecimiento lineal: duplicar el tamaño de entrada aproximadamente duplica el tiempo de ejecución. Los algoritmos O(n²) cuadráticos, comunes en implementaciones naivas de problemas comparativos, se tornan rápidamente impracticables para grandes volúmenes de datos.
+    </p>
+    <p>
+        La complejidad logarítmica O(log n), característica de algoritmos que iterativamente dividen el espacio de búsqueda (como búsqueda binaria en arrays ordenados), escala extraordinariamente bien: incluso para entradas masivas, el número de operaciones crece modestamente. Los algoritmos O(n log n), tipificados por algoritmos de ordenamiento eficientes como MergeSort y QuickSort, representan frecuentemente el óptimo alcanzable para problemas comparativos en el modelo de computación general. La complejidad exponencial O(2ⁿ) y factorial O(n!) caracteriza problemas intratables donde enumeración exhaustiva resulta inevitable, motivando aproximaciones heurísticas y aleatorias.
+    </p>
+    <p>
+        El análisis amortizado proporciona una perspectiva más sofisticada, caracterizando el costo promedio de operaciones en secuencias, reconociendo que operaciones individuales costosas pueden ser subsidiadas por operaciones baratas frecuentes. Las estructuras de datos dinámicas como tablas hash con expansión dinámica exhiben esta propiedad: aunque la expansión individual sea costosa (O(n)), su frecuencia se controla de manera que el costo amortizado por inserción permanece constante.
+    </p>
+    <p>
+        En el contexto de machine learning, la complejidad computacional determina la factibilidad de entrenar y desplegar modelos. Los algoritmos de entrenamiento de redes neuronales mediante backpropagation tienen complejidad lineal en el número de parámetros y el tamaño del conjunto de entrenamiento, haciendo practicable el entrenamiento de modelos con millones de parámetros. Sin embargo, arquitecturas como redes neuronales recurrentes (RNNs) exhiben limitaciones inherentes de paralelización debido a dependencias secuenciales, motivando el desarrollo de arquitecturas alternativas como Transformers que sacrifican complejidad por muestra (O(n²) respecto a longitud de secuencia) para ganar paralelización masiva.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Clases de Complejidad] --> B[O1 - Constante]
+        A --> C[O log n - Logarítmica]
+        A --> D[On - Lineal]
+        A --> E[On log n - Cuasi-lineal]
+        A --> F[On² - Cuadrática]
+        A --> G[O2ⁿ - Exponencial]
+        B --> H[Acceso a Tabla Hash]
+        C --> I[Búsqueda Binaria]
+        D --> J[Recorrido de Array]
+        E --> K[MergeSort]
+        F --> L[Comparaciones Exhaustivas]
+        G --> M[Problemas NP-Completos]
+        style A fill:#8B1538,stroke:#333,stroke-width:4px,color:#fff
+        style G fill:#E74C3C,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>4.2 Estructuras de Datos Fundamentales para IA</h2>
+    <p>
+        Las estructuras de datos apropiadas constituyen el fundamento de implementaciones eficientes de algoritmos de IA. Los arrays y listas enlazadas representan las estructuras secuenciales más básicas: arrays proporcionan acceso en tiempo constante mediante indexación pero requieren memoria contigua y tienen costo lineal para inserciones; listas enlazadas facilitan inserciones eficientes pero requieren recorrido secuencial para acceso. La elección entre estas alternativas depende del patrón de acceso predominante en la aplicación específica.
+    </p>
+    <p>
+        Las pilas (stacks) y colas (queues) implementan disciplinas LIFO y FIFO respectivamente, fundamentando algoritmos de búsqueda en grafos: búsqueda en profundidad (DFS) emplea pilas para rastrear nodos a explorar, mientras que búsqueda en amplitud (BFS) utiliza colas. Las colas de prioridad, típicamente implementadas mediante heaps binarios, mantienen elementos ordenados por prioridad permitiendo extracción eficiente del elemento máximo (o mínimo). Esta estructura fundamenta el algoritmo A* de búsqueda informada, donde se exploran nodos en orden de estimación de costo total al objetivo.
+    </p>
+    <p>
+        Las tablas hash proporcionan acceso, inserción y eliminación en tiempo constante promedio mediante funciones hash que mapean claves a índices de array. Colisiones, donde claves distintas generan el mismo hash, se resuelven mediante encadenamiento (listas enlazadas en cada bucket) o direccionamiento abierto (búsqueda de buckets alternativos). Las tablas hash fundamentan diccionarios y conjuntos en lenguajes de programación modernos, estructuras ubicuas en implementaciones de IA para almacenar vocabularios, cachés de cómputos intermedios, y mapeos arbitrarios.
+    </p>
+    <p>
+        Los árboles balanceados (AVL, Red-Black trees) mantienen datos ordenados permitiendo búsqueda, inserción y eliminación en tiempo logarítmico, garantizando balance mediante rotaciones durante modificaciones. Los árboles de decisión, centrales en machine learning clásico, particionen recursivamente el espacio de características mediante predicados sobre atributos, representando funciones de clasificación mediante estructura jerárquica interpretable. Los random forests ensemble múltiples árboles de decisión entrenados en muestras bootstrap de datos, combinando sus predicciones mediante votación o promediado para robustez y generalización superiores.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Estructuras de Datos))
+            Secuenciales
+                Arrays
+                Listas Enlazadas
+                Stacks
+                Queues
+            Asociativas
+                Hash Tables
+                Árboles Binarios de Búsqueda
+                Tries
+            Especializadas
+                Heaps
+                Grafos
+                Árboles de Decisión
+                Estructuras Probabilísticas
+            Para ML
+                Tensores
+                DataFrames
+                Sparse Matrices
+    </div>
+
+    <h2>4.3 Algoritmos de Búsqueda: Navegando Espacios de Soluciones</h2>
+    <p>
+        Los algoritmos de búsqueda constituyen una clase fundamental de métodos para resolver problemas de IA que pueden formularse como exploración de espacios de estados. Un espacio de estados consiste en un estado inicial, un conjunto de operadores que transforman estados, y un test de objetivo que identifica estados meta. El problema de búsqueda consiste en encontrar una secuencia de operadores que transforme el estado inicial en un estado objetivo, idealmente minimizando algún costo acumulado.
+    </p>
+    <p>
+        La búsqueda no informada explora el espacio sin información adicional sobre proximidad al objetivo. Búsqueda en amplitud (BFS) expande nodos capa por capa, garantizando encontrar la solución con menor número de pasos pero potencialmente requiriendo memoria exponencial. Búsqueda en profundidad (DFS) explora ramas completas antes de retroceder, usando memoria lineal en la profundidad pero sin garantías de optimalidad. La búsqueda de profundidad iterativa (IDS) combina las ventajas de ambos enfoques, repetidamente ejecutando DFS con límites de profundidad incrementales, alcanzando completitud de BFS con eficiencia de memoria de DFS.
+    </p>
+    <p>
+        La búsqueda informada explota funciones heurísticas que estiman el costo al objetivo desde cada estado, priorizando la exploración de regiones prometedoras del espacio. El algoritmo A* mantiene para cada nodo n una estimación f(n) = g(n) + h(n), donde g(n) es el costo acumulado desde el inicio hasta n, y h(n) es la heurística que estima el costo de n al objetivo. A* explora nodos en orden creciente de f, garantizando encontrar soluciones óptimas cuando la heurística es admisible (nunca sobreestima el costo verdadero) y consistente (respeta la desigualdad triangular).
+    </p>
+    <p>
+        Las heurísticas efectivas pueden acelerar dramáticamente la búsqueda, reduciendo nodos explorados en órdenes de magnitud. En el problema de las n-reinas, la heurística de conflictos mínimos guía hacia configuraciones con menos ataques. En planificación automatizada, las heurísticas de eliminación de precondiciones estiman pasos requeridos ignorando interacciones entre subobjetivos. El diseño de heurísticas admisibles pero informativas constituye un arte que balancea tratabilidad computacional con potencia discriminatoria.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Inicio] --> B{BFS o DFS?}
+        B -->|BFS| C[Cola FIFO]
+        B -->|DFS| D[Pila LIFO]
+        C --> E[Expandir Nivel Completo]
+        D --> F[Explorar Rama Completa]
+        E --> G{¿Objetivo?}
+        F --> G
+        G -->|No| H[Añadir Sucesores]
+        G -->|Sí| I[Retornar Solución]
+        H --> B
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style I fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>4.4 Algoritmos de Ordenamiento y su Relevancia en IA</h2>
+    <p>
+        El ordenamiento, problema computacional fundamental, encuentra numerosas aplicaciones en inteligencia artificial. Los algoritmos de ordenamiento simples —como SelectionSort, InsertionSort y BubbleSort— exhiben complejidad cuadrática O(n²), resultando practicables solo para conjuntos pequeños. InsertionSort, no obstante, muestra eficiencia excepcional para datos casi ordenados, propiedad aprovechada en algoritmos híbridos.
+    </p>
+    <p>
+        MergeSort ejemplifica el paradigma divide-y-vencerás: recursivamente divide el array en mitades, ordena cada mitad independientemente, y fusiona los resultados ordenados. Esta estrategia garantiza complejidad O(n log n) en todos los casos, óptimo para ordenamiento basado en comparaciones. MergeSort requiere espacio auxiliar O(n) para la fusión, consideración relevante para aplicaciones con restricciones de memoria. Su estructura naturalmente paralela permite implementaciones eficientes en arquitecturas de memoria compartida y distribuida.
+    </p>
+    <p>
+        QuickSort, alternativa in-place a MergeSort, selecciona un pivote, particiona el array reordenando elementos menores que el pivote antes y mayores después, y recursivamente ordena las particiones. Con pivotes bien elegidos, QuickSort alcanza complejidad promedio O(n log n), típicamente superando MergeSort en la práctica debido a mejores constantes y localidad de memoria. Sin embargo, el peor caso (O(n²) con pivotes sistemáticamente mal elegidos) requiere estrategias de selección de pivote aleatorias o deterministas sofisticadas.
+    </p>
+    <p>
+        En contextos de machine learning, el ordenamiento facilita numerosas operaciones: identificar k-vecinos más cercanos en k-NN, calcular medianas para imputación de datos faltantes, ordenar características por importancia para selección de atributos, y determinar umbrales óptimos en árboles de decisión. Los algoritmos de selección, que encuentran el k-ésimo elemento más pequeño sin ordenar completamente (QuickSelect, MedianOfMedians), ofrecen complejidad lineal promedio, superiores cuando solo se requiere identificar elementos específicos en lugar de ordenamiento completo.
+    </p>
+
+    <h2>4.5 Algoritmos Probabilísticos y de Aproximación</h2>
+    <p>
+        Muchos problemas relevantes para IA son NP-completos o NP-duros, implicando que ningún algoritmo eficiente (polinomial) se conoce ni se espera existir para resolverlos exactamente en el peor caso. Para estos problemas, algoritmos probabilísticos y de aproximación ofrecen soluciones practicables sacrificando garantías absolutas por eficiencia computacional. Los algoritmos de Monte Carlo producen respuestas que pueden ser incorrectas con probabilidad controlada, mientras que algoritmos de Las Vegas siempre producen respuestas correctas pero su tiempo de ejecución varía aleatoriamente.
+    </p>
+    <p>
+        Los algoritmos de muestreo probabilístico aproximan distribuciones de probabilidad complejas generando muestras aleatorias que asintóticamente reflejan la distribución objetivo. El muestreo de Monte Carlo por Cadenas de Markov (MCMC), particularmente el algoritmo de Metropolis-Hastings y el muestreador de Gibbs, construye cadenas de Markov cuya distribución estacionaria coincide con la distribución objetivo. Estos métodos fundamentan la inferencia bayesiana aproximada, permitiendo razonamiento probabilístico en modelos donde la inferencia exacta es intratable.
+    </p>
+    <p>
+        Los algoritmos evolutivos y genéticos aplican metáforas de evolución biológica para optimización global. Una población de soluciones candidatas evoluciona mediante operadores de selección (favorecer individuos con mejor fitness), crossover (combinar características de padres) y mutación (introducir variación aleatoria). Aunque sin garantías de optimalidad, estos algoritmos demuestran efectividad en espacios de búsqueda vastos, multimodales y discontinuos donde métodos basados en gradientes fallan.
+    </p>
+    <p>
+        El templado simulado (Simulated Annealing) emula el proceso físico de templado metalúrgico, donde el sistema se calienta y enfría gradualmente para alcanzar configuraciones de mínima energía. El algoritmo acepta probabilísticamente movimientos que empeoran la función objetivo con probabilidad decreciente a medida que avanza, escapando mínimos locales y explorando el espacio global. La búsqueda tabú mantiene memoria de regiones recientemente exploradas, prohibiendo temporalmente revisitas para forzar exploración diversa del espacio de búsqueda.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Problema NP-Duro] --> B{Estrategia}
+        B --> C[Algoritmos Exactos]
+        B --> D[Aproximación]
+        B --> E[Heurísticas]
+        C --> F[Tiempo Exponencial]
+        D --> G[Garantías de Calidad]
+        E --> H[Sin Garantías]
+        D --> I[Algoritmos de Aproximación]
+        E --> J[Algoritmos Genéticos]
+        E --> K[Simulated Annealing]
+        E --> L[Búsqueda Tabú]
+        style A fill:#E74C3C,stroke:#333,stroke-width:2px,color:#fff
+        style D fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>4.6 Paralelización y Algoritmos Distribuidos en IA</h2>
+    <p>
+        El advenimiento de procesadores multinúcleo, GPUs masivamente paralelas, y sistemas de computación distribuida ha transformado la implementación de algoritmos de inteligencia artificial. La paralelización explota múltiples unidades de procesamiento ejecutando computaciones concurrentemente, potencialmente reduciendo tiempo de ejecución proporcional al número de procesadores. Sin embargo, no todos los algoritmos son inherentemente paralelizables: la Ley de Amdahl formaliza que la aceleración máxima está limitada por la fracción secuencial del programa.
+    </p>
+    <p>
+        El entrenamiento de redes neuronales profundas se paraleliza naturalmente en múltiples dimensiones. El paralelismo de datos replica el modelo en múltiples dispositivos, procesando mini-batches diferentes simultáneamente y agregando gradientes para actualización de parámetros. Este enfoque escala casi linealmente con el número de dispositivos cuando la comunicación de gradientes no domina. El paralelismo de modelo particiona el propio modelo entre dispositivos cuando es demasiado grande para memoria de un solo dispositivo, requiriendo comunicación frecuente de activaciones y gradientes entre particiones.
+    </p>
+    <p>
+        Las GPUs (Graphics Processing Units), originalmente diseñadas para renderizado gráfico, han emergido como aceleradores dominantes para deep learning debido a su arquitectura SIMD (Single Instruction, Multiple Data) con miles de núcleos simples. Operaciones matriciales masivas características de redes neuronales se mapean naturalmente a esta arquitectura, alcanzando speedups de 10-100x comparado con CPUs. Las TPUs (Tensor Processing Units) de Google representan hardware especializado diseñado específicamente para operaciones de IA, optimizando consumo energético y throughput.
+    </p>
+    <p>
+        Los frameworks de computación distribuida como Apache Spark y Hadoop permiten procesar datasets que exceden la memoria de máquinas individuales, distribuyendo datos y computación en clusters. MapReduce, paradigma de programación subyacente, expresa computaciones como operaciones de mapeo (aplicar función a cada elemento independientemente) y reducción (agregar resultados), garantizando tolerancia a fallos y escalabilidad. Algoritmos de machine learning como regresión lineal, k-means clustering y árboles de decisión admiten formulaciones MapReduce eficientes, democratizando análisis de big data.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>La complejidad algorítmica determina la escalabilidad de sistemas de IA a grandes volúmenes de datos</li>
+            <li>Las estructuras de datos apropiadas son cruciales para implementaciones eficientes de algoritmos de IA</li>
+            <li>Los algoritmos de búsqueda permiten explorar espacios de estados para resolver problemas de planificación</li>
+            <li>El ordenamiento eficiente fundamenta numerosas operaciones en machine learning</li>
+            <li>Algoritmos probabilísticos y de aproximación hacen tratables problemas NP-duros mediante sacrificios controlados</li>
+            <li>La paralelización y computación distribuida son esenciales para entrenar modelos de IA a escala</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). <em>Introduction to Algorithms</em> (3rd ed.). MIT Press.</li>
+        <li>Sedgewick, R., & Wayne, K. (2011). <em>Algorithms</em> (4th ed.). Addison-Wesley.</li>
+        <li>Russell, S., & Norvig, P. (2021). Capítulos sobre búsqueda en <em>Artificial Intelligence: A Modern Approach</em>. Pearson.</li>
+        <li>Dean, J., & Ghemawat, S. (2008). MapReduce: simplified data processing on large clusters. <em>Communications of the ACM</em>, 51(1), 107-113.</li>
+        <li>Goyal, P., et al. (2017). Accurate, large minibatch SGD: Training ImageNet in 1 hour. <em>arXiv preprint arXiv:1706.02677</em>.</li>
+    </ul>
+</article>

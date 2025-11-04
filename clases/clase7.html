@@ -1,0 +1,145 @@
+<article class="lesson-content">
+    <h1>Clase 7: Ontologías y Bases de Conocimiento</h1>
+
+    <h2>7.1 Fundamentos de Ontologías Computacionales</h2>
+    <p>
+        En filosofía, la ontología estudia la naturaleza del ser y la existencia. En ciencias de la computación e inteligencia artificial, una ontología constituye una especificación explícita y formal de una conceptualización compartida de un dominio de discurso. Esta definición, acuñada por Tom Gruber, captura elementos esenciales: las ontologías formalizan conocimiento conceptual (qué entidades existen, cómo se categorizan, qué propiedades tienen, cómo se relacionan) de manera explícita y procesable por máquinas, facilitando comunicación no ambigua entre sistemas heterogéneos y habilitando razonamiento automatizado sobre información estructurada.
+    </p>
+    <p>
+        Los componentes fundamentales de una ontología incluyen: clases (conceptos o categorías que agrupan entidades con características comunes), instancias (individuos concretos que pertenecen a clases), propiedades o slots (atributos que describen características de clases), relaciones (asociaciones entre clases o instancias), restricciones (limitaciones sobre valores y relaciones permisibles), y axiomas (afirmaciones consideradas verdaderas que definen semántica de conceptos y restringen interpretaciones). La jerarquización de clases mediante relaciones taxonómicas (subclase-de) organiza conocimiento desde conceptos generales hasta específicos, facilitando herencia de propiedades y razonamiento taxonómico.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Ontología] --> B[Clases]
+        A --> C[Propiedades]
+        A --> D[Instancias]
+        A --> E[Relaciones]
+        A --> F[Axiomas]
+        B --> G[Taxonomía]
+        C --> H[DataProperties]
+        C --> I[ObjectProperties]
+        E --> J[Herencia]
+        E --> K[Composición]
+        F --> L[Restricciones]
+        F --> M[Reglas de Inferencia]
+        style A fill:#8B1538,stroke:#333,stroke-width:4px,color:#fff
+    </div>
+
+    <h2>7.2 Lenguajes de Ontologías: OWL y RDF</h2>
+    <p>
+        El Resource Description Framework (RDF) proporciona la infraestructura fundamental para representación de información en la Web Semántica. RDF modela información mediante triples sujeto-predicado-objeto, donde el sujeto denota un recurso, el predicado especifica una propiedad o relación, y el objeto proporciona un valor o recurso relacionado. Por ejemplo, el triple (DBpedia:Albert_Einstein, dbp:birthPlace, DBpedia:Ulm) afirma que Einstein nació en Ulm. Los URIs (Uniform Resource Identifiers) identifican globalmente recursos, asegurando desambiguación y permitiendo enlaces entre conjuntos de datos distribuidos.
+    </p>
+    <p>
+        RDF Schema (RDFS) extiende RDF con primitivas para definir vocabularios: rdfs:Class para declarar clases, rdfs:subClassOf para jerarquías taxonómicas, rdfs:Property para definir propiedades, rdfs:domain y rdfs:range para especificar tipos de sujetos y objetos de propiedades. RDFS permite inferencias simples mediante subsunción: si X es instancia de Clase1 y Clase1 es subclase de Clase2, entonces X es instancia de Clase2. Sin embargo, RDFS carece de expresividad para restricciones complejas, disjunciones, cardinalidades y equivalencias.
+    </p>
+    <p>
+        Web Ontology Language (OWL), recomendación del W3C, proporciona expresividad sustancialmente mayor basándose en lógicas de descripción. OWL soporta equivalencia de clases (owl:equivalentClass), disjunción (owl:disjointWith), restricciones de cardinalidad (owl:minCardinality, owl:maxCardinality), restricciones de valor (owl:someValuesFrom, owl:allValuesFrom), propiedades transitivas, simétricas e inversas, y enumeración de instancias. OWL 2 añade expresividad adicional: cadenas de propiedades, propiedades asimétricas, reflexivas e irreflexivas, claves, y tipos de datos avanzados.
+    </p>
+    <p>
+        Los perfiles de OWL balancean expresividad con tratabilidad computacional. OWL 2 EL, basado en la lógica de descripción EL++, restringe constructores para garantizar razonamiento polinomial, apropiado para ontologías masivas como SNOMED CT. OWL 2 QL, optimizado para consultas sobre datos grandes, permite traducción eficiente de consultas SPARQL a SQL. OWL 2 RL, diseñado para razonamiento basado en reglas, permite implementación mediante motores de producción estándar. Estas variantes permiten a diseñadores seleccionar compromisos apropiados entre expresividad y eficiencia para aplicaciones específicas.
+    </p>
+
+    <h2>7.3 Construcción y Metodologías de Desarrollo</h2>
+    <p>
+        El desarrollo de ontologías requiere metodologías sistemáticas que guíen desde especificación de requisitos hasta despliegue y mantenimiento. METHONTOLOGY, metodología comprensiva desarrollada en Universidad Politécnica de Madrid, estructura el proceso en fases: especificación (determinar propósito, alcance, usuarios, casos de uso), conceptualización (construir modelo conceptual informal), formalización (transformar modelo conceptual en formal), implementación (codificar en lenguaje ontológico), mantenimiento (actualizar y corregir). Cada fase produce artefactos específicos que facilitan validación y comunicación con stakeholders.
+    </p>
+    <p>
+        El método 101 de Stanford proporciona guías pragmáticas para ingeniería de ontologías: determinar dominio y alcance mediante preguntas de competencia (consultas que la ontología debe responder); considerar reutilización de ontologías existentes para economía y estandarización; enumerar términos importantes del dominio; definir jerarquía de clases mediante enfoque top-down (desde conceptos generales), bottom-up (desde conceptos específicos), o combinado; definir propiedades de clases especificando slots, restricciones y cardinalidades; definir facetas de slots (tipo, cardinalidad, valores permisibles); y crear instancias de clases rellenando valores de slots.
+    </p>
+    <p>
+        Los principios de diseño ontológico de Gruber enfatizan: claridad (definiciones objetivas y completas comunicadas efectivamente), coherencia (inferencias consistentes con definiciones), extensibilidad (diseño que anticipa usos adicionales), sesgo de codificación mínimo (independencia de formalismo de implementación), y compromiso ontológico mínimo (especificar solo lo necesario para propósito). El principio del mundo abierto (Open World Assumption) asume que ausencia de información no implica falsedad, contrastando con bases de datos relacionales que asumen mundo cerrado.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Desarrollo de Ontología] --> B[Especificación]
+        B --> C[Conceptualización]
+        C --> D[Formalización]
+        D --> E[Implementación]
+        E --> F[Evaluación]
+        F --> G[Mantenimiento]
+        B --> H[Requisitos]
+        C --> I[Modelo Conceptual]
+        D --> J[Lógica de Descripción]
+        E --> K[OWL/RDF]
+        F --> L[Validación]
+        G --> M[Evolución]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>7.4 Razonamiento sobre Ontologías</h2>
+    <p>
+        Los razonadores de ontologías implementan servicios de inferencia lógica que explotan semántica formal de ontologías para derivar conocimiento implícito. Las tareas de razonamiento fundamentales incluyen: verificación de consistencia (determinar si la ontología contiene contradicciones lógicas), clasificación (computar jerarquía de clases infiriendo relaciones de subsunción), realización (determinar clases más específicas de las que cada instancia es miembro), y satisfacibilidad de conceptos (verificar si una clase puede tener instancias). Estas operaciones fundamentan validación de ontologías durante desarrollo y habilitan aplicaciones inteligentes en tiempo de ejecución.
+    </p>
+    <p>
+        Los algoritmos de tableros (tableau algorithms) constituyen la aproximación dominante para razonamiento en lógicas de descripción. El algoritmo construye sistemáticamente un modelo (interpretación que satisface los axiomas) mediante aplicación de reglas de expansión que descomponen conceptos complejos en componentes. Si se deriva una contradicción en todas las ramas del tablero, el concepto es insatisfacible. Los tableaux implementan búsqueda en espacio de modelos con backtracking, requiriendo optimizaciones sofisticadas (normalización, absorción, codificación) para eficiencia práctica en ontologías reales.
+    </p>
+    <p>
+        Razonadores prominentes como Pellet, HermiT, Fact++, RacerPro, y ELK implementan lógicas de descripción expresivas con optimizaciones extensivas. Pellet soporta OWL 2 DL completo con razonamiento sobre tipos de datos y reglas SWRL. HermiT utiliza algoritmos hypertableau para eficiencia superior en ontologías con disjunciones. ELK especializa en el perfil OWL 2 EL, escalando a ontologías con cientos de miles de clases mediante algoritmos de consecuencia polinomiales basados en encadenamiento de reglas. La selección de razonador depende de expresividad requerida, tamaño de ontología, y balance deseado entre completitud y eficiencia.
+    </p>
+
+    <h2>7.5 Ontologías de Dominio y Aplicaciones</h2>
+    <p>
+        Las ontologías de alto nivel o fundacionales modelan conceptos genéricos aplicables a múltiples dominios: entidades, eventos, tiempo, espacio, causalidad, roles, partes y todos. DOLCE (Descriptive Ontology for Linguistic and Cognitive Engineering), BFO (Basic Formal Ontology), SUMO (Suggested Upper Merged Ontology), y Cyc Upper Ontology representan esfuerzos prominentes en esta categoría. Estas ontologías proporcionan vocabularios compartidos y principios ontológicos que facilitan integración de ontologías de dominio específico desarrolladas independientemente.
+    </p>
+    <p>
+        Las ontologías biomédicas han alcanzado adopción sustancial en investigación y aplicaciones clínicas. Gene Ontology (GO) estandariza términos para procesos biológicos, funciones moleculares y componentes celulares, facilitando anotación consistente de productos génicos y análisis de enriquecimiento funcional en estudios genómicos. SNOMED CT, ontología clínica comprensiva con más de 300,000 conceptos, estandariza terminología médica en registros electrónicos de salud. Disease Ontology, Human Phenotype Ontology, y Chemical Entities of Biological Interest (ChEBI) formalizan conocimiento sobre enfermedades, fenotipos y compuestos químicos respectivamente.
+    </p>
+    <p>
+        Las ontologías geoespaciales formalizan conocimiento sobre entidades y relaciones espaciales. GeoSPARQL, extensión de SPARQL para datos geoespaciales, soporta consultas que involucran relaciones topológicas (intersección, contención, adyacencia) y operaciones geométricas (buffer, unión, centroide). Las ontologías de sensores, particularmente la Semantic Sensor Network (SSN) Ontology, modelan dispositivos de observación, propiedades observadas, procedimientos de medición y observaciones resultantes, facilitando integración de datos de Internet of Things heterogéneos.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Aplicaciones de Ontologías))
+            Ciencias de la Vida
+                Genómica
+                Proteómica
+                Investigación Clínica
+                Farmacología
+            Web Semántica
+                Linked Open Data
+                Búsqueda Semántica
+                Integración de Datos
+            Empresa
+                E-commerce
+                Gestión de Procesos
+                Business Intelligence
+            Ingeniería
+                IoT
+                Manufactura
+                Geoespacial
+    </div>
+
+    <h2>7.6 Integración y Alineamiento de Ontologías</h2>
+    <p>
+        La heterogeneidad de ontologías desarrolladas independientemente plantea desafíos para interoperabilidad: conceptos similares pueden tener nombres diferentes, entidades idénticas pueden representarse con distintos URIs, jerarquías pueden estructurarse diferentemente. El alineamiento de ontologías identifica correspondencias semánticas entre entidades de ontologías distintas: equivalencia (conceptos denotan la misma clase de entidades), subsunción (un concepto es más específico que otro), disjunción (conceptos no comparten instancias), o relaciones más complejas. Los mappings resultantes permiten traducción de consultas, fusión de datos, y navegación entre ontologías.
+    </p>
+    <p>
+        Los sistemas de alineamiento automático combinan múltiples técnicas: comparación lingüística de etiquetas y descripciones usando similitud de cadenas, sinónimos de WordNet, y técnicas de NLP; comparación estructural explotando jerarquías taxonómicas y relaciones; y comparación extensional basada en instancias compartidas. Sistemas como AROMA, COMA++, Falcon-AO, y AgreementMaker implementan aproximaciones híbridas, agregando similitudes de múltiples heurísticas mediante esquemas de ponderación o aprendizaje supervisado de parámetros óptimos.
+    </p>
+    <p>
+        La Ontology Alignment Evaluation Initiative (OAEI), campaña anual de evaluación, proporciona benchmarks estandarizados y métricas para comparar sistemas de alineamiento. Los tracks incluyen: anatomía (ontologías biomédicas grandes), conferencia (ontologías de organización de conferencias con alta heterogeneidad), y multifarm (alineamiento multilingüe). Los resultados demuestran que ningún sistema domina universalmente: el desempeño varía según características de ontologías (tamaño, expresividad, idioma) y tipo de heterogeneidad (terminológica, estructural, semántica).
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>Las ontologías formalizan conceptualizaciones compartidas, habilitando interoperabilidad y razonamiento</li>
+            <li>OWL proporciona expresividad basada en lógicas de descripción con perfiles para diferentes compromisos</li>
+            <li>Metodologías sistemáticas guían desarrollo desde requisitos hasta mantenimiento de ontologías</li>
+            <li>Razonadores implementan servicios de inferencia lógica para validación y derivación de conocimiento implícito</li>
+            <li>Ontologías de dominio en biomedicina, geoespacial e IoT han alcanzado adopción significativa</li>
+            <li>El alineamiento de ontologías facilita integración de recursos heterogéneos desarrollados independientemente</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Hitzler, P., Krötzsch, M., & Rudolph, S. (2009). <em>Foundations of Semantic Web Technologies</em>. CRC Press.</li>
+        <li>Grau, B. C., et al. (2008). OWL 2: The next step for OWL. <em>Journal of Web Semantics</em>, 6(4), 309-322.</li>
+        <li>Noy, N. F., & McGuinness, D. L. (2001). <em>Ontology Development 101: A Guide to Creating Your First Ontology</em>. Stanford Knowledge Systems Laboratory.</li>
+        <li>Euzenat, J., & Shvaiko, P. (2013). <em>Ontology Matching</em> (2nd ed.). Springer.</li>
+    </ul>
+</article>
