@@ -139,27 +139,75 @@
 
     <h2>3.6 Lógica Matemática: Fundamentos del Razonamiento Formal</h2>
     <p>
-        La lógica matemática formaliza el razonamiento válido mediante sistemas de símbolos y reglas de inferencia precisas. La lógica proposicional, el sistema lógico más fundamental, opera sobre proposiciones que pueden ser verdaderas o falsas, combinándolas mediante conectivos lógicos (AND, OR, NOT, IMPLIES). Las tablas de verdad especifican completamente la semántica de estos conectivos, mientras que sistemas de deducción, como la resolución, proporcionan procedimientos automáticos para derivar conclusiones válidas de premisas.
+        La lógica matemática formaliza el razonamiento válido mediante sistemas de símbolos y reglas de inferencia precisas. La lógica proposicional, el sistema lógico más fundamental, opera sobre proposiciones que pueden ser verdaderas o falsas, combinándolas mediante conectivos lógicos: conjunción (∧, AND), disyunción (∨, OR), negación (¬, NOT), implicación (→, IMPLIES) y equivalencia (↔). Las tablas de verdad especifican completamente la semántica de estos conectivos defining truth values de expresiones compuestas basándose en truth values de proposiciones atómicas. Los sistemas de deducción, como la resolución y deducción natural, proporcionan procedimientos automáticos para derivar conclusiones válidas de premisas mediante aplicación sistemática de reglas inference preservando truth.
     </p>
     <p>
-        La lógica de primer orden (o lógica de predicados) extiende la lógica proposicional incorporando cuantificadores (∀ universal, ∃ existencial) y predicados que expresan propiedades y relaciones sobre dominios de objetos. Esta mayor expresividad permite representar conocimiento complejo sobre el mundo: "∀x (Humano(x) → Mortal(x))" afirma que todos los humanos son mortales. Los sistemas de demostración automática de teoremas aplican reglas de inferencia para derivar automáticamente teoremas de axiomas, con aplicaciones que van desde verificación formal de software hasta planificación automatizada.
+        La lógica de primer orden (FOL, first-order logic o lógica de predicados) extiende la lógica proposicional incorporando cuantificadores (∀ universal "para todo", ∃ existencial "existe") y predicados que expresan propiedades y relaciones sobre dominios de objetos. Esta mayor expresividad permite representar conocimiento complejo sobre el mundo: "∀x (Humano(x) → Mortal(x))" afirma que todos los humanos son mortales, "∃x (Número(x) ∧ Primo(x) ∧ x > 1000)" asserts existence de primes mayores que 1000. Los sistemas de demostración automática de teoremas (ATP) aplican reglas de inferencia (modus ponens, universal instantiation, resolution) para derivar automáticamente teoremas de axioms, con aplicaciones desde verificación formal de software y hardware hasta planificación automatizada y reasoning sobre ontologies.
     </p>
     <p>
-        La lógica modal extiende sistemas lógicos clásicos con operadores que expresan modalidades como necesidad, posibilidad, conocimiento y creencia. La lógica epistémica, rama de la lógica modal, formaliza el razonamiento sobre conocimiento y creencia de agentes, proporcionando fundamentos para sistemas multiagente donde agentes deben razonar sobre el conocimiento de otros agentes. La lógica temporal incorpora operadores para razonar sobre secuencias temporales de eventos, fundamentando la verificación de sistemas concurrentes y reactivos.
+        La lógica modal extiende sistemas lógicos clásicos con operadores que expresan modalidades: □ (necesidad "es necesariamente cierto que"), ◇ (posibilidad "es posible que"). La lógica epistémica, rama de la lógica modal, formaliza el razonamiento sobre conocimiento y creencia de agentes mediante operators K_i (agent i knows), providing foundations para sistemas multiagente donde agentes deben razonar sobre el conocimiento de otros agentes enabling coordination. La lógica temporal incorpora operadores para razonar sobre secuencias temporales: ○ (next), □ (always), ◇ (eventually), U (until), fundamentando la verificación de sistemas concurrentes y reactivos checking safety properties (bad states never reached) y liveness properties (good states eventually reached).
     </p>
     <p>
-        Las lógicas no-monótonas formalizan tipos de razonamiento donde conclusiones previas pueden retractarse a la luz de nueva información, característica del razonamiento de sentido común que contrasta con la monotonicidad de la lógica clásica. La lógica default, la circunscripción y la lógica autoepistémica proporcionan formalismos para razonar con información incompleta, defaults plausibles pero derrotables, y excepciones. Estos sistemas lógicos fundamentan la representación de conocimiento en IA, permitiendo modelar el razonamiento flexible y pragmático característico de la inteligencia humana.
+        Las lógicas no-monótonas formalizan tipos de razonamiento donde conclusiones previas pueden retractarse a la luz de nueva información (defeasible reasoning), característica del razonamiento de sentido común que contrasta con la monotonicidad de la lógica clásica donde adding premises never invalidates previous conclusions. La lógica default codifica rules con exceptions: "Birds typically fly" puede representarse como default rule aplicable unless exception (penguin, ostrich) detected. La circunscripción minimiza extensión de predicados assuming closed world: if database doesn't contain fact, assume false. La lógica autoepistémica reasons sobre own knowledge. Estos sistemas lógicos fundamentan la representación de conocimiento en IA, permitiendo modelar el razonamiento flexible, pragmático y context-dependent característico de la inteligencia humana dealing con información incomplete y ambiguous.
+    </p>
+
+    <h2>3.7 Optimización Convexa: Garantías de Optimalidad Global</h2>
+    <p>
+        La optimización convexa studies el problema de minimizar funciones convexas sobre conjuntos convexos, gozando de propiedades matemáticas excepcionales: cualquier mínimo local es también mínimo global, y algoritmos eficientes garantizan convergencia a soluciones óptimas. Una función f es convexa si f(λx + (1-λ)y) ≤ λf(x) + (1-λ)f(y) para todo x,y en domain y λ ∈ [0,1], meaning que line segment conectando cualquier dos points en graph lies above graph. Ejemplos incluyen normas (L1, L2), funciones lineales, exponential, negative logarithm, maximum de funciones convexas, composition con affine mappings.
+    </p>
+    <p>
+        Los problemas de optimización convexa pueden expresarse en forma estándar: minimizar f₀(x) sujeto a constraints fᵢ(x) ≤ 0 (inequality constraints) y hⱼ(x) = 0 (equality constraints lineales), donde f₀,...,fₘ son convex functions. Linear programming (LP) optimiza funciones lineales sobre polyhedra, solvable efficiently via simplex method o interior point methods. Quadratic programming (QP) minimiza quadratic objectives sobre linear constraints, arising en portfolio optimization, control, machine learning (SVMs). Semidefinite programming (SDP) generalizes LP a matrices requiriendo matrix variables satisfy positive semidefiniteness, enabling convex relaxations de problemas combinatoriales NP-hard.
+    </p>
+    <p>
+        Las condiciones de optimalidad KKT (Karush-Kuhn-Tucker) caracterizan solutions de problemas convexos con constraints, extending Lagrange multipliers a inequality constraints: en optimal point, gradient de Lagrangian vanishes, primal constraints satisfechas, dual variables non-negative, complementary slackness (dual variable positive solo if corresponding constraint active). Duality theory associates cada primal problem con dual problem providing lower bounds en optimal value; strong duality (optimal values equal) holds for convex problems under mild regularity conditions (Slater's), enabling solving primal via dual y providing certificates de optimality. Applications en machine learning incluyen SVM training, lasso regression, logistic regression, matrix factorization, neural network training con convex relaxations.
+    </p>
+
+    <h2>3.8 Estadística Bayesiana: Inferencia Probabilística Rigurosa</h2>
+    <p>
+        La estadística bayesiana proporciona framework coherente para inferencia probabilística treating parameters como random variables con distributions reflecting uncertainty. El paradigma bayesiano combines prior knowledge (prior distribution P(θ)) con observed data (likelihood P(D|θ)) producing posterior distribution P(θ|D) ∝ P(D|θ)P(θ) via Bayes' theorem, updating beliefs systematically. Priors pueden ser informative (incorporating domain knowledge), non-informative (minimal assumptions, eg. uniform, Jeffreys), o conjugate (mathematical convenience: posterior has same family as prior enabling analytical updates).
+    </p>
+    <p>
+        La inferencia bayesiana para prediction integrates over parameter uncertainty: predictive distribution P(x*|D) = ∫P(x*|θ)P(θ|D)dθ averaging predictions weighted by posterior belief, naturally incorporating uncertainty quantification. Para classification, posterior probabilities P(y|x,D) provide calibrated confidence estimates. Para regression, predictive distributions include both aleatoric uncertainty (inherent noise) y epistemic uncertainty (parameter uncertainty reducible con more data). Bayesian model comparison via marginal likelihood P(D|M) = ∫P(D|θ,M)P(θ|M)dθ (evidence) balances fit con complexity via Occam's razor: complex models penalized unless data strongly supports.
+    </p>
+    <p>
+        Los métodos computacionales enable bayesian inference para models intractable analytically. Markov Chain Monte Carlo (MCMC) constructs Markov chain con stationary distribution equal to posterior, generating samples approximating posterior distribution: Metropolis-Hastings proposes moves accepted probabilistically ensuring detailed balance, Gibbs sampling updates variables sequentially conditioning on others. Variational inference approximates posterior con tractable distribution (eg. factorized Gaussian) minimizing KL divergence, trading exactness for computational efficiency. Hamiltonian Monte Carlo (HMC) uses gradient information navigating parameter space efficiently for high-dimensional problems. Approximate Bayesian Computation (ABC) handles likelihood-free scenarios simulating data comparing to observed. Applications span hierarchical modeling, Bayesian neural networks, probabilistic programming (Stan, PyMC3, Edward), causal inference.
+    </p>
+
+    <h2>3.9 Análisis Numérico: Estabilidad y Precisión Computacional</h2>
+    <p>
+        El análisis numérico estudia algoritmos para problemas matemáticos implementados en computadoras con arithmetic de precisión finita, addressing errors desde floating-point representation, rounding, y approximation. Floating-point arithmetic (IEEE 754) representa números con precision limitada causing rounding errors: numbers representables are discrete, operations introduce small errors cumulating through computations. Condition number quantifies sensitivity de problem a perturbations en input: well-conditioned problems have small condition numbers (small input errors → small output errors), ill-conditioned problems amplify errors requiring careful numerical treatment.
+    </p>
+    <p>
+        La estabilidad numérica de algoritmos characterizes error propagation: numerically stable algorithms produce results close to exact solution de perturbed problem (backward stability), controlling error growth. Matrix operations require careful implementation: naive algorithms can be unstable, eg. computing variance via V = E[X²] - E[X]² suffers catastrophic cancellation; Welford's algorithm updates running mean y variance stably. Solving linear systems Ax=b via Gaussian elimination requires partial pivoting ensuring stability. Computing eigenvalues via QR algorithm iteratively transforms matrix maintaining numerical properties. Singular Value Decomposition computed via stable algorithms (Golub-Kahan bidiagonalization) provides robust matrix factorization.
+    </p>
+    <p>
+        La diferenciación numérica approximates derivatives via finite differences: forward f'(x) ≈ (f(x+h) - f(x))/h, central f'(x) ≈ (f(x+h) - f(x-h))/(2h) offering better accuracy. Step size h requires balancing truncation error (h large) versus rounding error (h small). Automatic differentiation (autodiff) computes exact derivatives (up to floating point) via chain rule applied systematically: forward mode accumulates derivatives alongside computation, reverse mode (backpropagation) propagates adjoints backwards efficiently for scalar outputs. Numerical integration (quadrature) approximates integrals ∫f(x)dx via weighted sums: trapezoidal rule, Simpson's rule, Gaussian quadrature choosing points y weights optimally. Adaptive methods refine mesh where integrand varies rapidly ensuring accuracy efficiently. Monte Carlo integration samples randomly estimating integrals via averages, effective en high dimensions despite slow convergence O(n^(-1/2)).
+    </p>
+
+    <h2>3.10 Complejidad Computacional: Límites de lo Computable</h2>
+    <p>
+        La teoría de complejidad computacional classifies problems según resources (tiempo, espacio) required para solving, characterizing tractability. Complexity classes partition problems: P contains problems solvable in polynomial time (efficient), NP contains problems verifiable in polynomial time (solutions checkable efficiently pero finding may be hard), NP-complete problems are hardest in NP (any NP problem reduces to them in polynomial time). P vs NP question, major open problem, asks si P=NP implying efficient verification implies efficient solving. Most believe P≠NP implying inherent hardness limits para many problems (optimization, scheduling, planning).
+    </p>
+    <p>
+        Los problemas NP-hard include traveling salesman, graph coloring, satisfiability (SAT), planning. Ante NP-hardness, strategies include: approximation algorithms guaranteeing solutions within factor de optimal (eg. 2-approximation for vertex cover), heuristics providing good solutions typically sin guarantees (greedy, local search, metaheuristics like simulated annealing, genetic algorithms), special cases with polynomial algorithms (restricted inputs), fixed-parameter tractable algorithms (exponential only in parameter k, polynomial in input size). Randomized algorithms use randomness achieving better average performance (quicksort), probabilistic correctness (primality testing), approximation ratios (MAX-SAT).
+    </p>
+    <p>
+        El analysis de algoritmos quantifies performance: time complexity (operations as función de input size n), space complexity (memory), usando notación asintótica: O (upper bound), Ω (lower bound), Θ (tight bound). Common complexities: O(1) constant, O(log n) logarithmic (binary search), O(n) linear (array scan), O(n log n) linearithmic (mergesort), O(n²) quadratic (naive matrix multiplication), O(2ⁿ) exponential (subset enumeration). Amortized analysis considers average cost over sequence de operations smoothing expensive operations. Probabilistic analysis evaluates expected performance over random inputs. Lower bounds prove no algorithm can solve problem faster establishing optimality de existing algorithms. Understanding complexity guides algorithm selection balancing theoretical guarantees con practical performance para AI applications requiring efficiency at scale.
     </p>
 
     <div class="info-box">
         <h3>Puntos Clave de la Clase</h3>
         <ul>
-            <li>Álgebra lineal proporciona el lenguaje fundamental para representar y manipular datos de alta dimensión</li>
-            <li>Cálculo y optimización, especialmente descenso por gradiente, subyacen al entrenamiento de modelos</li>
-            <li>Teoría de probabilidades formaliza razonamiento bajo incertidumbre, con el Teorema de Bayes como resultado central</li>
-            <li>Teoría de la información cuantifica información, entropía y similitud entre distribuciones</li>
-            <li>Teoría de grafos modela sistemas relacionales y fundamenta algoritmos de búsqueda y análisis de redes</li>
-            <li>Lógica matemática formaliza el razonamiento válido, desde lógica proposicional hasta sistemas no-monótonos</li>
+            <li>Álgebra lineal proporciona el lenguaje fundamental para representar y manipular datos de alta dimensión mediante vectores, matrices y descomposiciones</li>
+            <li>Cálculo y optimización, especialmente descenso por gradiente y backpropagation, subyacen al entrenamiento de modelos de ML</li>
+            <li>Teoría de probabilidades formaliza razonamiento bajo incertidumbre, con el Teorema de Bayes como resultado central para inferencia</li>
+            <li>Teoría de la información cuantifica información, entropía y similitud entre distribuciones mediante entropía de Shannon y divergencia KL</li>
+            <li>Teoría de grafos modela sistemas relacionales y fundamenta algoritmos de búsqueda, análisis de redes y graph neural networks</li>
+            <li>Lógica matemática formaliza el razonamiento válido, desde lógica proposicional hasta sistemas no-monótonos y lógicas modales</li>
+            <li>Optimización convexa garantiza optimalidad global enabling efficient solutions para SVM, regression y matrix factorization</li>
+            <li>Estadística bayesiana provides coherent framework para inferencia probabilística treating parameters como random variables</li>
+            <li>Análisis numérico addresses precision y estabilidad en implementaciones computacionales con floating-point arithmetic</li>
+            <li>Complejidad computacional characterizes tractability de problemas distinguiendo P, NP, NP-complete classes guiding algorithm design</li>
         </ul>
     </div>
 
@@ -170,6 +218,10 @@
         <li>Wasserman, L. (2004). <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer.</li>
         <li>MacKay, D. J. C. (2003). <em>Information Theory, Inference, and Learning Algorithms</em>. Cambridge University Press.</li>
         <li>Diestel, R. (2017). <em>Graph Theory</em> (5th ed.). Springer.</li>
-        <li>Russell, S., & Norvig, P. (2021). Capítulos sobre lógica en <em>Artificial Intelligence: A Modern Approach</em>. Pearson.</li>
+        <li>Russell, S., & Norvig, P. (2020). <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson.</li>
+        <li>Gelman, A., et al. (2013). <em>Bayesian Data Analysis</em> (3rd ed.). CRC Press.</li>
+        <li>Trefethen, L. N., & Bau, D. (1997). <em>Numerical Linear Algebra</em>. SIAM.</li>
+        <li>Sipser, M. (2012). <em>Introduction to the Theory of Computation</em> (3rd ed.). Cengage Learning.</li>
+        <li>Cormen, T. H., et al. (2009). <em>Introduction to Algorithms</em> (3rd ed.). MIT Press.</li>
     </ul>
 </article>
