@@ -1,6 +1,6 @@
-# Especialización en Inteligencia Artificial - UAI
+# Diplomado en Inteligencia Artificial - Liskov Ed Tech
 
-Sitio web educativo interactivo con 16 clases académicas sobre Inteligencia Artificial, basado en el programa de la Especialización en Inteligencia Artificial de la Universidad Abierta Interamericana (UAI).
+Sitio web educativo interactivo con 16 clases académicas sobre Inteligencia Artificial, desarrollado por Liskov Ed Tech para formar profesionales en IA.
 
 ## Características
 
@@ -64,15 +64,15 @@ Sitio web educativo interactivo con 16 clases académicas sobre Inteligencia Art
 - **Info boxes**: Resúmenes de puntos clave en cada clase
 - **Referencias bibliográficas**: Enlaces a recursos académicos
 
-## Basado en
+## Acerca de Liskov Ed Tech
 
-Este contenido está inspirado en el programa de la **Especialización en Inteligencia Artificial** de la **Universidad Abierta Interamericana (UAI)**, aprobado por CONEAU (Sesión N° 619 - RCS 6351/23).
+Liskov Ed Tech es una plataforma educativa dedicada a la formación de profesionales en tecnología e inteligencia artificial.
 
-### Características del programa UAI:
-- **Duración**: 1 año y medio + trabajo final
-- **Modalidad**: Virtual
-- **Título**: Especialista en Inteligencia Artificial
-- **Director Académico**: Dr. Marcelo Falappa
+### Características del programa:
+- **Duración**: 16 clases estructuradas
+- **Modalidad**: Virtual e interactiva
+- **Certificación**: Diplomado en Inteligencia Artificial
+- **Enfoque**: Práctico y académico
 
 ## Autor
 

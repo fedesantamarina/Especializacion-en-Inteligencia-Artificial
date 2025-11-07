@@ -3,7 +3,7 @@
 ## Pasos Simples (2 minutos)
 
 ### 1. Abre tu repositorio en GitHub
-Ve a: https://github.com/fedesantamarina/Especializacion-en-Inteligencia-Artificial
+Ve a tu repositorio en GitHub
 
 ### 2. Habilita GitHub Pages
 1. Haz clic en **"Settings"** (⚙️ arriba a la derecha)
@@ -16,15 +16,13 @@ Ve a: https://github.com/fedesantamarina/Especializacion-en-Inteligencia-Artific
 El sitio se publicará automáticamente.
 
 ### 4. Accede a tu sitio
-Tu sitio estará en:
-**https://fedesantamarina.github.io/Especializacion-en-Inteligencia-Artificial/**
+Tu sitio estará disponible en la URL de GitHub Pages
 
 ---
 
 ## ✅ Verificar el Estado
 
-Puedes ver el progreso del deployment en:
-https://github.com/fedesantamarina/Especializacion-en-Inteligencia-Artificial/actions
+Puedes ver el progreso del deployment en la sección **Actions** de tu repositorio.
 
 Busca el workflow llamado "Deploy to GitHub Pages" ✓
 
