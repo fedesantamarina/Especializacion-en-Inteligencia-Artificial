@@ -1,19 +1,192 @@
 <article class="lesson-content">
     <h1>Clase 12: Procesamiento de Lenguaje Natural</h1>
-    <h2>12.1 Fundamentos del NLP</h2>
-    <p>El Procesamiento de Lenguaje Natural permite a computadoras comprender, interpretar y generar lenguaje humano. Los desafíos incluyen ambigüedad (palabras con múltiples significados), dependencias a larga distancia, conocimiento de mundo implícito, y variabilidad lingüística. El preprocesamiento típico incluye tokenización (segmentar texto en palabras), normalización (lowercase, eliminar puntuación), stemming/lemmatization (reducir palabras a raíces), y remoción de stopwords.</p>
-    <h2>12.2 Representaciones de Texto</h2>
-    <p>Bag-of-Words representa documentos como vectores de conteos de palabras, ignorando orden. TF-IDF (Term Frequency-Inverse Document Frequency) pondera términos por importancia relativa. Word embeddings (Word2Vec, GloVe) mapean palabras a vectores densos capturando similaridad semántica: palabras similares tienen vectores cercanos. Embeddings contextuales (ELMo, BERT) generan representaciones dependientes del contexto, capturando polisemia.</p>
-    <h2>12.3 Modelos de Lenguaje</h2>
-    <p>Los modelos de lenguaje aprenden distribuciones de probabilidad sobre secuencias de palabras. Los n-gramas modelan P(wₜ|wₜ₋ₙ₊₁,...,wₜ₋₁) usando estadísticas de corpus. Los modelos neuronales (RNN, LSTM) capturan dependencias más largas. Los modelos basados en Transformers (GPT, T5) escalan a billones de parámetros entrenados en vastos córpora, exhibiendo capacidades emergentes de razonamiento y generación.</p>
-    <h2>12.4 Tareas de NLP</h2>
-    <p>Clasificación de texto (análisis de sentimiento, detección de spam). Named Entity Recognition identifica entidades (personas, organizaciones, ubicaciones). Part-of-Speech Tagging etiqueta categorías gramaticales. Parsing sintáctico construye árboles de derivación. Machine Translation traduce entre idiomas. Question Answering responde preguntas sobre textos. Summarización condensa documentos preservando información clave. Text Generation produce texto coherente.</p>
-    <h2>12.5 Transformers para NLP</h2>
-    <p>BERT (Bidirectional Encoder Representations from Transformers) pre-entrena en grandes córpora con objetivos de masked language modeling y next sentence prediction, luego se afina para tareas específicas. GPT (Generative Pre-trained Transformer) entrena autoregresivamente para predecir siguiente palabra, escalando a GPT-3 (175B parámetros) y GPT-4 con capacidades de few-shot learning impresionantes. T5 (Text-to-Text Transfer Transformer) formula todas las tareas como text-to-text.</p>
-    <h2>12.6 Aplicaciones Avanzadas</h2>
-    <p>Los chatbots y asistentes conversacionales (ChatGPT, Claude) mantienen diálogos coherentes. Los sistemas de pregunta-respuesta (Watson, Google Search) extraen información de bases de conocimiento. La generación de código (Copilot, AlphaCode) asiste programación. La traducción automática (Google Translate, DeepL) alcanza calidad casi humana. El análisis de sentimiento monitorea opiniones en redes sociales. El text-to-speech y speech-to-text facilitan interfaces de voz.</p>
-    <div class="info-box">
-        <h3>Puntos Clave</h3>
-        <ul><li>El NLP permite procesamiento computacional del lenguaje humano</li><li>Las representaciones evolucionaron desde bag-of-words hasta embeddings contextuales</li><li>Los modelos de lenguaje capturan distribuciones probabilísticas sobre texto</li><li>Las tareas de NLP incluyen clasificación, traducción, QA y generación</li><li>BERT y GPT representan paradigmas de pre-entrenamiento y fine-tuning</li><li>Las aplicaciones impactan chatbots, búsqueda, traducción y asistencia</li></ul>
+
+    <h2>12.1 Fundamentos del Procesamiento de Lenguaje Natural</h2>
+    <p>
+        El Procesamiento de Lenguaje Natural (NLP) constituye la rama de la inteligencia artificial dedicada a habilitar computadoras para comprender, interpretar, generar y manipular lenguaje humano de manera significativa. Esta disciplina intersecta lingüística computacional, ciencias de la computación y machine learning, enfrentando desafíos únicos derivados de la naturaleza ambigua, contextual y evolutiva del lenguaje. A diferencia de datos estructurados con semántica bien definida, el lenguaje natural exhibe ambigüedad léxica (palabras con múltiples significados), sintáctica (estructuras gramaticales alternativas), semántica (múltiples interpretaciones de significado) y pragmática (dependencia del contexto situacional). Los objetivos fundamentales del NLP abarcan comprensión del lenguaje, generación de texto fluido, traducción entre idiomas y mantenimiento de diálogos contextuales. Las aplicaciones prácticas incluyen traducción automática, análisis de sentimiento, respuesta a preguntas, resumen automático, extracción de información estructurada, reconocimiento de entidades nombradas y asistentes conversacionales inteligentes.
+    </p>
+    <p>
+        Las pipelines clásicas de NLP estructuran procesamiento en etapas secuenciales fundamentales. La tokenización segmenta texto en unidades básicas como palabras, subwords o caracteres. La normalización homogeniza variantes mediante lowercasing, stemming para reducir palabras a raíces comunes y lemmatization que mapea a formas canónicas dictionary. El POS tagging asigna categorías gramaticales como sustantivo, verbo o adjetivo. El parsing sintáctico construye árboles de derivación revelando estructura gramatical. El Named Entity Recognition identifica menciones de entidades como personas, organizaciones o ubicaciones. La resolución de correferencias vincula menciones que refieren a misma entidad. Finalmente, análisis semántico y pragmático extrae significado profundo e intención comunicativa del texto procesado.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Texto Crudo] --> B[Tokenización]
+        B --> C[Normalización]
+        C --> D[POS Tagging]
+        D --> E[Parsing]
+        E --> F[NER]
+        F --> G[Análisis Semántico]
+        G --> H[Comprensión]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style H fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
     </div>
+
+    <h2>12.2 Representaciones de Texto: De Bag-of-Words a Embeddings</h2>
+    <p>
+        La representación numérica de texto constituye prerequisito esencial para aplicar machine learning. El modelo Bag-of-Words representa documentos como vectores de conteos de palabras, ignorando orden sintáctico pero capturando frecuencias léxicas. TF-IDF refina BoW ponderando términos por importancia relativa mediante la fórmula tf-idf(t,d) = tf(t,d) × log(N/df(t)), donde tf es frecuencia en documento, N es número total de documentos y df es document frequency. Esto enfatiza términos frecuentes en documento específico pero raros globalmente. Los word embeddings revolucionaron NLP mapeando palabras a vectores densos de baja dimensión donde palabras semánticamente similares tienen representaciones cercanas en espacio vectorial. Word2Vec entrena embeddings mediante Skip-gram prediciendo palabras contextuales dado palabra central o CBOW prediciendo palabra central dado contexto. GloVe factoriza matriz de co-ocurrencias globales capturando estadísticas de corpus completo. FastText representa palabras como bags de character n-grams manejando morphology y out-of-vocabulary words efectivamente.
+    </p>
+    <p>
+        Los embeddings contextuales generalizan representaciones estáticas permitiendo que vectores de palabras varíen según contexto oracional capturando polisemia. ELMo genera embeddings desde bidirectional LSTMs entrenados en language modeling concatenando estados ocultos de capas múltiples. Las representaciones de frases y documentos agregan información de palabras mediante averaging word embeddings como baseline o Doc2Vec aprendiendo embeddings de documentos conjuntamente con words. Sentence-BERT fine-tunea BERT con objetivos de sentence similarity generando embeddings útiles para semantic search y clustering. Universal Sentence Encoder de Google entrena transformers y deep averaging networks para sentence embeddings general-purpose aplicables a múltiples tareas downstream sin reentrenamiento.
+    </p>
+
+    <h2>12.3 Modelos de Lenguaje y Transformers</h2>
+    <p>
+        Un modelo de lenguaje asigna probabilidades a secuencias de palabras formalizando qué secuencias son plausibles en idioma. Los n-gram language models estiman probabilidades mediante frecuencias de n-grams en corpus aplicando smoothing para manejar n-grams no vistos. Los neural language models usan redes neuronales que aprenden distributed representations y capturan dependencias arbitrariamente largas. Los modelos recurrentes procesan secuencias iterativamente manteniendo estado oculto que encode historia completa. Los Transformer language models escalan autoregressive modeling a capacidades sin precedentes. GPT entrena decoder-only transformers prediciendo next token left-to-right. GPT-3 con 175B parámetros exhibe few-shot learning resolviendo tareas diversas dado solo prompt con ejemplos. ChatGPT aplicó instruction tuning y RLHF alineando outputs con human preferences creando viral chatbot. GPT-4 multimodal procesa imágenes y texto extendiendo capacidades further. La escala enables emergent abilities como reasoning complejo, code generation y knowledge retrieval.
+    </p>
+    <p>
+        Los modelos masked language models como BERT entrenan encoders bidireccionales prediciendo tokens masked aleatoriamente dadas surrounding words en ambas direcciones. BERT pre-entrena en masking junto con next sentence prediction luego fine-tunea para classification, NER y QA. RoBERTa optimized BERT training removiendo NSP, entrenando longer con batch sizes mayores y más datos. ALBERT reduce parameters compartiendo weights across layers y factorizing embedding matrix. ELECTRA entrena discriminator distinguiendo tokens originales de reemplazos más sample-efficient que MLM. DeBERTa añade disentangled attention y enhanced mask decoder. T5 unifica NLP tasks reformulándolas como text-to-text permitiendo single model y loss function across tasks. Pre-entrena en Colossal Clean Crawled Corpus con span corruption objective luego fine-tunea multitask.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Modelos de Lenguaje] --> B[N-grams]
+        A --> C[RNN/LSTM]
+        A --> D[Transformers]
+        D --> E[GPT Autoregresivo]
+        D --> F[BERT Masked]
+        D --> G[T5 Seq2Seq]
+        E --> H[Generación]
+        F --> I[Comprensión]
+        G --> J[Traducción]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>12.4 Tareas Fundamentales: Classification, NER, QA, Translation</h2>
+    <p>
+        La clasificación de texto asigna etiquetas categóricas a documentos. El análisis de sentimiento determina polaridad o emociones expresadas. Topic classification categoriza documentos por tema. Spam detection filtra emails indeseados. Intent classification en chatbots identifica objetivo de user utterance. Los enfoques modernos fine-tunean BERT-like models achieving state-of-the-art tokenizando input, pasando por encoder y clasificando desde CLS token embedding con capa linear y softmax. Data augmentation mediante backtranslation y paraphrasing expande training data limitado. Named Entity Recognition extrae menciones de entidades typed desde texto unstructured. NER formula típicamente como sequence labeling con BIO tagging donde B-PER marca beginning de person, I-PER inside y O outside any entity. BiLSTM-CRF models combinan bidirectional context con conditional random fields ensuring label consistency. Transformer-based taggers aplican classification head a cada token embedding.
+    </p>
+    <p>
+        Question Answering sistemas extraen o generan respuestas a preguntas naturales. Extractive QA localiza answer span en passage provided prediciendo start y end positions mediante span prediction heads. Generative QA genera answers libremente usando seq2seq models o large language models con prompting. Open-domain QA integra retrieval encontrando passages relevantes desde large corpus con reading comprehension. Conversational QA maneja follow-up questions dependientes de dialog history. Machine Translation traduce texto entre idiomas preservando meaning. Neural MT usando encoder-decoder architectures with attention revolutionized field desde 2014. Transformers further improved quality dramáticamente. Back-translation augments training data traduciendo monolingual target a source. Multilingual models como mBART y mT5 manejan many language pairs jointly enabling zero-shot translation. Low-resource translation leverages transfer learning y multilingual pre-training efectivamente.
+    </p>
+
+    <h2>12.5 Aplicaciones Avanzadas: Chatbots, Summarization, Information Extraction</h2>
+    <p>
+        Los chatbots y asistentes conversacionales mantienen diálogos coherentes multi-turn integrando understanding, state tracking y generation. Task-oriented bots siguen pipelines donde NLU extrae intent y entities, dialog manager actualiza state y selecciona action, NLG genera response. Open-domain chatbots como ChatGPT usan large language models con memory mechanisms. Retrieval-augmented generation combina LLMs con knowledge bases retrieving relevant documents para ground responses mejorando factuality. Evaluation usa métricas automáticas como BLEU y ROUGE además de humanas evaluando coherence y engagingness. El text summarization condensa documentos preservando información key. Extractive summarization selecciona sentences salient desde source usando TextRank ranking sentences por centrality o BERT-ext classifying each sentence. Abstractive summarization genera summaries libremente mediante seq2seq models con attention, pointer-generator networks copying from source o transformers pre-trained como BART y PEGASUS. Evaluation usa ROUGE comparing n-gram overlap con references aunque factuality y faithfulness requieren evaluación humana adicional.
+    </p>
+    <p>
+        Information extraction estructura texto unstructured en databases mediante relation extraction identificando relaciones entre entities usando supervised methods clasificando entity pairs o distant supervision generating training data desde KB. Event extraction detecta eventos especificando who did what when where. Coreference resolution vincula mentions refiriendo a same entity. Knowledge base construction integrates IE components poblando structured KB desde text corpora masivos. Applications críticas en business intelligence, scientific literature mining y legal document analysis. El semantic search recupera documentos por meaning rather than keywords usando dense retrieval con embeddings encoding query y documents retrieving top-k by cosine similarity. Bi-encoders como SBERT encode independently permitiendo fast search via FAISS. Cross-encoders jointly encode query-document pairs más accurate pero computationally expensive. Hybrid approaches combine lexical BM25 y semantic signals. Reranking models reorder initial candidates mejorando relevance. Applications en search engines, enterprise search y document QA systems.
+    </p>
+
+    <h2>12.6 Herramientas y Frameworks</h2>
+    <p>
+        El ecosistema de NLP ofrece bibliotecas robustas facilitando desarrollo. NLTK proporciona tools para tokenization, POS tagging, parsing y semantic reasoning ideal para education. spaCy emphasizes industrial-strength NLP con pipelines eficientes para production. Transformers library de Hugging Face democratiza access a state-of-the-art pre-trained models con APIs unificadas para inference y fine-tuning. Stanford CoreNLP ofrece suite comprehensiva de annotators. Gensim especializa en topic modeling y document similarity. FastText proporciona efficient text classification y embeddings. Los frameworks de deep learning como PyTorch y TensorFlow permiten implementar custom architectures. Fairseq de Facebook facilita sequence modeling research. AllenNLP builds sobre PyTorch con abstractions para common NLP patterns. OpenNMT supports neural machine translation. Rasa framework estructura development de conversational AI comprehensivamente.
+    </p>
+
+    <h2>12.7 Desafíos Éticos: Bias, Privacy y Misinformation</h2>
+    <p>
+        Los sistemas NLP plantean concerns éticos significativos requiriendo consideración cuidadosa. Bias en training data propaga a model predictions donde word embeddings exhiben gender stereotypes asociando doctor con he y nurse con she. Sentiment analysis performs worse para dialectos minoritarios. Toxicity detectors flag african american vernacular disproportionately. Mitigation strategies incluyen debiasing embeddings, adversarial training para fairness, diverse datasets y auditing outputs across demographic groups. Transparency sobre model limitations es critical para responsible deployment. La privacidad plantea risks donde language models memorizan training data potentially leaking sensitive information. Differential privacy y federated learning protect user data. Misinformation y deepfakes generados por models requieren detection mechanisms y watermarking. Dual-use potential de language generation para spam, phishing o propaganda necessita access controls. Consent y agency de users interacting con AI systems deben respetarse siempre. El desarrollo responsible de NLP balancea innovation con protección de rights y values societal.
+    </p>
+
+    <h2>12.8 El Futuro Multimodal del NLP</h2>
+    <p>
+        La multimodalidad integra language con vision, audio y sensorimotor modalities prometiendo richer understanding. CLIP aprende joint embeddings de images y text enabling zero-shot image classification y retrieval. Flamingo y GPT-4V procesan interleaved images y text answering visual questions. Speech-text models como Whisper transcribe y translate audio robustamente. Video-language models como VideoBERT understand temporal dynamics en videos. Embodied language learning grounds words en physical interactions con entornos. Esta convergencia promises understanding transcendiendo text alone hacia truly multimodal intelligence. El multilingüismo democratiza NLP globally mediante multilingual BERT, XLM-R y mT5 handling 100+ languages sharing representations cross-lingually. Zero-shot cross-lingual transfer leverages high-resource languages para bootstrap low-resource ones. Machine translation facilitates access a information across language barriers efectivamente. Challenges persist para truly low-resource languages lacking written corpora suficientes. Community-driven efforts collecting data y building tools para underrepresented languages advance inclusivity global. El futuro equitable de NLP requires serving toda humanity no solo english-speaking populations.
+    </p>
+
+    <h2>12.9 Técnicas Avanzadas: Prompting y RAG</h2>
+    <p>
+        El prompting engineering diseña inputs que elicit desired behaviors desde large language models sin fine-tuning. Few-shot prompting proporciona ejemplos de input-output pairs en prompt permitiendo model infer task. Chain-of-thought prompting solicita reasoning steps explícitos antes de answer mejorando performance en complex reasoning tasks. Self-consistency samples multiple reasoning paths y selecciona most consistent answer mejorando robustez. Tree-of-thoughts explores alternative reasoning branches estructuradas como search trees systematically. Prompt tuning optimiza soft prompts como continuous embeddings rather que discrete text siendo parameter-efficient alternative a full fine-tuning. Los retrieval-augmented generation systems combinan parametric knowledge de LLMs con non-parametric retrieval desde external knowledge sources. Given query se retrieve relevant documents via dense retrieval, concatenate con prompt y generate answer conditioned on retrieved context. Esto mejora factuality providing grounding evidence, enables updating knowledge sin retraining y allows citing sources verificables. Frameworks como LangChain y LlamaIndex facilitate building RAG pipelines comprehensivos. Applications en question answering, conversational search y enterprise knowledge management donde freshness y verifiability son critical para trustworthiness.
+    </p>
+
+    <h2>12.10 NLP en Dominios Especializados y Evaluación</h2>
+    <p>
+        El biomedical NLP procesa literatura científica, electronic health records y clinical notes extrayendo entities como diseases, drugs y genes además de relations facilitando drug discovery. PubMedBERT y BioBERT pre-entrenan en biomedical corpora especializados. Named entity recognition identifica mentions de proteínas, chemicals y symptoms. Relation extraction découvre drug-drug interactions y gene-disease associations críticas. Clinical note de-identification protects privacy removing PHI meticulously. Challenges incluyen complex terminology, abbreviations y specialized knowledge requiring domain expertise significativo. El legal NLP analyzes contracts, court opinions, statutes y patents identifying relevant clauses, precedents y compliance issues. Document classification categorizes legal documents por type. Information extraction structures unstructured legal text systematically. Question answering sobre legal corpora assists attorneys efficiently. Challenges incluyen highly technical language, importance de precision y interpretability además de need para explainability en high-stakes decisions legales.
+    </p>
+    <p>
+        Los benchmarks estandarizados permiten comparar models objetivamente mediante GLUE y SuperGLUE suite diverse tasks incluyendo sentiment analysis, paraphrase detection, natural language inference y question answering. SQuAD evaluate reading comprehension via extractive QA. XNLI extends NLI cross-lingually a 15 languages diversos. TyDi QA covers typologically diverse languages globalmente. MMLU tests knowledge y reasoning across 57 subjects académicos. Las métricas de evaluación varían por task donde accuracy measures correctness para classification. F1 score balances precision y recall importante para imbalanced classes. BLEU y ROUGE compare n-gram overlap for generation tasks pero correlate imperfectly con human judgment requiring complementary evaluation. BERTScore uses contextualized embeddings comparing semantic similarity más sophisticatedly. Human evaluation assesses fluency, coherence y factuality requiriendo inter-annotator agreement careful. Adversarial evaluation tests robustness a perturbations. Diagnostic datasets probe specific capabilities como negation handling y numerical reasoning. Comprehensive evaluation combina métricas automáticas, human assessment detallado y error analysis identifying failure modes systematically.
+    </p>
+
+    <h2>12.11 Arquitecturas Específicas para Tareas de NLP</h2>
+    <p>
+        Las arquitecturas especializadas optimizan performance para tareas específicas mediante inductive biases apropiados. Para sequence-to-sequence tasks como traducción y summarization, los encoder-decoder transformers procesan input sequence con encoder stack generando contextualized representations, luego decoder stack autoregresively genera output condicionado en encoder outputs mediante cross-attention. BART pre-entrena encoder-decoder con denoising objectives incluyendo token masking, deletion, infilling y sentence permutation, resultando en robust sequence-to-sequence foundation model. T5 unifica tasks formateándolas como text-to-text permitiendo arquitectura común y simple cross-entropy loss. mBART extiende BART multilingüe pre-entrenando en 25 languages facilitando translation y cross-lingual transfer efectivo. Los pointer-generator networks augmentan seq2seq con copy mechanism permitiendo copying words directamente desde source útil para rare words, proper nouns y OOV tokens prevalentes en summarization y dialogue.
+    </p>
+    <p>
+        Para sentence pair tasks como natural language inference, paraphrase detection y semantic similarity, sentence encoders procesan each sentence independientemente luego clasifican basándose en combined representation. Cross-encoders jointly encode sentence pair pasando concatenated input a BERT-like model permitiendo full attention interaction pero computationally expensive para retrieval. Bi-encoders encode sentences independently usando shared encoder luego comparan embeddings via cosine similarity facilitating efficient search pero less expressive. Poly-encoders balancean eficiencia y expresividad usando múltiples contextualized codes para primer sentence interacting con segundo sentence embedding. Para generation tasks, autoregressive decoders como GPT generan left-to-right sampling tokens iterativamente. Nucleus sampling selecciona from dynamic vocabulary subset summing to cumulative probability p mejorando diversity. Top-k sampling restricts to k most probable tokens evitando low-quality tails. Temperature scaling controls randomness donde high temperature increases diversity y low temperature makes outputs more deterministic focused on highest probability tokens.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Arquitecturas NLP] --> B[Encoder-only]
+        A --> C[Decoder-only]
+        A --> D[Encoder-Decoder]
+        B --> E[BERT Classification]
+        B --> F[Sentence Embeddings]
+        C --> G[GPT Generación]
+        C --> H[Autocompletado]
+        D --> I[Traducción]
+        D --> J[Summarización]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>12.12 Fine-tuning y Transfer Learning en Profundidad</h2>
+    <p>
+        El transfer learning revolucionó NLP permitiendo aprovechar conocimiento aprendido desde large-scale unsupervised pre-training para downstream tasks con labeled data limitado. El pre-training aprende language understanding general desde billions de words texto unlabeled capturando sintaxis, semántica, facts y reasoning patterns implícitos. El fine-tuning adapta pre-trained model a task específico mediante supervised learning en task-specific dataset agregando task head (eg. classifier para classification, span prediction para QA) y updating all parameters end-to-end minimizando task loss. Feature extraction freezes pre-trained encoder extrayendo features fijas que alimentan classifier ligero entrenado desde scratch útil cuando computational resources son limitados o dataset downstream es muy pequeño evitando overfitting.
+    </p>
+    <p>
+        Las estrategias de fine-tuning avanzan beyond simple full fine-tuning maximizando transfer effectiveness y efficiency. Layer-wise learning rate decay asigna learning rates menores a capas inferiores que capturan features generales y rates mayores a capas superiores task-specific permitiendo actualización más conservadora de knowledge general. Gradual unfreezing comienza fine-tuning solo top layers luego progresivamente unfreeze capas inferiores previniendo catastrophic forgetting. Discriminative fine-tuning asigna learning rates diferentes a cada layer reconociendo que diferentes capas aprenden features en diferentes abstraction levels. Multi-task learning fine-tunea jointly en múltiples related tasks compartiendo encoder parameters pero manteniendo task-specific heads permitiendo transfer beneficioso entre tasks. Intermediate task transfer pre-entrena en intermediate task relacionado antes de target task particularmente efectivo cuando target data es escasa.
+    </p>
+    <p>
+        Los parameter-efficient fine-tuning methods minimizan parameters actualizados reduciendo memory y compute requirements dramatically. Adapter modules insertan small bottleneck layers entre transformer blocks manteniendo frozen pre-trained weights y solo actualizando adapters logrando performance comparable a full fine-tuning con <5% parameters actualizados. Prefix-tuning prepends trainable prefix vectors a each layer permitiendo modular task-specific conditioning sin modificar base model weights. LoRA (Low-Rank Adaptation) decompose weight updates en low-rank matrices reduciendo trainable parameters sustancialmente mientras matching full fine-tuning quality. BitFit actualiza only bias parameters achieving surprising effectiveness con minimal parameters. Prompt tuning optimiza soft continuous prompts como embeddings rather que discrete tokens siendo extremely parameter-efficient alternativa. Estos métodos facilitan serving múltiples task-specific models efficiently compartiendo single large pre-trained base model con small task-specific modules reduciendo deployment costs y enabling rapid task switching.
+    </p>
+
+    <h2>12.13 Desafíos de Escalabilidad y Optimización</h2>
+    <p>
+        El entrenamiento de large language models requiere infraestructura masiva y optimizaciones sofisticadas. Model parallelism distribuye layers across múltiples GPUs cuando single model no cabe en single device memory. Pipeline parallelism divide model verticalmente ejecutando different layers en different devices con micro-batching overlapping computation y communication. Tensor parallelism particiona individual layers horizontally splitting matrix multiplications across devices útil para extremely large layers. Data parallelism replica model completamente en múltiples devices procesando different data batches en parallel synchronizing gradients. ZeRO (Zero Redundancy Optimizer) elimina memory redundancy en data parallelism partitioning optimizer states, gradients y parameters across devices reduciendo per-device memory footprint proporcionalmente a parallelism degree permitiendo training de models muchísimo más grandes.
+    </p>
+    <p>
+        Mixed precision training usa FP16 arithmetic para forward y backward passes manteniendo FP32 master weights y loss scaling evitando underflow acelerando training 2-3x y reduciendo memory. Gradient checkpointing trades compute por memory recomputando activations durante backward pass instead de storing todas reduciendo memory footprint permitiendo larger batches o models. Activation recomputation selectivamente checkpoints certain layers balancing memory savings con compute overhead. Flash Attention optimiza attention mechanism reduciendo memory reads/writes mediante tiling y kernel fusion acelerando attention dramatically para long sequences. Sparse attention patterns como local attention, strided attention y global attention reduce quadratic complexity of full attention a linear o quasi-linear permitiendo procesamiento eficiente de extremely long documents. Long-range transformers como Longformer, BigBird y Performer scales to sequences de miles de tokens manteniendo reasonable computational cost.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Optimización LLMs] --> B[Paralelismo]
+        A --> C[Precision Mixta]
+        A --> D[Memory Optimization]
+        B --> E[Model Parallel]
+        B --> F[Data Parallel]
+        B --> G[Pipeline Parallel]
+        C --> H[FP16 Training]
+        D --> I[Gradient Checkpointing]
+        D --> J[ZeRO Optimizer]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>12.14 Comprensión del Lenguaje y Razonamiento</h2>
+    <p>
+        La verdadera comprensión del lenguaje requiere reasoning beyond pattern matching superficial. Natural language inference determina si hypothesis logically sigue desde premise (entailment), contradicts it (contradiction) o es undetermined (neutral). Models pre-entrenados achieving high accuracy en benchmarks como MNLI demuestran impressive pattern recognition pero fallan en adversarial examples requiriendo reasoning genuine. Commonsense reasoning infiere conocimiento implícito no explícitamente stated requiring world knowledge extensive. Benchmarks como SWAG, HellaSwag, PIQA y Winograd Schema Challenge test commonsense understanding evaluando physical reasoning, social understanding y ambiguity resolution. Los knowledge-enhanced models integran external knowledge bases mediante entity linking y knowledge graph embeddings mejorando factuality y reasoning capabilities.
+    </p>
+    <p>
+        El reasoning matemático y lógico challenges LLMs particularmente. Arithmetic tasks requieren numerical understanding y multi-step calculations. Algebraic reasoning necesita abstract symbol manipulation. Benchmarks como GSM8K test grade-school math problems requiring multiple reasoning steps. Chain-of-thought prompting donde model genera intermediate reasoning steps explícitamente antes de final answer mejora mathematical reasoning dramaticamente. Program-aided language models ejecutan código Python para computations precisas delegating arithmetic a symbolic systems. Tool-augmented LLMs accede calculators, search engines y APIs extending capabilities beyond parametric knowledge learned. El temporal reasoning comprende event ordering, duration y causality requiring temporal logic understanding. Event extraction identifica events, participants, temporal anchoring y causal relations desde narratives. Situational understanding contextualiza language en scenarios concretos grounding meaning en perceptual y experiential knowledge.
+    </p>
+
+    <h2>12.15 Generación Controlable y Estilística</h2>
+    <p>
+        La controlled text generation permite especificar attributes deseados de generated text beyond simple prompting. Attribute-based control manipula sentiment, formality, length o domain del output. Conditional training fine-tunea models en datasets labeled con target attributes luego genera condicionado en desired attribute values mediante special tokens o embeddings. Plug-and-play language models combinan pre-trained LM con attribute classifiers steering generation hacia desired attributes mediante gradient-based optimization en latent space sin retraining base model. Discriminator-guided generation usa discriminators distinguiendo desired vs undesired generations guiding decoding mediante weighted sampling. Control codes prepended a inputs especifican desired properties como Wikipedia-style, formal, or simple siendo learned durante training correlating codes con corresponding text properties.
+    </p>
+    <p>
+        El style transfer transforma text rewriting con target style preservando content. Sentiment transfer cambia polarity positivo-negativo manteniendo factual content. Formality transfer ajusta casual-formal register apropiadamente. Author style imitation replica writing style de specific authors. Unsupervised approaches disentangle content y style en latent representations separadas luego recombinan content representation con target style. Back-translation through style-specific models provides pseudo-parallel data para supervised training. Evaluation requiere balancing style strength, content preservation y fluency usando automated metrics y human judgment. Applications en personalized content generation, writing assistance, data augmentation y creative writing tools democratizing high-quality text generation accessible para diverse users con varying linguistic expertise y stylistic preferences.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>El NLP permite a computadoras comprender, generar y manipular lenguaje humano efectivamente</li>
+            <li>Los embeddings mapean palabras a vectores densos capturando similaridad semántica en espacio vectorial</li>
+            <li>Los language models aprenden distribuciones probabilísticas sobre secuencias de texto</li>
+            <li>BERT usa masked language modeling bidirectional; GPT usa autoregressive next-token prediction</li>
+            <li>Las tareas fundamentales incluyen classification, NER, QA, machine translation y summarization</li>
+            <li>Los transformers pre-entrenados dominan state-of-the-art mediante transfer learning efectivo</li>
+            <li>Las aplicaciones abarcan chatbots, search semántico, information extraction y content generation</li>
+            <li>Los desafíos incluyen interpretability, bias mitigation, privacy protection y efficiency improvement</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Jurafsky, D., & Martin, J. H. (2023). <em>Speech and Language Processing</em> (3rd ed.). Stanford University.</li>
+        <li>Devlin, J., et al. (2019). BERT: Pre-training of deep bidirectional transformers. <em>NAACL</em>.</li>
+        <li>Brown, T. B., et al. (2020). Language models are few-shot learners. <em>NeurIPS</em>.</li>
+        <li>Vaswani, A., et al. (2017). Attention is all you need. <em>NeurIPS</em>.</li>
+        <li>Raffel, C., et al. (2020). Exploring the limits of transfer learning with T5. <em>JMLR</em>.</li>
+    </ul>
 </article>
