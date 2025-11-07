@@ -123,6 +123,104 @@
         La Ontology Alignment Evaluation Initiative (OAEI), campaña anual de evaluación, proporciona benchmarks estandarizados y métricas para comparar sistemas de alineamiento. Los tracks incluyen: anatomía (ontologías biomédicas grandes), conferencia (ontologías de organización de conferencias con alta heterogeneidad), y multifarm (alineamiento multilingüe). Los resultados demuestran que ningún sistema domina universalmente: el desempeño varía según características de ontologías (tamaño, expresividad, idioma) y tipo de heterogeneidad (terminológica, estructural, semántica).
     </p>
 
+    <h2>7.7 Evolución y Versionado de Ontologías</h2>
+    <p>
+        Las ontologías son artefactos dinámicos que evolucionan en respuesta a cambios en dominios de conocimiento, correcciones de errores, extensiones de funcionalidad y refinamiento basado en uso. La gestión sistemática de evolución ontológica enfrenta desafíos únicos: cambios aparentemente locales pueden tener consecuencias globales mediante propagación de inferencias; aplicaciones dependientes requieren compatibilidad con versiones anteriores o migración asistida; y usuarios necesitan comprender impacto de cambios en datos y consultas existentes.
+    </p>
+    <p>
+        Los patrones de cambio ontológico se clasifican en: cambios atómicos (añadir/eliminar clase, propiedad o axioma individual), cambios compuestos (operaciones complejas como dividir clase en subclases, fusionar clases, extraer jerarquía), y cambios semánticos (modificar significado conceptual sin necesariamente alterar estructura sintáctica). Los cambios pueden ser conservativos (preservando consecuencias lógicas existentes) o no-conservativos (potencialmente alterando inferencias). El análisis de impacto identifica entidades y aplicaciones afectadas por cambios propuestos, informando decisiones de diseño y estrategias de comunicación con usuarios.
+    </p>
+    <p>
+        Las estrategias de versionado varían en granularidad y mecanismos de acceso: versionado de ontología completa asigna identificadores a versiones enteras, apropiado cuando cambios son substanciales e infrecuentes; versionado de entidad individual rastrea cambios a nivel de clases y propiedades individuales, facilitando evolución incremental; y versionado temporal asocia timestamps a axiomas, permitiendo consultas históricas y reconstrucción de estados pasados. Los sistemas avanzados como PROV-O Ontology modelan provenance completa de cambios, capturando quién hizo qué modificación, cuándo, y por qué razón.
+    </p>
+    <p>
+        Las herramientas de gestión de evolución incluyen Protégé con plugin de versionado, OntoView para visualización de diferencias entre versiones, PromptDiff para detección automática de cambios estructurales, y CHanGe Ontology (ChOKE) para representación formal de operaciones de cambio. Los repositorios de ontologías como BioPortal proporcionan infraestructura para publicación de múltiples versiones, navegación histórica, comparación de versiones, y notificaciones de cambios a suscriptores. La documentación sistemática de rationale para cambios facilita comprensión evolutiva y auditoría de decisiones de diseño.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Ontología v1.0] --> B[Cambios Propuestos]
+        B --> C[Análisis de Impacto]
+        C --> D{¿Conservativo?}
+        D -->|Sí| E[Aplicar Cambios]
+        D -->|No| F[Evaluación Manual]
+        F --> G[Aprobación]
+        G --> E
+        E --> H[Ontología v1.1]
+        H --> I[Validación]
+        I --> J[Publicación]
+        J --> K[Notificar Usuarios]
+        C --> L[Entidades Afectadas]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style H fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>7.8 Ontologías en Sistemas Multi-agente</h2>
+    <p>
+        Los sistemas multi-agente involucran múltiples entidades autónomas que interactúan para resolver problemas complejos, coordinarse, o competir. Las ontologías desempeñan rol crucial facilitando comunicación semántica entre agentes heterogéneos desarrollados independientemente: proporcionan vocabulario compartido que reduce ambigüedad, especifican protocolos de interacción mediante compromiso semántico común, y habilitan descubrimiento dinámico de servicios mediante descripciones ontológicas de capacidades de agentes.
+    </p>
+    <p>
+        FIPA (Foundation for Intelligent Physical Agents), organización de estándares para sistemas multi-agente, especifica Agent Communication Language (ACL) para mensajes entre agentes. ACL adopta teoría de speech acts, modelando comunicación como actos performativos (inform, request, query, propose) con semántica formal. Los agentes requieren ontologías compartidas para interpretar contenido de mensajes: al recibir un mensaje "inform" sobre una instancia de clase "PurchaseOrder", el agente receptor consulta la ontología para comprender estructura, propiedades requeridas, y restricciones sobre órdenes de compra.
+    </p>
+    <p>
+        Las ontologías de servicio describen capacidades de agentes facilitando matchmaking automático: agentes que requieren servicios específicos buscan proveedores con capacidades correspondientes mediante razonamiento sobre descripciones ontológicas. OWL-S (OWL for Services) modela servicios mediante tres perspectivas: ServiceProfile (qué hace el servicio, inputs, outputs, precondiciones, efectos), ServiceModel (cómo funciona, composición de procesos), y ServiceGrounding (cómo invocarlo, binding a protocolos concretos como WSDL). Razonadores pueden determinar subsunción entre perfiles de servicio, identificando proveedores que satisfacen requisitos de consumidores.
+    </p>
+    <p>
+        Los desafíos incluyen heterogeneidad de ontologías cuando agentes adoptan conceptualizaciones diferentes: traducción automática mediante alineamiento de ontologías, mediación dinámica mediante agentes intermediarios, y negociación de significados compartidos on-the-fly. Las ontologías de contexto modelan información situacional (ubicación, tiempo, preferencias de usuario) que afecta interpretación de comunicaciones y decisiones de agentes. Los sistemas multi-agente para comercio electrónico, gestión de cadena de suministro, smart grids y robótica colaborativa explotan ontologías para coordinación escalable y adaptativa.
+    </p>
+
+    <h2>7.9 Calidad y Métricas de Ontologías</h2>
+    <p>
+        La evaluación rigurosa de calidad ontológica es esencial para asegurar que ontologías sirven efectivamente a propósitos pretendidos. Las dimensiones de calidad abarcan aspectos sintácticos, semánticos, pragmáticos y sociales. La corrección sintáctica verifica conformidad con especificaciones de lenguaje ontológico (RDF, OWL): parsers automáticos detectan errores de sintaxis. La consistencia lógica, verificada mediante razonadores, asegura ausencia de contradicciones que harían la ontología inconsistente o inutilizable. La completitud evalúa si la ontología cubre adecuadamente el dominio pretendido sin omisiones críticas de conceptos o relaciones.
+    </p>
+    <p>
+        Las métricas cuantitativas caracterizan estructura ontológica: número de clases, propiedades, instancias; profundidad y amplitud de jerarquía taxonómica; ratio de subsunción (promedio de superclases por clase); cohesión (grado de interconexión dentro de módulos); y acoplamiento (dependencias entre módulos). Métricas de riqueza evalúan uso de constructores expresivos: restricciones de cardinalidad, equivalencias, disjunciones, propiedades inversas. Ontologías que explotan expresividad de lenguaje típicamente capturan conocimiento más precisamente que aquellas limitadas a jerarquías taxonómicas simples.
+    </p>
+    <p>
+        La evaluación basada en criterios examina adherencia a principios de diseño: claridad (definiciones objetivas y documentadas), coherencia (consistencia terminológica y estructural), extensibilidad (facilidad de añadir conceptos sin reestructuración mayor), sesgo de codificación mínimo (independencia de implementación particular), y compromiso ontológico mínimo (especificar solo lo necesario). Las competency questions, definidas durante especificación de requisitos, proveen criterios de validación: la ontología debe permitir formular y responder consultas relevantes para casos de uso previstos.
+    </p>
+    <p>
+        La evaluación basada en tareas mide utilidad de ontologías en aplicaciones reales: mejora en precisión/recall de sistemas de pregunta-respuesta, efectividad en integración de datos heterogéneos, facilidad de desarrollo de aplicaciones utilizando la ontología. Los gold standards, cuando disponibles, permiten evaluación objetiva mediante comparación con ontologías de referencia curadas por expertos. Las evaluaciones de usabilidad con expertos de dominio investigan comprensibilidad, naturalidad de modelado, y facilidad de mantenimiento. El benchmarking competitivo en comunidades de práctica (ej. OAEI) estimula mejora continua identificando mejores prácticas y deficiencias comunes.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Calidad de Ontologías))
+            Aspectos Sintácticos
+                Conformidad con Estándares
+                Parsabilidad
+            Aspectos Semánticos
+                Consistencia Lógica
+                Completitud
+                Corrección
+            Aspectos Estructurales
+                Profundidad de Jerarquía
+                Cohesión
+                Acoplamiento
+                Riqueza de Constructores
+            Aspectos Pragmáticos
+                Competency Questions
+                Utilidad en Tareas
+                Usabilidad
+            Aspectos Sociales
+                Adopción por Comunidad
+                Mantenimiento Activo
+    </div>
+
+    <h2>7.10 Tendencias Futuras: Ontologías y Machine Learning</h2>
+    <p>
+        La convergencia de ontologías simbólicas y machine learning subsimbólico representa una de las fronteras más prometedoras en inteligencia artificial. Los enfoques tradicionales trataban estas aproximaciones como dicotómicas; investigación contemporánea explora sinergias: ontologías informando aprendizaje mediante conocimiento estructurado a priori, y machine learning enriqueciendo ontologías mediante extracción automática de conocimiento de datos. Esta hibridación promete sistemas que combinan interpretabilidad y garantías lógicas de enfoques simbólicos con robustez y aprendizaje de extremo a extremo de enfoques estadísticos.
+    </p>
+    <p>
+        El aprendizaje de ontologías (Ontology Learning) automatiza construcción de ontologías desde textos, bases de datos estructuradas, y APIs Web. Las técnicas de extracción de taxonomías identifican relaciones is-a mediante patrones lingüísticos (Hearst patterns: "X such as Y", "Y and other X") y análisis de co-ocurrencia de términos. El descubrimiento de relaciones no-taxonómicas aplica métodos de extracción de relaciones basados en patrones, bootstrapping y aprendizaje supervisado. El enriquecimiento de ontologías existentes añade clases, propiedades y axiomas mediante análisis de córpora relevantes, manteniendo consistencia con conocimiento formalizado previamente.
+    </p>
+    <p>
+        Los embeddings de grafos de conocimiento aprenden representaciones vectoriales densas de entidades y relaciones preservando estructura del grafo ontológico. TransE modela relaciones como traslaciones en espacio vectorial: h + r ≈ t donde h es embedding de entidad head, r de relación, t de entidad tail. DistMult, ComplEx, RotatE y variantes sofisticadas mejoran expresividad modelando relaciones simétricas, asimétricas y compositivas. Estos embeddings facilitan predicción de enlaces faltantes (knowledge base completion), razonamiento aproximado eficiente, y transferencia de conocimiento estructurado a arquitecturas neuronales.
+    </p>
+    <p>
+        La inyección de conocimiento ontológico en redes neuronales guía aprendizaje con conocimiento estructurado: regularización semántica añade pérdidas que penalizan violaciones de restricciones ontológicas; arquitecturas neurosimbólicas incorporan módulos de razonamiento diferenciable que operan sobre representaciones simbólicas; y pre-entrenamiento sobre grafos de conocimiento proporciona inicializaciones informadas para modelos. Los modelos de lenguaje masivos como BERT y GPT demuestran conocimiento factual emergente; investigación reciente explora augmentation con grafos de conocimiento explícitos para mejorar factualidad, razonamiento multi-hop, y explicabilidad. Las ontologías probabilísticas, como Probabilistic Soft Logic y Markov Logic Networks, unifican razonamiento lógico y probabilístico, prometiendo sistemas que razonan robustamente bajo incertidumbre preservando estructura y garantías lógicas.
+    </p>
+
     <div class="info-box">
         <h3>Puntos Clave de la Clase</h3>
         <ul>
@@ -132,6 +230,10 @@
             <li>Razonadores implementan servicios de inferencia lógica para validación y derivación de conocimiento implícito</li>
             <li>Ontologías de dominio en biomedicina, geoespacial e IoT han alcanzado adopción significativa</li>
             <li>El alineamiento de ontologías facilita integración de recursos heterogéneos desarrollados independientemente</li>
+            <li>La gestión de evolución ontológica requiere análisis de impacto y versionado sistemático</li>
+            <li>Las ontologías facilitan comunicación semántica en sistemas multi-agente heterogéneos</li>
+            <li>Métricas multidimensionales evalúan calidad sintáctica, semántica, estructural y pragmática</li>
+            <li>La convergencia de ontologías y machine learning promete sistemas neurosimbólicos potentes</li>
         </ul>
     </div>
 
