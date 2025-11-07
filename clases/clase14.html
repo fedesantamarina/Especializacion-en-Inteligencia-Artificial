@@ -1,19 +1,209 @@
 <article class="lesson-content">
     <h1>Clase 14: Agentes Inteligentes y Sistemas Multiagente</h1>
-    <h2>14.1 Teoría de Agentes Inteligentes</h2>
-    <p>Un agente inteligente es una entidad que percibe su entorno mediante sensores y actúa sobre él mediante actuadores para alcanzar objetivos. Los agentes se clasifican por capacidades: agentes reactivos simples (responden directamente a percepciones), agentes basados en modelo (mantienen estado interno del mundo), agentes basados en objetivos (planifican acciones para alcanzar metas), agentes basados en utilidad (optimizan función de utilidad), y agentes que aprenden (mejoran desempeño con experiencia). La racionalidad caracteriza agentes que maximizan medida de desempeño esperado dados percepción y conocimiento.</p>
-    <h2>14.2 Entornos de Agentes</h2>
-    <p>Los entornos se caracterizan por dimensiones: totalmente observable vs parcialmente observable; determinista vs estocástico; episódico vs secuencial; estático vs dinámico; discreto vs continuo; single-agent vs multi-agent. El diseño de agentes depende críticamente de propiedades del entorno: entornos totalmente observables y deterministas facilitan planificación; entornos parcialmente observables requieren mantener creencias probabilísticas; entornos multiagente introducen consideraciones estratégicas y coordinación.</p>
-    <h2>14.3 Arquitecturas de Agentes</h2>
-    <p>Las arquitecturas deliberativas (BDI: Beliefs-Desires-Intentions) razonan explícitamente sobre creencias (modelo del mundo), deseos (objetivos), e intenciones (planes comprometidos). Las arquitecturas reactivas (subsumption) usan comportamientos reactivos en capas sin representación simbólica explícita, útiles para entornos dinámicos requiriendo respuestas rápidas. Las arquitecturas híbridas combinan capas reactivas y deliberativas, balanceando respuesta rápida y razonamiento sofisticado. Las arquitecturas basadas en utilidad modelan preferencias mediante funciones de utilidad, tomando decisiones bajo incertidumbre mediante teoría de decisión.</p>
-    <h2>14.4 Sistemas Multiagente</h2>
-    <p>Los sistemas multiagente involucran múltiples agentes interactuando, cooperando o compitiendo. La coordinación distribuida distribuye tareas y sincroniza acciones sin control centralizado. La negociación permite agentes alcanzar acuerdos mediante intercambios de propuestas. Las subastas asignan recursos eficientemente. La formación de coaliciones agrupa agentes para objetivos compartidos. La comunicación entre agentes usa lenguajes (KQML, FIPA ACL) y protocolos estándar. Los organizaciones multiagente estructuran sociedades mediante roles, normas y estructuras organizacionales.</p>
-    <h2>14.5 Teoría de Juegos y Agentes Estratégicos</h2>
-    <p>La teoría de juegos formaliza interacciones estratégicas donde acciones de un agente afectan recompensas de otros. El equilibrio de Nash caracteriza estrategias mutuamente mejores respuestas: ningún agente mejora desviándose unilateralmente. Los juegos cooperativos permiten acuerdos vinculantes y coaliciones. Los juegos repetidos introducen consideraciones de reputación y estrategias como tit-for-tat. La teoría de mecanismos diseña reglas de juego (mecanismos) que incentivan comportamientos deseados, aplicable a subastas, votación y asignación de recursos.</p>
-    <h2>14.6 Aplicaciones de Sistemas Multiagente</h2>
-    <p>Trading algorítmico (agentes ejecutan estrategias de mercado). Smart grids (coordinación distribuida de generación y consumo energético). Logística y supply chain (agentes optimizan transporte y inventario). Robótica colaborativa (equipos de robots coordinan tareas). Simulación social (modelar sociedades, epidemias, economías). E-commerce (agentes comparadores de precios, recomendadores). Gestión de tráfico (vehículos autónomos coordinan flujos). Juegos y entretenimiento (NPCs inteligentes, adversarios adaptativos).</p>
-    <div class="info-box">
-        <h3>Puntos Clave</h3>
-        <ul><li>Los agentes perciben entornos y actúan para alcanzar objetivos</li><li>Las propiedades del entorno determinan diseño apropiado de agentes</li><li>Las arquitecturas balancean reactividad y deliberación</li><li>Los sistemas multiagente coordinan múltiples agentes autónomos</li><li>La teoría de juegos formaliza interacciones estratégicas</li><li>Las aplicaciones incluyen trading, robótica, logística y simulación</li></ul>
+
+    <h2>14.1 Teoría de Agentes Inteligentes: Fundamentos</h2>
+    <p>
+        Un agente inteligente constituye entidad autónoma que percibe su entorno mediante sensores, procesa información percibida, y actúa sobre el entorno mediante actuadores para alcanzar objetivos específicos. Esta abstracción fundamental unifica múltiples paradigmas de inteligencia artificial proporcionando framework conceptual general. Los sensores capturan información perceptual desde el entorno: cámaras para agentes robóticos, inputs textuales para chatbots, datos de mercado para trading agents. Los actuadores permiten acciones modificando entorno: motores en robots, respuestas textuales en asistentes conversacionales, órdenes de compra-venta en sistemas de trading. La función del agente mapea sequences de percepciones (history completo de observaciones) a acciones, implementando policy o estrategia comportamental. La autonomía implica que agentes operan independientemente sin intervención humana directa, exhibiendo goal-directed behavior, proactividad iniciando acciones, reactividad respondiendo a cambios, y social ability interactuando con otros agentes cuando beneficial.
+    </p>
+    <p>
+        La racionalidad constituye concepto central caracterizando agentes que seleccionan acciones maximizando medida de desempeño esperado dados conocimiento disponible y percepciones recibidas. Un agente racional no necesariamente exhibe comportamiento óptimo (que requiere omnisciencia impráctica), sino decisiones razonables basadas en información limitada. La medida de desempeño cuantifica success objetivamente: robot limpiador mide área limpiada y energía consumida, chatbot mide satisfacción de usuario, trading agent mide profit-risk ratio. Las performance measures deben diseñarse cuidadosamente alineándose con objetivos reales evitando reward hacking donde agentes explotan especificaciones deficientes logrando high scores sin satisfacer intenciones subyacentes. La información disponible incluye conocimiento previo diseñado y información aprendida mediante experiencia. Las percepciones corrientes informan estado actual pero history completo puede influenciar decisiones óptimas en entornos parcialmente observables donde estados no son fully determined por single observations.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Agente Inteligente] --> B[Sensores]
+        A --> C[Procesamiento]
+        A --> D[Actuadores]
+        B --> E[Percepciones]
+        E --> C
+        C --> F[Función del Agente]
+        F --> D
+        D --> G[Acciones]
+        G --> H[Entorno]
+        H --> B
+        C --> I[Autonomía]
+        C --> J[Racionalidad]
+        C --> K[Aprendizaje]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style H fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
     </div>
+
+    <h2>14.2 Taxonomía de Agentes: Clasificación por Capacidades</h2>
+    <p>
+        Los agentes reactivos simples seleccionan acciones basándose únicamente en percepción corriente mediante condition-action rules: IF condición percibida THEN acción. Esta arquitectura stateless no mantiene memoria de history, limitándose a entornos totalmente observables donde current percept suffices para decisiones. Los robots reactivos evitan obstáculos mediante sensores de proximidad ejecutando reflexes: IF obstacle-ahead THEN turn. Los thermostats activan calefacción IF temperatura-baja. La simplicidad garantiza respuestas rápidas pero limita capacidad de resolver problemas requiriendo razonamiento sobre pasado o futuro. Los agentes basados en modelo mantienen estado interno representando aspectos del mundo no observables directamente, actualizando state mediante modelo de transición especificando cómo evoluciona entorno y modelo de sensores especificando cómo percepciones dependen de estado. Los robots móviles mantienen mapa del entorno, actualizándolo mediante SLAM incorporando nuevas observaciones. Esto habilita funcionamiento en entornos parcialmente observables donde single observations son ambiguas pero sequences revelan estado mediante belief tracking.
+    </p>
+    <p>
+        Los agentes basados en objetivos seleccionan acciones alcanzando goal states especificados. Planning algorithms search secuencias de acciones achieving goals: pathfinding en robots, scheduling en sistemas de producción. Classical planning asume entornos deterministas fully observable con preconditions y effects especificados formalmente. La flexibilidad de goals permite adaptación a múltiples tareas sin reescribir agent program. Los agentes basados en utilidad representan preferencias mediante funciones de utilidad cuantificando desirability de estados, optimizando expected utility en entornos estocásticos. Expected utility maximization integra probabilidades de outcomes con utilities via ∑P(outcome|action) × U(outcome), fundamentando decisiones racionales bajo incertidumbre. Markov Decision Processes formalizan este framework con estados, acciones, transitions, rewards, enabling optimal policy computation via dynamic programming. Los agentes que aprenden mejoran performance mediante experiencia, adaptándose a entornos desconocidos inicialmente. Reinforcement learning agents aprenden policies mediante trial-and-error maximizando cumulative reward. Supervised learning agents aprenden desde labeled examples. El learning element genera mejoras basándose en feedback, performance element ejecuta acciones, critic evalúa desempeño, y problem generator sugiere exploratory actions balancing exploitation-exploration.
+    </p>
+
+    <h2>14.3 Características de Entornos de Agentes</h2>
+    <p>
+        Las propiedades del entorno determinan críticamente diseño apropiado de agentes. Los entornos totalmente observables proveen información completa sobre estado mediante percepciones: chess donde board entero es visible. Los entornos parcialmente observables ocultan información: poker con cartas ocultas, robots con sensores limitados. Partial observability requiere belief states (distribuciones probabilísticas sobre posibles estados) y state estimation mediante filtering incorporando observations secuencialmente. Los entornos deterministas tienen outcomes de acciones predecibles: tableros de juegos sin aleatoriedad. Los entornos estocásticos exhiben outcomes probabilísticos: dados, demanda de productos, condiciones climáticas. Stochasticity requiere reasoning sobre distributions y planning considerando multiple possible futures.
+    </p>
+    <p>
+        Los entornos episódicos dividen experiencia en episodes independientes: clasificación de imágenes donde cada decisión es independiente. Los entornos secuenciales tienen decisiones corrientes afectando futuras: chess donde cada movida altera positions subsecuentes. Sequential environments requieren planning ahead considerando consecuencias long-term. Los entornos estáticos permanecen unchanged mientras agente delibera: puzzles, offline optimization. Los entornos dinámicos cambian independientemente: mercados financieros, tráfico vehicular. Dynamic environments exigen real-time decision making balancing deliberation quality con response speed. Los entornos discretos tienen estados, tiempo y acciones finitos countables: chess con positions finitas. Los entornos continuos tienen variables continuous-valued: control robótico con posiciones y velocidades reales. Continuity complica representation y computation requiriendo discretization o function approximation.
+    </p>
+    <p>
+        Los entornos single-agent involucran solo agente actuando: solitaire, optimization problems. Los entornos multi-agent involucran múltiples agentes interactuando, cooperando o compitiendo: poker, autonomous vehicles sharing roads. Multiagent settings introducen consideraciones estratégicas donde optimal actions dependen de comportamientos de otros agentes, formalizadas mediante game theory. Los entornos competitivos tienen agents con objetivos conflicting: zero-sum games. Los entornos cooperativos tienen shared goals: team robotics. Designing agents requiere understanding environment properties: fully observable deterministic environments enable simple reflex agents; partially observable stochastic sequential environments require sophisticated state estimation, planning under uncertainty, y learning from experience.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Entornos] --> B[Observable]
+        A --> C[Determinista]
+        A --> D[Episódico]
+        A --> E[Estático]
+        A --> F[Discreto]
+        A --> G[Single-Agent]
+        B --> H[Total/Parcial]
+        C --> I[Determinista/Estocástico]
+        D --> J[Episódico/Secuencial]
+        E --> K[Estático/Dinámico]
+        F --> L[Discreto/Continuo]
+        G --> M[Single/Multi-Agent]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>14.4 Arquitecturas de Agentes en Profundidad</h2>
+    <p>
+        Las arquitecturas deliberativas implementan reasoning simbólico explícito mediante representaciones lógicas, planning, y problem solving. La arquitectura BDI (Beliefs-Desires-Intentions) modela agentes mediante beliefs (representación epistémica del mundo), desires (objetivos potenciales), e intentions (planes comprometidos ejecutándose). El ciclo BDI percibe entorno actualizando beliefs, genera opciones (planes aplicables), filtra options seleccionando intentions basándose en desires y commitments, y ejecuta intentions monitoring success. Los plans consisten en secuencias de acciones con preconditions y effects. El plan execution monitorea condiciones ensuring validity, replanning cuando fallan. La deliberación balancea reconsideration de intentions (flexibility responding to changes) con commitment continuando plans (avoiding endless reconsideration overhead). Applications incluyen simulación social donde agentes BDI modelan human-like decision making y autonomous spacecraft management.
+    </p>
+    <p>
+        Las arquitecturas reactivas eliminan representaciones simbólicas y reasoning explícito, implementando behaviors directamente mapping sensations a actions mediante subsumption architecture organizando competence layers jerárquicamente. Lower layers implementan basic survival behaviors: obstacle avoidance. Higher layers implement goal-directed behaviors: exploration, goal seeking. Higher layers subsume lower ones, suppressing outputs cuando active. Esta arquitectura behavior-based achieves real-time response sin deliberation overhead, demostrando surprising emergent complexity desde simple reactive behaviors. Brooks' mobile robots exhibieron robust navigation sin world models contrastando con traditional planning approaches. Las limitaciones incluyen difficulty engineering complex tasks requiring lookahead y lack de learning mechanisms for adaptation. Modern reactive agents often incorporate learning ajustando behavior mappings mediante reinforcement learning refining policies incrementally.
+    </p>
+    <p>
+        Las arquitecturas híbridas combinan capas reactivas handling immediate responses con capas deliberativas para planning y reasoning. La layered architecture organiza vertically con reactive layer ensuring real-time safety responses, planning layer generating action sequences achieving goals, y meta-level layer monitoring overall performance adjusting strategies. Horizontal layering conecta layers mediante information sharing: perceptions flow upward, commands flow downward. El challenge es integrar seamlessly: reactive behaviors deben respetar plans deliberativos, deliberation debe account para limitations de reactive execution. InteRRaP architecture tri-layer implements behavior-based, local planning, y cooperative planning layers. TouringMachines usa parallel layers communicating mediante control rules mediating conflicts. Applications incluyen autonomous vehicles donde reactive layer handles emergency braking mientras planning layer routes trajectories y coordination layer negotiates con otros vehicles.
+    </p>
+
+    <h2>14.5 Sistemas Multiagente: Coordinación y Cooperación</h2>
+    <p>
+        Los sistemas multiagente involucran sociedades de agentes autónomos interactuando mediante comunicación, coordinación, cooperation, y competition. La coordinación distribuida sincroniza acciones de agentes sin control centralizado evitando conflicts y achieving joint goals efficiently. Task allocation distribuye subtasks entre agents maximizando utilización y minimizando duplication. Market-based mechanisms usan auctions donde agents bid para tasks: contract net protocol anuncia tasks, agents submit bids especificando capabilities y costs, manager awards contracts a best bidders. Auction mechanisms incluyen first-price (highest bidder pays bid), second-price (highest bidder pays second-highest bid incentivizing truthful bidding), combinatorial auctions (bidding sobre bundles de tasks optimizando synergies). Multi-robot systems asignan targets coordinadamente: police drones covering areas, warehouse robots retrieving items distributedly.
+    </p>
+    <p>
+        La formación de coaliciones agrupa agents achieving goals unattainable individually mediante pooling resources y capabilities. Coalition formation algorithms compute partitions de agents maximizando social welfare considerando synergies entre members. Coalition structures distribuyen rewards fairly usando Shapley value allocating proportionally a marginal contributions ensuring stability (no subset benefits defecting). Team formation en rescue scenarios agrupa robots con complementary sensors y actuators. La negociación permite agents con conflicting preferences reach mutually acceptable agreements mediante exchanging proposals iteratively. Monotonic concession protocol requiere agents conceding incrementally until agreement o impasse. Zeuthen strategy concedes when risk de conflict outweighs concession cost. Argumentation-based negotiation exchanges justifications persuading agents mediante logical reasoning sobre shared knowledge bases. Contract negotiation en supply chains coordina suppliers, manufacturers, distributors optimizando jointly costs y service levels.
+    </p>
+
+    <h2>14.6 Comunicación entre Agentes: Lenguajes y Protocolos</h2>
+    <p>
+        La comunicación efectiva requiere lenguajes compartidos y protocolos estructurando interactions. Knowledge Query and Manipulation Language (KQML) define message format con performatives especificando speech acts: ask-if (query truth de proposition), tell (assert fact), achieve (request action), advertise (announce capability). FIPA Agent Communication Language (FIPA ACL) estandariza communication basándose en speech act theory. Los mensajes especifican sender, receiver, performative, content (expresado en content language como KIF, RDF), ontology (vocabulario compartido), protocol (conversation pattern), y conversation-id tracking interactions. Los protocolos de coordinación estructuran multi-step conversations: request protocol (request → agree/refuse → inform-done), contract net (call-for-proposals → propose → accept-proposal/reject-proposal → inform-done), negotiation protocols (multi-round bidding, argumentation exchanges).
+    </p>
+    <p>
+        El content de mensajes expresa propositions, queries, y actions usando knowledge representation formalisms. Knowledge Interchange Format usa first-order logic: (and (Robot ?r) (Location ?r ?l)). RDF expresses statements como triples: <agent1, has-capability, welding>. Las ontologías compartidas definen vocabularios ensuring semantic interoperability: agentes purchasing supplies deben agree sobre términos como "delivery-date", "unit-price". Standards como FIPA promueven interoperability across platforms heterogéneos permitiendo agents desarrollados independently interact seamlessly. Speech act semantics formalizan meaning de performatives: request establece obligation si accepted, inform updates beliefs. Commitment tracking maintains accountability recording obligations, permissions, prohibitions ensuring agents honor agreements. Applications span distributed sensing networks sharing observations, supply chain management negotiating contracts, emergency response coordinating rescue teams.
+    </p>
+
+    <h2>14.7 Teoría de Juegos y Agentes Estratégicos</h2>
+    <p>
+        La teoría de juegos formaliza interacciones estratégicas donde payoffs de agents dependen de joint actions requiring reasoning sobre comportamientos de otros. Un juego especifica players, actions disponibles, y payoff functions mapping action profiles a utilities. Games normales (strategic form) representan simultaneous decisions mediante payoff matrices. Nash equilibrium caracteriza strategy profiles donde ningún player mejora desviándose unilaterally: todos players play best responses mutually. Prisoner's dilemma ilustra tension entre individual rationality y collective optimality donde defection domina cooperation individualmente pero mutual cooperation Pareto-dominates mutual defection. Coordination games tienen multiple equilibria requiriendo selection mechanisms. Zero-sum games tienen strictly opposed interests: one player's gain es otro's loss, enabling minimax analysis.
+    </p>
+    <p>
+        Los juegos extensivos (sequential form) modelan decisions sequential mediante game trees con alternating moves. Backward induction computes subgame perfect equilibria via rollback: reasoning backward desde terminal nodes choosing optimal actions inductively. Chess y poker se modelan extensively incorporando uncertainty mediante chance nodes y imperfect information donde players desconocen estados exactos. Los juegos repetidos iterate stage games enabling reputation effects y conditional strategies. Tit-for-tat cooperates initially luego mimics opponent's previous action, promoting cooperation en infinitely repeated prisoner's dilemma. Folk theorems show que diverse outcomes are sustainable as equilibria con sufficiently patient players. Evolutionary game theory estudia strategy evolution en populations: replicator dynamics favor strategies achieving above-average payoffs, stable strategies resist invasion de mutants.
+    </p>
+    <p>
+        La teoría de mecanismos diseña game rules incentivizing desired behaviors: "implementation theory" designing mechanisms achieving social choice functions mediante equilibrium play. Auctions asignan resources efficiently: Vickrey auction (second-price sealed-bid) incentivizes truthful bidding siendo weakly dominant strategy. Mechanism design sin pagos incluye voting protocols agregando preferences fairly: impossibility theorems muestran no voting rule satisface todas properties deseables simultaneously. VCG mechanisms (Vickrey-Clarke-Groves) achieve efficient allocations y truthful reporting via incentive compatibility donde reporting truthfully es dominant strategy. Applications span spectrum allocation (spectrum auctions), ad placement (ad auctions en search engines), resource allocation en clouds, y participatory budgeting en governance.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Teoría de Juegos] --> B[Juegos Normales]
+        A --> C[Juegos Extensivos]
+        A --> D[Juegos Repetidos]
+        A --> E[Teoría de Mecanismos]
+        B --> F[Nash Equilibrium]
+        C --> G[Backward Induction]
+        D --> H[Tit-for-Tat]
+        E --> I[Auctions]
+        E --> J[Voting]
+        F --> K[Dilema del Prisionero]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>14.8 Aprendizaje en Sistemas Multiagente</h2>
+    <p>
+        El aprendizaje multiagente extiende reinforcement learning a settings con múltiples agents learning simultaneously creando non-stationary environments: optimal policy de un agent depende de policies de otros agents que también están learning. Independent learners tratan otros agents como parte del environment ignorando adaptations, convergiendo a equilibria solo en limited cases. Joint action learners model behaviors de opponents learning Q-functions over joint action spaces, pero sufren exponential growth con número de agents. Opponent modeling explicitly learns models de opponent policies predicting behaviors: fictitious play assumes opponents play average historical strategies, pero fails cuando opponents aren't stationary. Lenient learning forgives poor initial actions de teammates coordinándose optimistically, effective en cooperative settings.
+    </p>
+    <p>
+        Los multi-agent policy gradient methods extend policy optimization a multiagent cases: MADDPG (Multi-Agent Deep Deterministic Policy Gradient) usa centralized training con decentralized execution donde critics accede observations de todos agents durante training pero actors ejecutan based on local observations. QMIX factorizes joint Q-function as monotonic combination de individual Q-functions ensuring consistency entre decentralized execution y centralized training. Mean field methods approximate interactions mediante average effect de populations scaling to large agent counts. Emergent communication aprende communication protocols end-to-end sin diseño explícito: agents develop languages optimizando task performance, exhibiendo grounding (symbols corresponding to referents) y compositionality (combining symbols systematically). Applications incluyen robot teams learning coordination, autonomous vehicles learning traffic behaviors, gaming AI learning team strategies.
+    </p>
+
+    <h2>14.9 Inteligencia de Enjambre: Coordinación Sin Líderes</h2>
+    <p>
+        La inteligencia de enjambre estudia comportamientos colectivos emergiendo desde interacciones locales de agentes simples sin control centralizado, inspirada en colonias de insectos, parvadas de pájaros, cardúmenes de peces. Particle Swarm Optimization optimiza funciones mediante partículas moving en search space influenciadas por personal best positions y global best position encontrada por swarm, balancing exploration (individual experience) con exploitation (social learning). Ant Colony Optimization solves combinatorial optimization depositando pheromones en paths: shorter paths acumulan pheromones faster debido a más iterations, attracting más ants mediante positive feedback, converging a near-optimal solutions. Applications incluyen routing, scheduling, y task allocation problems.
+    </p>
+    <p>
+        Los enjambres robóticos coordinan physically embodied agents performing tasks colectivamente: construction robots building structures coordinadamente, inspection drones covering areas distributed, transport robots moving objetos cooperatively. Flocking behaviors emerge desde simple rules: separation (avoid crowding), alignment (steer toward average heading), cohesion (steer toward average position), generando motion patterns resemblando natural swarms. Consensus protocols synchronize states (values, beliefs) across networks: agents iterate averaging neighbors' values converging a agreement bajo connectivity conditions. Applications incluyen distributed sensor fusion aggregating measurements, clock synchronization en networks, formation control maintaining geometric configurations en robot teams. Swarm systems exhibit scalability (performance maintained con large numbers), robustness (tolerate individual failures), flexibility (adapt to dynamic environments), y self-organization (patterns emerge without central direction).
+    </p>
+
+    <h2>14.10 Aplicaciones Prácticas de Sistemas Multiagente</h2>
+    <p>
+        El trading algorítmico emplea agents ejecutando strategies en mercados financieros: market making agents provide liquidity quoting bid-ask spreads profiting desde spread, arbitrage agents exploit price discrepancies across markets, trend-following agents detect momentum executing directional trades. High-frequency trading usa agents reacting to market signals en microsegundos, requiring low-latency infrastructure. Multi-agent simulations model market dynamics studying phenomena como flash crashes, bubbles, herding behaviors informando regulatory policies. Las smart grids coordinan generation, storage, y consumption de energía distribuida: prosumer agents con solar panels y batteries optimize charging-discharging-selling decisions responding a price signals, aggregator agents pool resources participating en wholesale markets, grid operator agents balance supply-demand ensuring stability. Demand response adjusts consumption dynamically incentivizing load shifting to off-peak hours reducing strain during peaks.
+    </p>
+    <p>
+        La logística y supply chain management optimizan transportation, warehousing, inventory mediante agents: carriers bid para delivery tasks, warehouse agents manage stock levels ordering replenishments anticipating demand, factory agents schedule production coordinating con suppliers. Vehicle routing assigns delivery routes minimizando costs satisfying constraints (time windows, capacity limits) mediante coordination entre drivers y dispatchers. Los equipos de robots colaboran en manufacturing: assembly robots install components cooperatively passing workpieces, inspection robots detect defects, maintenance robots service equipment. Warehouse automation systems coordinate pickers, sorters, packers achieving high throughput. Rescue robots explore disaster zones coordinadamente searching victims, mapping environments, delivering supplies. Aerial drones survey areas, ground robots navigate rubble, coordination agents prioritize regions exploiting heterogeneous capabilities.
+    </p>
+    <p>
+        La gestión de tráfico vehicular coordina autonomous vehicles optimizando flows: intersection management agents schedule vehicles crossing eliminating stop signs reducing delays y emissions, platooning agents coordinate closely-spaced vehicles reducing drag y increasing highway capacity, routing agents distribute traffic across networks avoiding congestion hotspots. Vehicle-to-vehicle communication shares intentions enabling cooperative maneuvers. La simulación social modela sociedades artificiales studying emergent phenomena: epidemic spreading models simulate disease transmission informing public health interventions, economic models simulate markets studying policy impacts, opinion dynamics models study information diffusion y polarization en social networks. Agent-based models complement equation-based approaches capturing heterogeneity, bounded rationality, spatial structure, network effects, y non-equilibrium dynamics prevalent en complex social systems.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Aplicaciones MAS))
+            Finanzas
+                Trading Algorítmico
+                Market Making
+                Arbitraje
+            Energía
+                Smart Grids
+                Demand Response
+                Prosumers
+            Logística
+                Supply Chain
+                Vehicle Routing
+                Warehouse Management
+            Robótica
+                Equipos Colaborativos
+                Swarm Robotics
+                Rescue Operations
+            Transporte
+                Gestión de Tráfico
+                Vehículos Autónomos
+                Platooning
+            Simulación
+                Social Simulation
+                Epidemic Modeling
+                Economic Modeling
+    </div>
+
+    <h2>14.11 Desafíos y Direcciones Futuras</h2>
+    <p>
+        La escalabilidad plantea desafíos fundamentales: coordination complexity crece con agent numbers requiring efficient algorithms y architectures. Hierarchical organizations reduce communication overhead grouping agents bajo managers. Sparse communication topologies limit interactions a local neighborhoods achieving scalability con bounded connectivity. Approximate algorithms trade optimality for computational tractability enabling real-time decision making en large systems. La robustez ante fallos requiere redundancy y graceful degradation: Byzantine fault tolerance ensures correctness despite arbitrary failures de minority de nodes mediante voting y redundant computation. Self-healing systems detect failures reassigning tasks a functioning agents automatically. Verification y validation de multiagent systems remain challenging: emergent behaviors dificultan prediction desde component specifications requiring simulation, formal methods, y runtime monitoring ensuring safety properties.
+    </p>
+    <p>
+        La explicabilidad y confianza son críticas cuando autonomous agents impactan humanos: transparent decision making mediante explainable AI techniques increases acceptance. Human-agent interaction designs interfaces enabling supervision, intervention, delegation balancing autonomy con control. Ethical considerations incluyen accountability (quien es responsable por agent actions?), fairness (resource allocation equitable?), privacy (agents respetan information confidentiality?), y safety (agents evitan harm?). Regulation emerging worldwide establece frameworks governing autonomous systems: liability rules, certification requirements, auditing mechanisms ensuring responsible deployment. La investigación futura explora heterogeneous teams combinando human y artificial agents leveraging complementary strengths, lifelong learning donde agents adapt continuamente a changing environments, y general-purpose agents exhibiendo flexible intelligence across diverse tasks approaching human-level versatility en agency autónoma.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>Los agentes inteligentes perciben entornos mediante sensores y actúan mediante actuadores alcanzando objetivos autónomamente</li>
+            <li>La racionalidad caracteriza agentes maximizando desempeño esperado dados conocimiento y percepciones disponibles</li>
+            <li>Las taxonomías clasifican agentes por capacidades: reactivos, basados en modelo, goal-based, utility-based, learning</li>
+            <li>Las propiedades del entorno (observabilidad, determinismo, dinamismo) determinan diseño apropiado de agentes</li>
+            <li>Las arquitecturas balancean reactividad y deliberación: BDI para reasoning simbólico, subsumption para respuestas rápidas</li>
+            <li>Los sistemas multiagente coordinan múltiples agentes autónomos mediante comunicación, negociación, y protocolos</li>
+            <li>La teoría de juegos formaliza interacciones estratégicas mediante Nash equilibria y mechanism design</li>
+            <li>El aprendizaje multiagente extiende reinforcement learning a settings con agentes aprendiendo simultaneously</li>
+            <li>La inteligencia de enjambre logra coordinación colectiva desde reglas locales simples sin liderazgo centralizado</li>
+            <li>Las aplicaciones abarcan trading algorítmico, smart grids, logística, robótica colaborativa, y simulación social</li>
+            <li>Los desafíos incluyen escalabilidad, robustez, verificación, explicabilidad, y consideraciones éticas</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Russell, S., & Norvig, P. (2020). <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson. [Capítulos 2-3: Agentes]</li>
+        <li>Wooldridge, M. (2009). <em>An Introduction to MultiAgent Systems</em> (2nd ed.). Wiley.</li>
+        <li>Shoham, Y., & Leyton-Brown, K. (2008). <em>Multiagent Systems: Algorithmic, Game-Theoretic, and Logical Foundations</em>. Cambridge University Press.</li>
+        <li>Rao, A. S., & Georgeff, M. P. (1995). BDI agents: From theory to practice. <em>International Conference on Multi-Agent Systems</em>.</li>
+        <li>Lowe, R., et al. (2017). Multi-agent actor-critic for mixed cooperative-competitive environments. <em>NeurIPS</em>.</li>
+    </ul>
 </article>
