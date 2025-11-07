@@ -136,6 +136,94 @@
         El crowdsourcing ha democratizado la construcción de recursos de conocimiento a gran escala. Wikipedia representa el ejemplo paradigmático: millones de contribuyentes han creado la enciclopedia más comprehensiva de la historia humana. Proyectos como Wikidata estructuran este conocimiento en formato procesable por máquinas. Los juegos con propósito (games with a purpose) gamifican tareas de anotación, motivando contribuciones mediante mecánicas lúdicas. Cyc, proyecto de más de 35 años, ha construido manualmente una vasta ontología de conocimiento de sentido común mediante esfuerzo sistemático de ingenieros de conocimiento.
     </p>
 
+    <h2>5.7 Razonamiento Temporal y Espacial en Sistemas de Conocimiento</h2>
+    <p>
+        El razonamiento temporal y espacial constituyen dimensiones fundamentales del conocimiento sobre el mundo físico, esenciales para aplicaciones que van desde planificación robótica hasta sistemas de información geográfica. Las lógicas temporales extienden lógicas clásicas con operadores modales que capturan relaciones temporales: "siempre", "eventualmente", "hasta que", "desde que". La lógica temporal lineal (LTL) modela tiempo como secuencia lineal de estados, apropiada para especificación de sistemas reactivos. La lógica temporal computacional de árboles (CTL) permite razonamiento sobre múltiples futuros posibles, esencial para verificación de sistemas concurrentes.
+    </p>
+    <p>
+        Las álgebras de intervalos temporales, iniciadas por el trabajo de James Allen, representan conocimiento sobre relaciones cualitativas entre intervalos: "antes", "durante", "solapa", "encuentra". Estas trece relaciones primitivas capturan la totalidad de configuraciones posibles entre dos intervalos en una línea temporal. El razonamiento sobre restricciones temporales involucra propagación de consistencia: dado que A está antes de B y B solapa C, se pueden derivar restricciones sobre la relación entre A y C. Point algebras y event calculus proporcionan formalismos alternativos para razonamiento temporal, optimizados para diferentes patrones de inferencia.
+    </p>
+    <p>
+        El razonamiento espacial aborda representación y razonamiento sobre configuraciones geométricas y topológicas. Las relaciones topológicas cualitativas (desconectado, toca, solapa, dentro, contiene, igual) formalizadas en el modelo RCC-8 (Region Connection Calculus) capturan nociones espaciales sin requerir coordenadas numéricas precisas. Las representaciones métricas especifican distancias y ángulos exactos, fundamentando sistemas de navegación y modelado geométrico. Los formalismos híbridos combinan razonamiento cualitativo y cuantitativo: razonamiento cualitativo eficiente para inferencias de alto nivel, refinado con cálculos métricos cuando se requiere precisión.
+    </p>
+    <p>
+        Las aplicaciones contemporáneas integran razonamiento espaciotemporal complejo: sistemas de tráfico inteligente razonan sobre trayectorias de vehículos, prediciendo colisiones y optimizando flujos; simulaciones de cambio climático modelan dinámicas espaciotemporales de sistemas terrestres; realidad aumentada requiere tracking y registro espacial preciso en tiempo real. Los desafíos computacionales surgen de la combinatoria explosiva de configuraciones espaciotemporales posibles, motivando aproximaciones probabilísticas, razonamiento aproximado y explotación de independencias condicionales para tratabilidad.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Razonamiento Temporal] --> B[Lógicas Temporales]
+        A --> C[Álgebra de Intervalos]
+        A --> D[Event Calculus]
+        E[Razonamiento Espacial] --> F[Topológico Cualitativo]
+        E --> G[Métrico Cuantitativo]
+        E --> H[Híbrido]
+        B --> I[LTL: Lineal]
+        B --> J[CTL: Ramificada]
+        F --> K[RCC-8]
+        C --> L[Relaciones de Allen]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style E fill:#2C3E50,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>5.8 Bases de Conocimiento Distribuidas y Federadas</h2>
+    <p>
+        A medida que el volumen de conocimiento excede capacidades de sistemas centralizados y organizaciones heterogéneas requieren compartir conocimiento preservando autonomía, las arquitecturas distribuidas y federadas han emergido como necesidad práctica. Las bases de conocimiento distribuidas particionan conocimiento a través de múltiples nodos computacionales, coordinando consultas que requieren integración de fragmentos. Esta arquitectura facilita escalabilidad horizontal, tolerancia a fallos mediante replicación, y localidad de datos mejorando latencias para consultas geográficamente distribuidas.
+    </p>
+    <p>
+        Los desafíos fundamentales incluyen particionamiento óptimo (minimizar consultas que cruzan particiones), mantenimiento de consistencia (asegurar vistas coherentes del conocimiento global), y procesamiento eficiente de consultas distribuidas. Las estrategias de particionamiento vertical dividen ontologías por conceptos o propiedades; particionamiento horizontal divide instancias de clases según criterios como rangos de atributos o hashing. El teorema CAP formaliza trade-offs ineludibles: sistemas distribuidos no pueden simultáneamente garantizar Consistencia, Disponibilidad y Tolerancia a Particiones, forzando compromisos diseñados según requisitos de aplicación.
+    </p>
+    <p>
+        La federación de bases de conocimiento permite a organizaciones independientes compartir conocimiento sin centralización ni pérdida de autonomía. Los sistemas mediadores proveen vistas integradas virtuales sobre fuentes heterogéneas, traduciendo consultas a sub-consultas sobre fuentes individuales y combinando resultados. El alineamiento de ontologías mapea conceptos equivalentes, relacionados o disjuntos entre ontologías heterogéneas, facilitando interoperabilidad semántica. Las técnicas varían desde mappings declarativos manuales hasta aprendizaje automático de correspondencias basado en similitudes léxicas, estructurales y extensionales.
+    </p>
+    <p>
+        Linked Data, iniciativa de la Web Semántica, constituye un ecosistema masivamente distribuido de conocimiento interconectado. Principios fundamentales prescriben uso de URIs para identificación, URIs HTTP desreferenciables, provisión de información útil mediante estándares (RDF), y enlaces a recursos externos. El Linked Open Data Cloud contiene miles de datasets interconectados abarcando dominios diversos: datos gubernamentales, publicaciones científicas, información geográfica, datos bibliográficos. SPARQL Federation permite consultas que integran datos de múltiples endpoints SPARQL remotos, habilitando análisis global de conocimiento distribuido.
+    </p>
+
+    <h2>5.9 Verificación y Validación de Bases de Conocimiento</h2>
+    <p>
+        La calidad de sistemas basados en conocimiento depende críticamente de la corrección, completitud y consistencia de sus bases de conocimiento. La verificación establece que la base de conocimiento satisface propiedades formales específicas: consistencia lógica (ausencia de contradicciones), satisfacibilidad (existencia de al menos un modelo), y conformidad con restricciones especificadas. Los razonadores automáticos verifican consistencia mediante procedimientos de decisión: si el razonador encuentra un modelo, la ontología es consistente; si deriva una contradicción, es inconsistente; si termina sin conclusión, puede ser indecidible.
+    </p>
+    <p>
+        La detección de inconsistencias localiza axiomas contradictorios para facilitar corrección. Los conjuntos de soporte de inconsistencia (Minimal Unsatisfiable Subsets, MUS) identifican subconjuntos mínimos de axiomas cuya conjunción es inconsistente: remover cualquier axioma del MUS restaura consistencia. Algoritmos para computar todos los MUS ayudan a diagnosticar múltiples errores independientes. Las técnicas de depuración guiada explican inconsistencias mediante justificaciones comprensibles, presentando cadenas de inferencia que conducen a contradicciones.
+    </p>
+    <p>
+        La validación verifica que la base de conocimiento captura fielmente el dominio pretendido, correspondiendo a corrección semántica más que sintáctica. Las técnicas de competency questions evalúan si la ontología puede responder consultas relevantes para casos de uso previstos. El testing basado en instancias verifica que clasificaciones inferidas de individuos corresponden a expectativas de dominio. Las métricas de calidad cuantifican aspectos como riqueza (profundidad de jerarquías, diversidad de propiedades), coherencia (adherencia a convenciones de diseño), y documentación (anotaciones explicativas).
+    </p>
+    <p>
+        Los enfoques de validación empíricos evalúan utilidad de ontologías en tareas downstream: si una ontología sobre medicina mejora performance de sistemas de pregunta-respuesta médica, provee validación empírica de su adecuación. Las evaluaciones de usabilidad investigan si expertos de dominio comprenden y pueden efectivamente utilizar la ontología. El benchmarking comparativo evalúa ontologías alternativas sobre criterios estandarizados, identificando mejores prácticas. La evolución continua requiere regresión testing asegurando que modificaciones no introducen defectos inesperados.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Verificación] --> B[Consistencia Lógica]
+        A --> C[Satisfacibilidad]
+        A --> D[Detección de MUS]
+        E[Validación] --> F[Competency Questions]
+        E --> G[Testing de Instancias]
+        E --> H[Métricas de Calidad]
+        B --> I[Razonador]
+        D --> J[Depuración]
+        F --> K[Casos de Uso]
+        H --> L[Benchmarking]
+        style A fill:#E74C3C,stroke:#333,stroke-width:2px,color:#fff
+        style E fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>5.10 Representación de Incertidumbre y Conocimiento Probabilístico</h2>
+    <p>
+        El mundo real presenta incertidumbre irreducible: información incompleta, sensores imprecisos, dinámicas estocásticas, complejidad que excede capacidades de modelado exacto. Los formalismos de representación de conocimiento deben capturar y razonar efectivamente bajo incertidumbre. Las lógicas probabilísticas combinan semántica lógica con teoría de probabilidad: asignan probabilidades a fórmulas lógicas, permitiendo afirmaciones como "P(Vuela(x) | Ave(x)) = 0.95". La semántica puede definirse sobre distribuciones de probabilidad sobre mundos posibles, generalizando modelos lógicos clásicos.
+    </p>
+    <p>
+        Las redes bayesianas proporcionan representación gráfica de dependencias probabilísticas entre variables mediante grafos acíclicos dirigidos. Nodos representan variables aleatorias, aristas denotan dependencias directas, y distribuciones de probabilidad condicional especifican P(Variable | Padres). La estructura del grafo codifica independencias condicionales: una variable es independiente de sus no-descendientes dado sus padres. Estas independencias permiten factorización compacta de la distribución conjunta, reduciendo complejidad exponencial a lineal en el número de nodos para grafos apropiadamente estructurados.
+    </p>
+    <p>
+        La inferencia en redes bayesianas calcula probabilidades posteriores de variables de interés dado evidencia observada. Los algoritmos exactos incluyen eliminación de variables (sumando iterativamente variables irrelevantes) y propagación de creencias en árboles (message passing explotando estructura arbórea). Para grafos con ciclos, junction tree algorithm triangula el grafo creando estructura arbórea sobre cliques. La complejidad es exponencial en el tree-width del grafo, motivando aproximaciones cuando la estructura es densa o el número de variables es grande.
+    </p>
+    <p>
+        Los métodos de inferencia aproximada incluyen muestreo estocástico (Monte Carlo methods, importance sampling, particle filtering) y algoritmos variacionales que aproximan distribuciones intratables mediante distribuciones tratables optimizando divergencia. Las Markov Logic Networks unifican lógica de primer orden y redes bayesianas asignando pesos a fórmulas lógicas: violaciones tienen costos proporcionales a pesos, definiendo distribución de probabilidad sobre mundos posibles que maximiza satisfacción ponderada de fórmulas. Este formalismo combina expresividad de FOL con razonamiento probabilístico robusto, aplicándose a extracción de información, fusión de datos y razonamiento de sentido común bajo incertidumbre.
+    </p>
+
     <div class="info-box">
         <h3>Puntos Clave de la Clase</h3>
         <ul>
@@ -145,6 +233,10 @@
             <li>Las ontologías formalizan conceptualizaciones compartidas, facilitando interoperabilidad</li>
             <li>Los enfoques neurosimbólicos combinan fortalezas de métodos simbólicos y subsimbólicos</li>
             <li>La adquisición automática de conocimiento es crucial para escalabilidad de sistemas basados en conocimiento</li>
+            <li>El razonamiento temporal y espacial captura dinámicas y configuraciones del mundo físico</li>
+            <li>Las arquitecturas distribuidas y federadas permiten escalabilidad y autonomía organizacional</li>
+            <li>La verificación y validación aseguran corrección y utilidad de bases de conocimiento</li>
+            <li>Los formalismos probabilísticos manejan incertidumbre inherente en problemas del mundo real</li>
         </ul>
     </div>
 
