@@ -1,51 +1,181 @@
 <article class="lesson-content">
     <h1>Clase 9: Aprendizaje Supervisado - Algoritmos Clásicos</h1>
 
-    <h2>9.1 Regresión Lineal y Logística</h2>
+    <h2>9.1 Regresión Lineal: Fundamentos y Variantes</h2>
     <p>
-        La regresión lineal constituye uno de los algoritmos de machine learning más fundamentales, modelando relaciones entre variables predictoras y una variable respuesta continua mediante combinación lineal: y = β₀ + β₁x₁ + ... + βₙxₙ + ε. Los coeficientes β se estiman minimizando el error cuadrático medio entre predicciones y valores observados, problema con solución analítica mediante ecuaciones normales o métodos iterativos como descenso por gradiente. La regresión lineal múltiple maneja múltiples predictores, mientras que regresión polinómica captura relaciones no lineales mediante términos de orden superior.
+        La regresión lineal constituye uno de los algoritmos de machine learning más fundamentales y ampliamente utilizados, modelando relaciones entre variables predictoras (features) y una variable respuesta continua (target) mediante combinación lineal: y = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ + ε, donde β₀ representa el intercept, βᵢ son coeficientes de features, y ε captura ruido aleatorio. El objetivo es estimar parámetros β que minimizan el error cuadrático medio (MSE) entre predicciones ŷ y valores observados y: MSE = (1/n)∑(yᵢ - ŷᵢ)². Este problema de optimización tiene solución analítica mediante ecuaciones normales: β = (X^T X)^(-1) X^T y, donde X es matriz de diseño conteniendo features y y es vector de targets. Alternativamente, métodos iterativos como gradient descent optimizan actualizando parámetros: β ← β - α∇MSE, donde α es learning rate.
     </p>
     <p>
-        La regresión logística extiende estas ideas a clasificación binaria, modelando la probabilidad de pertenencia a una clase mediante la función logística (sigmoide): P(y=1|x) = 1/(1 + e^(-z)), donde z = β₀ + β₁x₁ + ... + βₙxₙ. La estimación de parámetros procede mediante máxima verosimilitud, optimizada típicamente mediante descenso por gradiente. Regresión logística multinomial generaliza a clasificación multiclase mediante función softmax que normaliza scores en distribución de probabilidad sobre clases.
+        La regresión lineal simple con single predictor permite visualización clara: datos plotean en 2D, modelo representa línea que minimiza suma de distancias verticales cuadradas a puntos. El coeficiente β₁ representa pendiente (cambio en y por unidad de cambio en x), β₀ representa intercept (valor de y cuando x=0). La regresión lineal múltiple generaliza a múltiples predictores, permitiendo capturar relaciones complejas where target depende de múltiples factors. Interpretation de coeficientes requiere cuidado: βᵢ representa cambio esperado en target por unidad de cambio en feature i manteniendo otros features constantes (ceteris paribus interpretation). Multicollinearity, correlación alta entre predictores, infla variance de estimadores complicando interpretation; detectable via Variance Inflation Factor (VIF).
     </p>
-
-    <h2>9.2 K-Nearest Neighbors (k-NN)</h2>
     <p>
-        El algoritmo k-NN constituye un método de aprendizaje basado en instancias que no construye modelo explícito durante entrenamiento, sino que memoriza datos y difiere computación hasta predicción. Para clasificar una nueva instancia, k-NN identifica los k vecinos más cercanos en el conjunto de entrenamiento según alguna métrica de distancia (típicamente euclidiana), y asigna la clase mayoritaria entre esos vecinos. Para regresión, predice el promedio de valores de vecinos. La selección de k balancea suavidad de decisiones: k pequeño produce fronteras de decisión complejas susceptibles a ruido; k grande suaviza decisiones pero puede perder detalle.
+        Las extensiones de regresión lineal incluyen regresión polinómica que captura relaciones no lineales mediante términos de orden superior: y = β₀ + β₁x + β₂x² + β₃x³ + ..., transformando problema no lineal en x a linear en parámetros β, resolvible con métodos estándar. Regularization techniques previenen overfitting penalizando magnitudes de coeficientes: Ridge regression (L2 regularization) añade penalty ∑βᵢ² fomentando coeficientes pequeños; Lasso (L1 regularization) añade ∑|βᵢ| induciendo sparsity (coeficientes exactamente cero) performing automatic feature selection. Elastic Net combina L1 y L2 penalties balancing benefits. La selección de hyperparameter de regularization λ typically proceeds via cross-validation optimizando trade-off entre bias y variance. Standardization de features (mean 0, variance 1) es importante para regularization ensuring penalties aplican equitably across features con different scales.
     </p>
 
-    <h2>9.3 Support Vector Machines (SVM)</h2>
+    <div class="mermaid">
+    graph TD
+        A[Regresión Lineal] --> B[Simple]
+        A --> C[Múltiple]
+        A --> D[Polinómica]
+        A --> E[Regularizada]
+        E --> F[Ridge L2]
+        E --> G[Lasso L1]
+        E --> H[Elastic Net]
+        B --> I[y = β₀ + β₁x]
+        C --> J[y = β₀ + β₁x₁ + ... + βₙxₙ]
+        F --> K[Coeficientes Pequeños]
+        G --> L[Feature Selection]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>9.2 Regresión Logística: Clasificación Probabilística</h2>
     <p>
-        Las Support Vector Machines buscan el hiperplano que separa clases con margen máximo, donde el margen es la distancia mínima de cualquier punto de entrenamiento al hiperplano. Esta formulación maximiza la separación entre clases, teóricamente mejorando generalización. Los vectores de soporte, subconjunto de puntos de entrenamiento que definen el margen, son los únicos que influencian el modelo. La formulación dual permite el kernel trick: computar productos internos en espacios de alta dimensión implícitamente mediante funciones kernel (polinomial, RBF, sigmoide), permitiendo fronteras de decisión no lineales sin computación explícita en espacios transformados.
+        La regresión logística extiende ideas de regresión lineal a clasificación binaria modelando probabilidad de pertenencia a clase positiva mediante función logística (sigmoid): P(y=1|x) = σ(z) = 1/(1 + e^(-z)), donde z = β₀ + β₁x₁ + ... + βₙxₙ es combinación lineal de features. La función sigmoid mapea valores reales a rango (0,1) interpretable como probabilidad, exhibiendo forma S approach 0 para z→-∞ y 1 para z→+∞. La frontera de decisión occurs donde P(y=1|x) = 0.5, equivalentemente z = 0, representando hyperplane linear en feature space. Aunque nombre sugiere regression, logistic regression es classification algorithm output probability scores usadas para predictions clasificando según threshold (típicamente 0.5).
+    </p>
+    <p>
+        La estimación de parámetros procede mediante maximum likelihood maximizando probabilidad de observar data dado modelo: L(β) = ∏P(yᵢ|xᵢ,β). En práctica, minimizamos negative log-likelihood (cross-entropy loss): -∑[yᵢlog(ŷᵢ) + (1-yᵢ)log(1-ŷᵢ)], función convexa optimizable via gradient descent. El gradient ∇loss tiene forma simple: ∑(ŷᵢ - yᵢ)xᵢ, permitiendo efficient optimization. No hay closed-form solution como en linear regression, requiring iterative methods. Regularization (L1, L2) prevents overfitting penalizando parámetros grandes, especialmente importante con high-dimensional data.
+    </p>
+    <p>
+        La generalización multiclase usa regresión logística multinomial (softmax regression) modelando probabilidades para K clases: P(y=k|x) = exp(z_k)/∑exp(z_j), donde z_k = β_k^T x son scores para cada clase. Esto asegura probabilities sum to 1 interpretable como distribution. One-vs-Rest (OvR) approach entrena K binary classifiers, cada uno distinguiendo clase k desde resto; prediction selecciona clase con highest score. One-vs-One (OvO) entrena K(K-1)/2 classifiers, uno por cada par de clases; prediction via majority voting. Las calibration techniques ensure predicted probabilities reflect true likelihoods: Platt scaling fits sigmoid to outputs, isotonic regression fits monotonic function, improving reliability para decision-making requiriendo well-calibrated probabilities.
     </p>
 
-    <h2>9.4 Árboles de Decisión</h2>
+    <h2>9.3 K-Nearest Neighbors: Aprendizaje Basado en Instancias</h2>
     <p>
-        Los árboles de decisión aprenden jerarquías de reglas de decisión que particionan recursivamente el espacio de características, representando modelos interpretables mediante estructura de árbol donde nodos internos representan tests sobre atributos y hojas representan predicciones. El algoritmo ID3 construye árboles seleccionando en cada nodo el atributo que maximiza ganancia de información (reducción de entropía). C4.5 maneja atributos continuos mediante thresholds y realiza poda para prevenir overfitting. CART (Classification and Regression Trees) soporta tanto clasificación como regresión, optimizando índice Gini o error cuadrático.
+        El algoritmo K-Nearest Neighbors (k-NN) constituye método de aprendizaje lazy (basado en instancias) que no construye modelo explícito durante training phase, sino memoriza dataset entero difiriendo computation hasta prediction time. Para clasificar nueva instancia x, k-NN identifica k vecinos más cercanos en training set según distance metric (Euclidean, Manhattan, Minkowski), luego asigna clase mayoritaria entre esos vecinos (classification) o promedio de valores (regression). La simplicidad conceptual y ausencia de training phase hacen k-NN attractive baseline, pero prediction cost escala linearly con training set size, costly para large datasets.
+    </p>
+    <p>
+        La selección de k balancea bias-variance tradeoff: k pequeño (eg. k=1) produce decision boundaries complejas, altamente flexible capturing local patterns pero susceptible a noise (high variance, low bias); k grande suaviza decisions producing simpler boundaries menos sensitive a individual points pero potentially underfitting (low variance, high bias). Cross-validation guides k selection evaluating performance across range. La choice de distance metric affects neighborhoods: Euclidean distance √∑(xᵢ-yᵢ)² natural para continuous features; Manhattan distance ∑|xᵢ-yᵢ| robust a outliers; Hamming distance for categorical features counting mismatches. Feature scaling (standardization, normalization) es crítica: features con large magnitudes dominate distance calculations, distorting neighborhoods. Weighted k-NN asigna pesos inversely proportional a distance, prioritizing closer neighbors.
+    </p>
+    <p>
+        Las optimizaciones aceleran nearest neighbor search desde naive O(n) per query: KD-trees partition space recursively enabling O(log n) search en low dimensions pero degrading en high dimensions (curse of dimensionality). Ball trees use hypersphere partitions more effective para high dimensions. Locality-Sensitive Hashing (LSH) approximates nearest neighbors hashing similar items to same buckets con high probability, enabling sublinear query time. Dimensionality reduction (PCA, t-SNE) proyecta data a lower-dimensional space mitigating curse of dimensionality. Applications incluyen recommendation systems (collaborative filtering finding similar users/items), anomaly detection (instances far desde neighbors), image classification (pixel-based similarity). Challenges incluyen computational cost, memory requirements storing entire dataset, sensitivity a irrelevant features, y imbalanced classes donde majority class dominates neighborhoods.
     </p>
 
-    <h2>9.5 Naive Bayes</h2>
+    <h2>9.4 Support Vector Machines: Maximización de Margen</h2>
     <p>
-        Los clasificadores Naive Bayes aplican el teorema de Bayes con la suposición "naive" de independencia condicional entre características dado la clase: P(C|x₁,...,xₙ) ∝ P(C)∏P(xᵢ|C). Esta simplificación, aunque frecuentemente violada en práctica, permite estimación eficiente de probabilidades de datos limitados y predicción rápida. Variantes incluyen Gaussian Naive Bayes (características continuas modeladas con gaussianas), Multinomial Naive Bayes (conteos de características, común en clasificación de texto), y Bernoulli Naive Bayes (características binarias).
+        Las Support Vector Machines (SVM) buscan optimal separating hyperplane maximizando margin, distancia mínima desde hyperplane a nearest training points de ambas classes. Intuitively, large margin increases confidence en predictions, theoretically improving generalization. El hyperplane representa decision boundary: wx + b = 0, donde w es normal vector y b es bias. Training points satisfacen constraints: yᵢ(w·xᵢ + b) ≥ 1, ensuring correct classification con margin. Support vectors, subconjunto de points exactly on margin boundaries (yᵢ(w·xᵢ + b) = 1), solely determine hyperplane; removing other points no afecta model. La formulación primal minimiza ||w||² sujeto a constraints, convex quadratic programming problem solvable via Lagrange multipliers yielding dual formulation expressing w como linear combination de support vectors.
+    </p>
+    <p>
+        El kernel trick permite SVMs handle non-linearly separable data sin explicit transformation a high-dimensional spaces. Idea clave: dual formulation involves only dot products xᵢ·xⱼ; replacing con kernel function K(xᵢ,xⱼ) = φ(xᵢ)·φ(xⱼ) computes dot products en transformed space implicitly. Popular kernels incluyen: Linear K(x,y)=x·y (no transformation), Polynomial K(x,y)=(x·y+c)^d (polynomial features), RBF (Gaussian) K(x,y)=exp(-γ||x-y||²) (infinite-dimensional space, smooth boundaries), Sigmoid K(x,y)=tanh(αx·y+c) (neural network inspired). RBF kernel particularmente popular for flexibility: hyperparameter γ controls smoothness (small γ→smooth, large γ→wiggly).
+    </p>
+    <p>
+        Soft-margin SVM relaxa hard constraints permitiendo misclassifications via slack variables ξᵢ: yᵢ(w·xᵢ + b) ≥ 1-ξᵢ, ξᵢ≥0. Objective function añade penalty C∑ξᵢ balancing margin maximization con minimizing violations. Hyperparameter C controls trade-off: large C heavily penalizes errors encouraging hard margin (risk overfitting), small C tolerates errors allowing wider margin (risk underfitting). Cross-validation tunes C y kernel parameters jointly. Multiclass SVM extends via One-vs-Rest o One-vs-One strategies. Applications span text classification, image recognition, bioinformatics. Challenges incluyen computational cost O(n²-n³) para large datasets, memory requirements storing kernel matrix, hyperparameter sensitivity. Approximations (Nystrom, random features) scale SVMs a big data. Interpretability limited para non-linear kernels: decision function es complex combination of support vectors.
     </p>
 
-    <h2>9.6 Ensemble Methods: Bagging y Boosting</h2>
+    <div class="mermaid">
+    graph LR
+        A[Support Vector Machines] --> B[Hard Margin]
+        A --> C[Soft Margin]
+        A --> D[Kernel Trick]
+        B --> E[Linealmente Separable]
+        C --> F[Permite Errores]
+        D --> G[Linear]
+        D --> H[Polynomial]
+        D --> I[RBF]
+        D --> J[Sigmoid]
+        F --> K[Hyperparameter C]
+        I --> L[Hyperparameter γ]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>9.5 Árboles de Decisión: Modelos Jerárquicos Interpretables</h2>
     <p>
-        Los métodos ensemble combinan múltiples modelos base para mejorar desempeño y robustez. Bagging (Bootstrap Aggregating) entrena modelos independientes en muestras bootstrap (remuestreo con reemplazo) de datos de entrenamiento, agregando predicciones mediante votación (clasificación) o promediado (regresión). Random Forests extiende bagging a árboles de decisión, añadiendo aleatorización adicional mediante selección de subconjuntos aleatorios de características en cada split, reduciendo correlación entre árboles y mejorando generalización.
+        Los árboles de decisión aprenden hierarchical sequences de reglas de decisión que recursively partition feature space en regions homogéneas respecto a target. La estructura de árbol consiste en internal nodes representando tests sobre features, branches representando outcomes de tests, y leaf nodes representando predictions (class labels para classification, valores para regression). Model interpretation es straightforward: seguir path desde root a leaf aplicando tests secuencialmente. Esta transparencia hace decision trees valiosos para dominios requiring explainability como healthcare, finance.
     </p>
     <p>
-        Boosting entrena secuencialmente modelos débiles, cada uno enfocándose en instancias mal clasificadas por predecesores. AdaBoost ajusta pesos de instancias, incrementando peso de ejemplos difíciles. Gradient Boosting optimiza aditivamente un conjunto de árboles para minimizar función de pérdida diferenciable, construyendo cada árbol para predecir el gradiente negativo de la pérdida. XGBoost, LightGBM y CatBoost implementan gradient boosting con optimizaciones de eficiencia y regularización, dominando competencias de machine learning en problemas tabulares.
+        La construcción procede top-down greedy recursively: en cada node, seleccionar feature y threshold que "best" split data según purity criterion. Para classification, criterios incluyen: Gini impurity G = 1-∑pᵢ² measuring probability de misclassification; entropy H = -∑pᵢlog(pᵢ) desde information theory quantifying uncertainty; misclassification error 1-max(pᵢ). Information gain mide reduction en impurity: IG = H(parent) - ∑(nᵢ/n)H(child_i). Para regression, variance reduction optimiza: VR = Var(parent) - ∑(nᵢ/n)Var(child_i). Recursion continues hasta stopping criteria: maximum depth reached, minimum samples per node, purity threshold achieved. Different algorithms (ID3, C4.5, CART) vary en criteria y handling de continuous/categorical features.
+    </p>
+    <p>
+        Overfitting es concern major: unconstrained trees grow arbitrarily complex, memorizing training noise. Pruning techniques mitigate overfitting removing branches: pre-pruning stops growth early basándose en criteria (max depth, min samples); post-pruning grows full tree luego removes branches using validation set evaluating if removal improves generalization. Cost-complexity pruning balances tree size con training error via hyperparameter α. Feature importance scores quantify contribution de cada feature summing impurity decreases across all splits involving feature, guiding feature selection y interpretation. Handling missing values varies: some implementations skip instances con missing values, others surrogate splits using correlated features. Categorical features with many levels pueden dominate splits; grouping categories o using specialized algorithms (LightGBM) addresses this.
+    </p>
+
+    <h2>9.6 Naive Bayes: Clasificación Probabilística Bayesiana</h2>
+    <p>
+        Los clasificadores Naive Bayes aplican teorema de Bayes P(C|X) = P(X|C)P(C)/P(X) con "naive" assumption de conditional independence entre features dado class: P(X|C) = ∏P(xᵢ|C). Esto simplifica estimation dramatically: instead de estimating full joint distribution P(x₁,...,xₙ|C) requiring exponential parameters, estimate univariate distributions P(xᵢ|C) individually requiring linear parameters. Aunque independence assumption frecuentemente violated en practice, Naive Bayes surprisingly effective, often rivaling sophisticated methods especialmente con limited data.
+    </p>
+    <p>
+        Variantes adaptan a different feature types: Gaussian Naive Bayes assumes continuous features distribuidas normalmente, estimating mean μ y variance σ² per feature per class; prediction evaluates Gaussian density. Multinomial Naive Bayes handles discrete counts (word counts en text), modeling P(xᵢ|C) via multinomial distribution; Laplace smoothing añade pseudocounts evitando zero probabilities. Bernoulli Naive Bayes models binary features, estimating P(feature=1|C). Training extremely fast: count frequencies, compute probabilities. Prediction computes posterior probabilities for each class, selecting maximum (MAP: Maximum A Posteriori). Log probabilities prevent numerical underflow: log P(C|X) ∝ log P(C) + ∑log P(xᵢ|C).
+    </p>
+    <p>
+        Applications destacan en text classification: spam filtering (words as features), sentiment analysis, document categorization. Simplicity, speed, y effectiveness con high-dimensional sparse data hacen Naive Bayes attractive baseline. Challenges incluyen violated independence assumption reducing accuracy cuando features strongly correlated; poor probability estimates aunque classifications often correct (calibration issue). Continuous features requieren choosing distributional family; Gaussian assumption may not hold. Zero-frequency problem donde unseen feature-class combinations have zero probability addressed via smoothing. Despite limitations, Naive Bayes remains popular para large-scale text applications, real-time systems requiring fast predictions, y baselines establishing performance floors para complex methods.
+    </p>
+
+    <h2>9.7 Ensemble Methods: Combinando Múltiples Modelos</h2>
+    <p>
+        Los ensemble methods combinan predictions desde múltiples base learners achieving superior performance versus single models leveraging "wisdom of crowds": diverse models make different errors; averaging reduces variance. Bagging (Bootstrap AGGregating) trains models independently en bootstrap samples (random sampling con replacement desde training data), aggregating predictions via majority voting (classification) o averaging (regression). Independently trained models exhibit low correlation; errors partially cancel when aggregated. Bagging particularly effective reducing variance de high-variance models (eg. deep decision trees) sin significantly increasing bias. Out-of-bag samples (instances excluded desde bootstrap sample) serve como validation set estimating generalization error sin separate validation set.
+    </p>
+    <p>
+        Random Forests extend bagging a decision trees adding extra randomness: at each split, select best feature desde random subset rather que all features. This decorrelates trees further: if strong predictor exists, all bagged trees might use it in top splits correlating predictions; random feature subsets force diversity exploring alternative predictors. Hyperparameters incluyen number of trees (more generally better pero plateaus), max features per split (√n para classification, n/3 para regression common defaults), tree depth, min samples per leaf. Feature importance aggregated across trees identifies influential predictors. Extremely Randomized Trees (Extra Trees) randomize thresholds additionally, sampling random thresholds rather que optimizing, further reducing variance. Random Forests achieve state-of-the-art performance en tabular data, robust to overfitting, handle mixed feature types, require minimal tuning. Interpretability suffers versus single trees; partial dependence plots visualize feature effects.
+    </p>
+    <p>
+        Boosting trains models sequentially, each correcting errors de predecessors. AdaBoost adjusts instance weights: incorrectly classified instances receive higher weights; subsequent models focus on hard examples. Final prediction combines weighted models. Gradient Boosting generalizes boosting via gradient descent en function space: fit additive model F(x) = ∑fₜ(x) where each fₜ predicts negative gradient of loss function evaluated en current model. GBDT (Gradient Boosted Decision Trees) uses shallow trees como base learners. XGBoost, LightGBM, CatBoost implement optimized GBDT with regularization, efficient algorithms, handling categorical features. Hyperparameters incluyen learning rate (shrinkage reducing each tree's contribution), number of trees (more risks overfitting requiring early stopping), tree depth, subsampling (stochastic gradient boosting). Boosting achieves excellent performance competing con deep learning en structured data, winning Kaggle competitions. Overfitting risk requires careful tuning, early stopping based on validation performance. Interpretability limited pero feature importance y SHAP values aid explanation.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Ensemble Methods] --> B[Bagging]
+        A --> C[Boosting]
+        B --> D[Random Forest]
+        B --> E[Extra Trees]
+        C --> F[AdaBoost]
+        C --> G[Gradient Boosting]
+        G --> H[XGBoost]
+        G --> I[LightGBM]
+        G --> J[CatBoost]
+        D --> K[Árboles Decorrelacionados]
+        F --> L[Re-ponderación]
+        G --> M[Optimización Gradiente]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>9.8 Evaluación de Modelos de Clasificación</h2>
+    <p>
+        La evaluación rigurosa de classification models requiere métricas comprehensivas capturando different aspects de performance. Accuracy = (TP+TN)/(TP+TN+FP+FN) mide overall correctness pero engañosa con imbalanced classes donde predicting majority class achieves high accuracy sin learning useful patterns. Confusion matrix tabula True Positives (TP), True Negatives (TN), False Positives (FP), False Negatives (FN) revealing error types. Precision = TP/(TP+FP) measures correctness de positive predictions (how many predicted positives are actual positives?). Recall (Sensitivity, True Positive Rate) = TP/(TP+FN) measures completeness capturing actual positives (how many actual positives are predicted?). Precision-recall tradeoff exists: increasing threshold for positive prediction increases precision pero decreases recall.
+    </p>
+    <p>
+        F1-score = 2·(Precision·Recall)/(Precision+Recall) harmonizes precision y recall balancing both. Fβ-score generaliza weighting recall β times más than precision. Specificity (True Negative Rate) = TN/(TN+FP) measures correctly identifying negatives. ROC (Receiver Operating Characteristic) curve plots TPR versus FPR (False Positive Rate = FP/(FP+TN)) across classification thresholds visualizing trade-off. AUC (Area Under ROC Curve) summarizes ROC en single score: 1.0 perfect, 0.5 random guessing. AUC interpreta como probability que model ranks random positive higher que random negative. PR (Precision-Recall) curve preferable para imbalanced datasets donde negatives vastly outnumber positives; ROC curves pueden engañar appearing optimistic.
+    </p>
+    <p>
+        El multiclass evaluation extends binary metrics via averaging: macro-averaging computes metric per class luego averages (treats classes equally); micro-averaging aggregates TP, FP, FN across classes luego computes (weights by class frequency); weighted averaging weights class metrics by support. Kappa statistic measures agreement beyond chance: κ = (p_o - p_e)/(1 - p_e) where p_o es observed agreement, p_e expected agreement by chance. Cross-validation assesses generalization: K-fold splits data en K folds, training en K-1, validating en held-out fold, rotating; average performance estimates expected performance en unseen data. Stratified K-fold preserves class proportions en folds critical para imbalanced data. Nested cross-validation separates hyperparameter tuning desde model evaluation preventing optimistic bias.
+    </p>
+
+    <h2>9.9 Evaluación de Modelos de Regresión</h2>
+    <p>
+        Los regression models evaluados mediante error metrics quantifying prediction accuracy. Mean Absolute Error MAE = (1/n)∑|yᵢ-ŷᵢ| averages absolute errors, interpretable en units de target, robust a outliers pero non-differentiable at zero. Mean Squared Error MSE = (1/n)∑(yᵢ-ŷᵢ)² squares errors emphasizing large errors, differentiable facilitating optimization, sensitive a outliers. Root Mean Squared Error RMSE = √MSE restores original units being more interpretable. R² (coefficient of determination) = 1 - SS_res/SS_tot measures proportion of variance explained: 1.0 perfect fit, 0 baseline (mean prediction), negative worse than baseline. Adjusted R² penalizes model complexity preventing inflated scores desde adding irrelevant features.
+    </p>
+    <p>
+        Mean Absolute Percentage Error MAPE = (100/n)∑|(yᵢ-ŷᵢ)/yᵢ| expresses error as percentage, interpretable, scale-independent pero undefined cuando yᵢ=0 y biased towards underforecasts. Residual analysis examines prediction errors: plotting residuals versus predictions reveals patterns (heteroscedasticity, non-linearity); normal probability plot checks normality assumption. Cross-validation for regression uses same K-fold strategy, averaging metrics. Prediction intervals quantify uncertainty: confidence intervals for mean predictions; prediction intervals for individual predictions (wider accounting for individual variability). Metrics selection depends on context: RMSE penalizes large errors appropriate cuando costly; MAE treats errors equally appropriate cuando errors equally undesirable.
+    </p>
+
+    <h2>9.10 Selección de Características y Reducción de Dimensionalidad</h2>
+    <p>
+        La feature selection identifica subconjunto de relevant features improving model performance, interpretability, reducing training time. Filter methods rank features independently de model usando statistical tests: correlation con target, mutual information, chi-squared test, ANOVA F-test. Fast pero ignoran feature interactions. Wrapper methods evaluate feature subsets usando model performance: forward selection iteratively adds best feature; backward elimination removes worst; recursive feature elimination (RFE) repeatedly trains model, removes least important features. Computationally expensive pero consider interactions. Embedded methods perform selection during training: L1 regularization induces sparsity; tree-based feature importance ranks features by contribution; linear model coefficients indicate importance.
+    </p>
+    <p>
+        La dimensionality reduction transforma features a lower-dimensional space preservando information. PCA (Principal Component Analysis) finds orthogonal directions of maximum variance projecting data; components are linear combinations of original features. Unsupervised, fast, pero components may not align con supervised task. LDA (Linear Discriminant Analysis) finds projection maximizing class separation supervised approach. Feature engineering creates new features capturing domain knowledge: polynomial features, interactions, domain-specific transformations often improving performance dramatically. The curse of dimensionality afflicts high-dimensional data: sparsity, distance concentration, computational cost motivate dimensionality reduction especially para k-NN, clustering. Regularization implicitly performs selection shrinking coefficients; combining explicit selection con regularization balances interpretability con performance.
     </p>
 
     <div class="info-box">
         <h3>Puntos Clave de la Clase</h3>
         <ul>
-            <li>La regresión lineal y logística constituyen fundamentos para regresión y clasificación</li>
-            <li>k-NN es un método simple basado en instancias sin fase explícita de entrenamiento</li>
-            <li>SVM maximiza el margen, usando kernel trick para fronteras no lineales</li>
-            <li>Los árboles de decisión proporcionan modelos interpretables mediante reglas jerárquicas</li>
-            <li>Naive Bayes aplica teorema de Bayes con suposición de independencia condicional</li>
-            <li>Los ensemble methods combinan múltiples modelos para mejorar desempeño y robustez</li>
+            <li>La regresión lineal modela relaciones lineales optimizando MSE; regularization (Ridge, Lasso) previene overfitting</li>
+            <li>La regresión logística modela probabilidades de clasificación mediante función sigmoid y maximum likelihood</li>
+            <li>k-NN clasifica basándose en vecinos cercanos; selección de k balancea bias-variance; scaling crítico</li>
+            <li>SVM maximiza margen para robustez; kernel trick habilita fronteras no lineales implicitamente</li>
+            <li>Los árboles de decisión aprenden reglas jerárquicas interpretables; pruning previene overfitting</li>
+            <li>Naive Bayes aplica teorema de Bayes con independence assumption; rápido, efectivo para text</li>
+            <li>Bagging reduce variance promediando models; Random Forests añade randomness decorrelating trees</li>
+            <li>Boosting corrige errors secuencialmente; Gradient Boosting optimiza via gradient descent achieving SOTA</li>
+            <li>Las métricas de evaluación incluyen accuracy, precision, recall, F1, ROC-AUC para classification; MAE, RMSE, R² para regression</li>
+            <li>Feature selection y dimensionality reduction mejoran performance, interpretability, efficiency</li>
         </ul>
     </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Hastie, T., Tibshirani, R., & Friedman, J. (2009). <em>The Elements of Statistical Learning</em> (2nd ed.). Springer.</li>
+        <li>Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning</em>. Springer.</li>
+        <li>James, G., et al. (2021). <em>An Introduction to Statistical Learning</em> (2nd ed.). Springer.</li>
+        <li>Breiman, L. (2001). Random forests. <em>Machine Learning</em>, 45(1), 5-32.</li>
+        <li>Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. <em>KDD</em>.</li>
+    </ul>
 </article>
