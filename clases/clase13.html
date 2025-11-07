@@ -1,19 +1,210 @@
 <article class="lesson-content">
     <h1>Clase 13: Visión por Computadora</h1>
+
     <h2>13.1 Fundamentos de Visión Computacional</h2>
-    <p>La visión por computadora permite a sistemas extraer comprensión de imágenes y videos. Los desafíos incluyen variaciones de iluminación, oclusiones, cambios de perspectiva, y la brecha semántica entre píxeles y conceptos de alto nivel. Las representaciones progresan desde píxeles crudos hasta características engineered (SIFT, HOG) y actualmente embeddings neuronales aprendidos. Las tareas fundamentales incluyen clasificación, detección, segmentación, tracking y generación de imágenes.</p>
-    <h2>13.2 Clasificación y Detección de Objetos</h2>
-    <p>La clasificación asigna etiqueta global a imagen completa. Las CNNs dominan con arquitecturas como VGG, ResNet, EfficientNet. La detección localiza y clasifica múltiples objetos mediante bounding boxes. R-CNN genera region proposals, extrae características CNN y clasifica. Fast R-CNN y Faster R-CNN mejoran eficiencia. YOLO (You Only Look Once) y SSD realizan detección en single forward pass, alcanzando tiempo real. Detectores modernos usan Feature Pyramid Networks y NMS (Non-Maximum Suppression).</p>
-    <h2>13.3 Segmentación de Imágenes</h2>
-    <p>La segmentación semántica asigna etiqueta de clase a cada píxel. FCN (Fully Convolutional Networks) reemplaza capas densas con convolucionales para salida espacial. U-Net usa arquitectura encoder-decoder con skip connections, popular en imágenes médicas. DeepLab emplea atrous convolutions para receptive fields grandes. La segmentación de instancias (Mask R-CNN) distingue individuos de misma clase. Segmentación panóptica combina semántica (stuff) e instancias (things).</p>
-    <h2>13.4 Generación de Imágenes</h2>
-    <p>Las GANs generan imágenes fotorealistas. DCGAN usa CNNs. StyleGAN controla atributos mediante style vectors en múltiples escalas. BigGAN escala a ImageNet con fidelidad impresionante. Los modelos de difusión (DDPM, Stable Diffusion) aprenden invertir corrupciones graduales, generando mediante denoising iterativo. DALL-E y Midjourney generan imágenes desde descripciones textuales mediante cross-modal learning. Image-to-image translation (pix2pix, CycleGAN) transforma entre dominios.</p>
-    <h2>13.5 Vision Transformers</h2>
-    <p>Los Vision Transformers (ViT) aplican arquitectura Transformer a imágenes, dividiendo en patches tratados como tokens. ViT alcanza state-of-the-art en clasificación cuando pre-entrenado en datasets grandes. CLIP (Contrastive Language-Image Pre-training) aprende embeddings conjuntos de imagen-texto, permitiendo zero-shot classification. DINO (self-DIstillation with NO labels) aprende representaciones mediante self-supervised learning. Los transformers superan CNNs en muchas tareas con datos suficientes.</p>
-    <h2>13.6 Aplicaciones de Visión Computacional</h2>
-    <p>Reconocimiento facial (Face ID, seguridad). Vehículos autónomos (detección de peatones, señales, lanes). Imagen médica (detección de tumores, diagnóstico asistido). Realidad aumentada (pose estimation, scene understanding). Agricultura (monitoreo de cultivos, detección de enfermedades). Retail (checkout automático, análisis de comportamiento). Manufactura (inspección de calidad, control robótico). Deportes (análisis de jugadas, estadísticas automáticas).</p>
-    <div class="info-box">
-        <h3>Puntos Clave</h3>
-        <ul><li>La visión computacional extrae comprensión de datos visuales</li><li>Las CNNs dominaron clasificación y detección de objetos</li><li>La segmentación asigna etiquetas a nivel de píxel</li><li>Las GANs y difusión generan imágenes realistas</li><li>Los Vision Transformers superan CNNs con datos suficientes</li><li>Las aplicaciones impactan múltiples industrias y dominios</li></ul>
+    <p>
+        La visión por computadora constituye el campo de la inteligencia artificial dedicado a habilitar máquinas para interpretar y comprender información visual del mundo, emulando y extendiendo capacidades del sistema visual humano. Esta disciplina intersecta procesamiento de señales, reconocimiento de patrones, geometría computacional, machine learning y ciencias cognitivas, abordando el desafío fundamental de extraer conocimiento semántico significativo desde representaciones pixel-level de bajo nivel. Los sistemas de visión computacional transforman datos visuales crudos capturados por cámaras y sensores en estructuras simbólicas interpretables que habilitan razonamiento, decisiones y acciones inteligentes. Los objetivos primarios incluyen reconocimiento (identificar qué objetos están presentes), reconstrucción (inferir geometría 3D desde imágenes 2D), detección (localizar objetos espacialmente), segmentación (delinear boundaries precisos), tracking (seguir objetos temporalmente), y comprensión de escenas (interpretar relaciones contextuales entre entidades).
+    </p>
+    <p>
+        Los desafíos intrínsecos de visión computacional derivan de la naturaleza compleja del proceso de formación de imágenes y la ambigüedad inherente en proyecciones 2D de escenas 3D. Las variaciones de iluminación afectan drasticamente apariencia donde mismo objeto bajo diferentes condiciones lumínicas puede exhibir intensidades completamente distintas. Las oclusiones parciales donde objetos se solapan requieren inferencia robusta desde información incompleta. Los cambios de punto de vista alteran geometría proyectada introduciendo transformaciones de perspectiva no lineales. La deformación de objetos no rígidos como cuerpos humanos, telas y fluidos desafía modelado basado en templates rígidos. El clutter y backgrounds complejos introducen distractores que complican figura-fondo segmentation. La brecha semántica entre representaciones pixel-level de bajo nivel y conceptos semánticos de alto nivel requiere abstracción jerárquica multi-nivel. El intra-class variation donde instancias de misma categoría exhiben apariencias diversas contrasta con inter-class similarity donde objetos diferentes pueden lucir similares en imágenes. Estos challenges motivaron evolución desde métodos handcrafted features hacia deep learning que aprende representaciones jerárquicas automáticamente desde datos.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Imagen Cruda] --> B[Preprocesamiento]
+        B --> C[Extracción de Características]
+        C --> D[Representación Intermedia]
+        D --> E[Análisis de Alto Nivel]
+        E --> F[Interpretación Semántica]
+        C --> G[Características de Bajo Nivel]
+        C --> H[Características de Medio Nivel]
+        C --> I[Características de Alto Nivel]
+        F --> J[Reconocimiento]
+        F --> K[Detección]
+        F --> L[Segmentación]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style F fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
     </div>
+
+    <h2>13.2 Redes Neuronales Convolucionales: Arquitecturas Fundamentales</h2>
+    <p>
+        Las Convolutional Neural Networks revolucionaron visión computacional explotando inductive biases apropiados para datos visuales mediante convolutions que implementan translation equivariance, parameter sharing reduciendo parameters dramáticamente comparado con fully connected layers, y local connectivity reflejando locality espacial de features visuales. Una CNN típica alterna capas convolucionales que aprenden filtros jerárquicos, pooling layers que implementan translational invariance y reduce dimensionalidad espacial, y capas fully connected que realizan clasificación final. Las convoluciones aplican kernels compartidos sliding over espacialmente extrayendo features locales. ReLU activations introducen non-linearity permitiendo representaciones complejas. Batch normalization estabiliza training normalizando activations. Dropout previene overfitting desactivando aleatoriamente neuronas durante training fomentando robust distributed representations.
+    </p>
+    <p>
+        LeNet-5, propuesta por LeCun para reconocimiento de dígitos, pionera arquitectura CNN con alternating convolutions y average pooling. AlexNet (2012) revitalizó deep learning venciendo ImageNet Competition mediante deeper architecture con 8 layers, ReLU activations, dropout, data augmentation y GPU training. VGG demostró que network depth es critical utilizando stacks de small 3x3 convolutions alcanzando receptive fields grandes con fewer parameters. GoogleNet introdujo Inception modules que computan convolutions de múltiples tamaños en parallel concatenando outputs, permitiendo network aprender multi-scale features eficientemente. ResNet (2015) revolucionó training de networks profundísimas introduciendo skip connections que implementan residual learning mitigando vanishing gradients y enabling networks de 100+ layers. DenseNet conecta cada layer a todas subsecuentes maximizando information flow y feature reuse. EfficientNet systematically scales depth, width y resolution balanceadamente logrando state-of-the-art accuracy con efficiency superior mediante Neural Architecture Search.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Evolución CNNs] --> B[LeNet-5 1998]
+        B --> C[AlexNet 2012]
+        C --> D[VGG 2014]
+        C --> E[GoogleNet 2014]
+        C --> F[ResNet 2015]
+        F --> G[DenseNet 2017]
+        F --> H[EfficientNet 2019]
+        D --> I[Depth]
+        E --> J[Multi-scale]
+        F --> K[Skip Connections]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>13.3 Clasificación y Detección de Objetos en Profundidad</h2>
+    <p>
+        La clasificación de imágenes asigna etiqueta categórica global a imagen completa seleccionando desde conjunto predefinido de clases. El pipeline típico extrae features mediante CNN backbone, flattens feature maps, y aplica fully connected layers culminando en softmax outputting distribución probabilística sobre clases. ImageNet dataset con 1.2M images y 1000 clases democratizó research facilitando comparaciones objetivas. El transfer learning aprovecha features aprendidas en ImageNet fine-tuneando en target tasks con data limitado achieving remarkable performance. Data augmentation mediante random crops, flips, rotations, color jittering expande effective training set mejorando generalization. Test-time augmentation promedia predictions sobre múltiples augmented versions de test image boosting accuracy. Ensembles combinan múltiples models averaging predictions reduciendo variance y improving robustness.
+    </p>
+    <p>
+        La detección de objetos localiza y clasifica múltiples instancias outputting bounding boxes con class labels. Two-stage detectors primero generan region proposals luego clasifican cada region. R-CNN usa selective search generando ~2000 proposals, extrae CNN features de cada region warpada, clasifica con SVM y refina boxes con regressor. Fast R-CNN mejora eficiencia compartiendo convolution computation across proposals mediante RoI pooling extracting fixed-size features desde arbitrary regions. Faster R-CNN introdujo Region Proposal Network aprendiendo proposals end-to-end compartiendo features con detector eliminando selective search bottleneck. One-stage detectors como YOLO reformulan detection como single regression problem dividiendo imagen en grid donde cada cell predice bounding boxes y confidences directamente achieving real-time performance. YOLOv3 usa multi-scale predictions y residual networks mejorando accuracy dramáticamente. SSD combina predictions desde multiple feature maps de diferentes resolutions handling objects de diversos tamaños efectivamente.
+    </p>
+    <p>
+        Los detectores modernos incorporan innovaciones sofisticadas maximizando performance. Feature Pyramid Networks construyen pirámides multi-scale con top-down pathways y lateral connections combinando low-resolution semantically strong features con high-resolution spatially precise features. Focal Loss addresses class imbalance down-weighting well-classified examples focusing training en hard negatives críticos en one-stage detectors. Non-Maximum Suppression elimina duplicate detections preservando highest-confidence boxes pero introduce non-differentiability. Soft-NMS y aprendizaje end-to-end de NMS mejoran diferenciabilidad. Anchor-free detectors evitan anchor hyperparameters predicting object centers y sizes directly simplificando design. DETR (DEtection TRansformer) reformula detection como set prediction usando transformers eliminando hand-designed components como NMS y anchors achieving competitive performance con architecture elegante.
+    </p>
+
+    <h2>13.4 Segmentación Semántica e Instancias</h2>
+    <p>
+        La segmentación semántica asigna etiqueta de clase a cada píxel produciendo dense pixel-wise predictions. Fully Convolutional Networks reemplazan fully connected layers con convolucionales preservando spatial information y permitiendo input de arbitrary size. El encoder extrae features abstractas reduciendo resolution, decoder upsamples mediante transposed convolutions recuperando spatial resolution. U-Net, ampliamente usado en imágenes médicas, emplea arquitectura simétrica encoder-decoder con skip connections concatenando encoder features con corresponding decoder features permitiendo flujo de información high-resolution facilitando localization precisa. SegNet usa pooling indices desde encoder para upsampling eficiente. PSPNet aplica Pyramid Pooling Module agregando context desde múltiples scales mediante parallel pooling con different bin sizes capturando global context crucial para scene understanding.
+    </p>
+    <p>
+        DeepLab series introduce innovaciones significativas mejorando segmentación sistemáticamente. Atrous convolutions (dilated convolutions) expanden receptive field sin aumentar parameters insertando spaces entre kernel elements capturando multi-scale context. Atrous Spatial Pyramid Pooling aplica atrous convolutions con múltiples rates en parallel capturando features en múltiples scales. Conditional Random Fields como post-processing refina boundaries explotando low-level cues como color similarity y spatial proximity. DeepLabv3+ combina spatial pyramid pooling con encoder-decoder achieving state-of-the-art segmentation. Self-attention mechanisms capturan long-range dependencies modelando relaciones entre píxeles distant mejorando coherencia global. Transformers-based segmentation como SETR aplica pure transformer arquitectura dividiendo imagen en patches procesándolos con self-attention capturando global context naturally.
+    </p>
+    <p>
+        La segmentación de instancias distingue instancias individuales de misma clase outputting máscaras separadas. Mask R-CNN extiende Faster R-CNN agregando mask prediction branch en parallel con box regression y classification prediciendo binary mask para cada RoI mediante small FCN. La arquitectura multi-task aprende conjuntamente detection y segmentation mejorando ambas tasks mutuamente. RoIAlign reemplaza RoI pooling con bilinear interpolation evitando quantization misalignment preservando spatial correspondence crítico para masks precisas. PANet mejora information flow agregando bottom-up path augmentation. Cascade Mask R-CNN encadena múltiples detection stages con increasing IoU thresholds refinando predictions progresivamente. YOLACT realiza instance segmentation real-time mediante prototype masks y assembly coefficients combinándolos linealmente. SOLOv2 segmenta instances directly mediante semantic categories y instance locations sin bounding boxes.
+    </p>
+
+    <h2>13.5 Generación de Imágenes: GANs y Modelos de Difusión</h2>
+    <p>
+        Las Generative Adversarial Networks introducidas por Goodfellow aprenden generar imágenes realistas mediante juego adversarial donde generator sintetiza imágenes engañando discriminator que distingue real vs fake. El generator mapea noise latent vectors a images, discriminator clasifica images como reales o generadas. Training alterna optimizando discriminator para clasificar correctamente y generator para engañar discriminator. Este adversarial setup evita necesidad de explicit density modeling aprendiendo implicit generative distribution. DCGAN estabilizó training usando convolutional architectures, batch normalization, ReLU en generator, LeakyReLU en discriminator, eliminando fully connected layers. Progressive GAN aumenta resolution gradualmente empezando con low-resolution images progresivamente añadiendo layers para higher resolutions estabilizando training y generando imágenes ultra-high quality.
+    </p>
+    <p>
+        StyleGAN revolucionó control granular sobre generated images introduciendo style-based generator que inyecta learned constants en diferentes resolutions controlando attributes desde coarse (pose, shape) hasta fine (color, microstructure). Adaptive instance normalization modula activations mediante style vectors en cada resolution. Mapping network transforma latent codes a intermediate latent space más disentangled facilitando manipulation semántica. StyleGAN2 mejora quality mediante weight demodulation y path length regularization eliminando artifacts. BigGAN escala GANs a ImageNet con fidelity impresionante mediante large batch sizes, truncation trick balancing fidelity-diversity, orthogonal regularization y self-attention. Conditional GANs generan condicionado en class labels o text descriptions permitiendo control sobre content generado. Image-to-image translation aprende mappings entre image domains: pix2pix usa paired data con conditional GAN, CycleGAN aprende mappings sin paired data mediante cycle consistency loss.
+    </p>
+    <p>
+        Los modelos de difusión emergieron como alternativa poderosa a GANs generando mediante iterative denoising. Denoising Diffusion Probabilistic Models definen forward process que gradualmente añade Gaussian noise destruyendo imagen, luego aprenden reverse process que iterativamente denoise recuperando imagen desde pure noise. El modelo aprende predecir noise añadido permitiendo removerlo step-by-step. Score-based models aprenden score function (gradient of log density) permitiendo sampling mediante Langevin dynamics. Latent diffusion models como Stable Diffusion operan en latent space de autoencoder reduciendo computational cost dramáticamente mientras generando high-quality images. DALL-E 2 y Imagen generan imágenes desde text descriptions usando CLIP embeddings guiding diffusion process enabling creative text-to-image synthesis. Classifier-free guidance mejora sample quality trade-off con diversity. Aplicaciones abarcan creative content generation, data augmentation, image editing, super-resolution y inpainting.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Modelos Generativos] --> B[GANs]
+        A --> C[Diffusion Models]
+        B --> D[DCGAN]
+        B --> E[StyleGAN]
+        B --> F[BigGAN]
+        C --> G[DDPM]
+        C --> H[Stable Diffusion]
+        C --> I[DALL-E 2]
+        E --> J[Control de Estilo]
+        H --> K[Text-to-Image]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>13.6 Vision Transformers y Modelos de Atención</h2>
+    <p>
+        Los Vision Transformers adaptan arquitectura Transformer exitosa en NLP a visión computacional desafiando dominancia de CNNs. ViT divide imagen en non-overlapping patches (eg. 16x16 pixels), linearly embeds cada patch, añade positional embeddings preservando información espacial, y procesa sequence de patch embeddings mediante standard Transformer encoder con multi-head self-attention y feedforward networks. La self-attention permite cada patch atender a todos otros patches capturando long-range dependencies globalmente sin inductive biases de locality y translation equivariance de CNNs. ViT achieving state-of-the-art en image classification cuando pre-entrenado en datasets masivos (JFT-300M) pero requiere más data que CNNs para aprender efectivamente sin inductive biases built-in. DeiT mejora data efficiency mediante distillation usando CNN teacher guiding ViT student permitiendo training competitivo en ImageNet alone.
+    </p>
+    <p>
+        Swin Transformer introduce shifted window mechanism computando self-attention dentro non-overlapping local windows luego shifting windows entre layers permitiendo cross-window connections. Esta hierarchical architecture con patch merging reduce computational complexity de quadratic a linear respecto image size habilitando procesamiento eficiente de high-resolution images y aplicación a dense prediction tasks como detection y segmentation. Swin achieves state-of-the-art across multiple vision tasks demostrando versatilidad. CvT combina convolutions con transformers introduciendo convolution token embedding y convolution projection en attention mejorando performance y efficiency. Pyramid Vision Transformer diseña multi-scale feature hierarchy enabling use como backbones en detection y segmentation frameworks reemplazando traditional CNN backbones manteniendo competitive performance con global receptive fields beneficiosos.
+    </p>
+    <p>
+        CLIP (Contrastive Language-Image Pre-training) aprende joint embeddings de imágenes y text mediante contrastive learning en 400M image-text pairs desde web. Durante pre-training, CLIP maximiza cosine similarity entre correct image-text pairs minimizando similarities entre mismatched pairs aprendiendo aligned multimodal representations. Esto habilita zero-shot classification donde modelo clasifica images sin ver task-specific training examples simplemente comparando image embedding con text embeddings de class names seleccionando highest similarity. CLIP generaliza remarkably a distribuciones out-of-distribution demostrando robustness superior. ALIGN escala contrastive learning a 1.8B noisy image-text pairs demostrando benefits de data scale. Florence unifica representaciones vision y language mediante adapter-based architecture. BLIP mejora quality mediante bootstrapping captions usando captioning model y filtering con noisy data. Applications en retrieval, zero-shot recognition y vision-language understanding democratizan AI capabilities.
+    </p>
+
+    <h2>13.7 Aprendizaje Auto-supervisado en Visión</h2>
+    <p>
+        El self-supervised learning aprende representaciones desde datos unlabeled explotando pretext tasks creando supervision signals desde data itself evitando expensive manual annotation. Contrastive learning aprende diferenciando instances donde positive pairs (augmented views de same image) se acercan en embedding space mientras negative pairs (different images) se alejan. SimCLR usa strong data augmentation generando multiple views, large batch sizes proporcionando many negatives, projection heads, y NT-Xent loss maximizando agreement entre positive pairs. MoCo mantiene dynamic dictionary de encoded keys con momentum encoder actualizando slowly permitiendo large consistent negative set con memory efficiency. SwAV clusters representations online asignando codes mediante optimal transport luego predicting codes desde augmented views evitando negative pairs entirely.
+    </p>
+    <p>
+        BYOL evita negative pairs completamente usando online network y target network donde online predice target representations de augmented views y target se actualiza mediante exponential moving average de online. Esto desafía belief de que contrastive methods requieren negatives para evitar representational collapse. DINO (self-DIstillation with NO labels) distills knowledge desde teacher network a student network donde teacher es exponential moving average de student. Crucially, DINO usa centering y sharpening operations prevenir collapse. Visualizations revelan que attention heads aprenden object boundaries espontáneamente sin supervision explícita demostrando emergent semantic understanding. Masked image modeling como BEiT y MAE adaptan masked language modeling a vision masking patches y reconstruyendo prediciendo visual tokens o pixel values aprendiendo representations contextuales. MAE con extremely high masking ratios (75%) aprende efficient representations siendo computationally economical.
+    </p>
+
+    <h2>13.8 Detección y Tracking de Objetos en Video</h2>
+    <p>
+        El video understanding extiende visión computacional a secuencias temporales explotando coherencia temporal y motion cues. Video classification reconoce acciones y actividades en clips. Two-stream networks procesan spatial information mediante RGB frames y temporal information mediante optical flow stacks separadamente fusionando predictions. 3D CNNs como C3D extienden 2D convolutions a 3D aplicando kernels espacio-temporales capturando motion patterns directamente. I3D infla 2D filters de ImageNet-pretrained models a 3D bootstrapping desde image understanding. Non-local networks capturan long-range dependencies temporales mediante self-attention across frames. SlowFast networks operan dual pathways: slow pathway procesa frames baja frame rate capturando spatial semantics, fast pathway procesa alta frame rate capturando rapid motion con lightweight architecture, fusionando ambas via lateral connections.
+    </p>
+    <p>
+        El object tracking mantiene identidades de objetos a través de video frames enfrentando desafíos de oclusiones, deformaciones, motion blur, y cambios de apariencia. Tracking-by-detection asocia detections entre frames mediante appearance y motion cues. SORT usa Kalman filter prediciendo positions y Hungarian algorithm asociando detections con tracks maximizando overlap. DeepSORT añade deep appearance features mejorando robustness a oclusiones. Siamese networks aprenden similarity metrics comparando target template con search regions scoring patches. SiamFC usa fully convolutional similarity matching. SiamRPN añade region proposal predicting bounding box refinement end-to-end. Transformer trackers como TransT y TrDiMP usan attention mechanisms capturando relaciones entre template y search regions mejorando discriminability. Multi-object tracking asocia detections across frames manteniendo identidades en presence de interactions y occlusions usando graph-based optimization o learning-based data association.
+    </p>
+
+    <h2>13.9 Visión 3D y Geometría</h2>
+    <p>
+        La computer vision 3D reconstruye geometría espacial desde imágenes habilitando applications en robotics, AR/VR y autonomous systems. Structure from Motion recupera 3D structure y camera poses desde multiple 2D images detectando keypoints correspondencias across views, estimando fundamental matrix mediante RANSAC, triangulating 3D points y refining mediante bundle adjustment minimizando reprojection errors conjuntamente. Multi-view stereo densifica reconstruction estimando depth maps desde múltiples viewpoints fusionándolos en complete 3D models. SLAM (Simultaneous Localization and Mapping) construye map mientras localizando agent siendo critical para autonomous navigation. Visual SLAM usa cameras tracking features, estimando poses, y updating map incrementally. ORB-SLAM usa ORB features con loop closure detection y relocalization.
+    </p>
+    <p>
+        El depth estimation desde single image aprende prediciendo depth map desde monocular image explotando monocular cues como perspective, occlusion, shading. Supervised methods entrenan en RGB-D pairs desde sensors como Kinect prediciendo depth via regression. Self-supervised approaches usan video sequences con photometric consistency donde synthesized views desde predicted depth deben match actual frames minimizando photometric error evitando ground truth depth requirement. 3D object detection localiza objects en espacio 3D outputting oriented 3D bounding boxes con location, dimensions, orientation. LiDAR-based detectors procesan point clouds mediante PointNet extracting permutation-invariant features o voxelization con 3D CNNs. Multi-modal approaches fusionan camera images con LiDAR leveraging complementary strengths: images proveen rich texture, LiDAR provee accurate geometry. BEV (Bird's Eye View) representations unifican multi-sensor inputs facilitando fusion effective para autonomous driving perception systems.
+    </p>
+
+    <h2>13.10 Aplicaciones Prácticas de Visión Computacional</h2>
+    <p>
+        El reconocimiento facial identifica individuos desde imágenes faciales con applications en seguridad, authentication, y social media. Face detection localiza caras mediante Viola-Jones cascade classifiers o CNN-based detectors. Face alignment normaliza pose mediante facial landmark detection ubicando puntos clave como eyes, nose, mouth usando coordinated regression o heatmap prediction. Face recognition mapea faces a embeddings donde same person tiene embeddings cercanos. FaceNet usa triplet loss minimizando distance entre anchor-positive pairs maximizando distance a negatives aprendiendo discriminative embedding space. ArcFace añade angular margin penalty improving intra-class compactness y inter-class discrepancy. Privacy concerns motivate federated learning training models sin centralizar data sensitivo y differential privacy protecting individual privacy.
+    </p>
+    <p>
+        Los vehículos autónomos requieren robust perception para safe navigation. Object detection identifica vehicles, pedestrians, cyclists, traffic signs, lanes. Semantic segmentation clasifica cada pixel en drivable area, sidewalk, vegetation facilitando path planning. 3D detection localiza obstacles en espacio 3D con distance y orientation precise. Multi-task learning conjuntamente optimiza múltiples perception tasks compartiendo representations mejorando efficiency. Sensor fusion combina cameras, LiDAR, radar leveraging complementary modalities: cameras capturan appearance bajo cost, LiDAR provee accurate depth robust a lighting, radar detecta velocity. Prediction models forecast future trajectories de agents surrounding vehicle anticipating behaviors. End-to-end learning approaches como conditional imitation learning mapean directamente sensory inputs a control actions simplifying pipeline pero requiriendo massive data y raising interpretability concerns. Safety-critical applications demandan rigorous testing, redundancy y fail-safe mechanisms ensuring reliability.
+    </p>
+    <p>
+        La imagen médica diagnostica diseases, guides interventions y monitors treatments. Segmentation delinea anatomical structures y pathological regions como tumors, lesions. Classification categorizes images en disease categories assisting differential diagnosis. Detection localiza abnormalities como nodules, microcalcifications. U-Net architecture dominates medical segmentation por effective feature propagation con limited data. 3D CNNs procesan volumetric scans como CT y MRI capturing 3D context. Transfer learning desde ImageNet-pretrained models accelerates training despite domain gap. Explainability mediante attention maps y saliency visualization increases clinician trust highlighting regions influencing decisions. Regulatory approval requiere rigorous validation en diverse populations demonstrating generalization y fairness. Federated learning allows collaborative training preserving patient privacy crucial en healthcare settings. Challenges incluyen class imbalance, limited annotated data, variability across scanners y protocols, requiring domain adaptation y robust augmentation strategies ensuring clinical reliability.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Aplicaciones Visión))
+            Seguridad
+                Reconocimiento Facial
+                Vigilancia
+                Biometría
+            Transporte
+                Vehículos Autónomos
+                Inspección Vial
+                Traffic Analysis
+            Salud
+                Diagnóstico Médico
+                Cirugía Asistida
+                Teleradiología
+            Retail
+                Checkout Automático
+                Análisis de Clientes
+                Gestión de Inventario
+            Manufactura
+                Control de Calidad
+                Robótica
+                Mantenimiento Predictivo
+            Entretenimiento
+                Realidad Aumentada
+                Efectos Especiales
+                Gaming
+    </div>
+
+    <h2>13.11 Desafíos Éticos y Limitaciones</h2>
+    <p>
+        Los sistemas de visión computacional plantean concerns éticos significativos requiriendo consideración cuidadosa. Bias en training data propaga a model predictions donde facial recognition exhibe disparity performance across demographic groups con mayor error rates para minorities y mujeres. Datasets históricamente desbalanceados favor majority demographics resultando en unfair systems. Mitigation strategies incluyen balanced dataset curation, fairness-aware training objectives, y rigorous auditing across subgroups. Surveillance applications raise privacy concerns especialmente con facial recognition enabling mass monitoring sin consent individual. Regulations como GDPR en Europa y emerging AI governance frameworks buscan balance security benefits con privacy rights. Deepfakes generan content falsificado hyper-realistic enabling misinformation, fraud y harassment requiring detection techniques y digital provenance solutions como watermarking y blockchain-based verification.
+    </p>
+    <p>
+        La explicabilidad permanece desafío crítico donde deep models funcionan como black boxes dificultando trust en high-stakes applications como medical diagnosis y autonomous driving. Saliency maps visualizan regiones importantes pero no explican causality completamente. Adversarial examples donde pequeñas perturbaciones imperceptibles causan misclassifications dramatic revelan fragility de models cuestionando robustness. Adversarial training mejora robustness pero con computational cost y trade-offs en clean accuracy. Out-of-distribution generalization donde models fallan en datos diferentes de training distribution requiere domain adaptation, continual learning y uncertainty estimation cuantificando confidence. Environmental impact de training large models con massive computational requirements motivates efficient architectures, neural architecture search y green AI practices reduciendo carbon footprint. Dual-use potential donde technology desarrollado con intenciones beneficial puede misuse requiere responsible development, access controls y ethical guidelines balancing innovation con protección social.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>La visión computacional extrae comprensión semántica desde datos visuales mediante aprendizaje jerárquico</li>
+            <li>Las CNNs revolucionaron el campo mediante convolutions, pooling y arquitecturas profundas con skip connections</li>
+            <li>La detección localiza y clasifica múltiples objetos usando two-stage (Faster R-CNN) o one-stage (YOLO) detectors</li>
+            <li>La segmentación asigna etiquetas pixel-wise usando encoder-decoder architectures como U-Net y DeepLab</li>
+            <li>Las GANs y modelos de difusión generan imágenes fotorealistas con control sobre attributes y condicionamiento textual</li>
+            <li>Los Vision Transformers capturan dependencias globales mediante self-attention superando CNNs con suficiente data</li>
+            <li>CLIP aprende representaciones multimodales vision-language habilitando zero-shot recognition y retrieval</li>
+            <li>El self-supervised learning aprende desde datos unlabeled mediante contrastive methods y masked reconstruction</li>
+            <li>El video understanding explota coherencia temporal y motion mediante 3D CNNs y tracking algorithms</li>
+            <li>La visión 3D reconstruye geometría espacial desde imágenes habilitando SLAM, depth estimation y detection 3D</li>
+            <li>Las aplicaciones impactan autonomous vehicles, medical imaging, facial recognition, retail y manufacturing</li>
+            <li>Los desafíos éticos incluyen bias, privacy, deepfakes, explicabilidad y robustez adversarial</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Goodfellow, I., et al. (2014). Generative adversarial nets. <em>NeurIPS</em>.</li>
+        <li>He, K., et al. (2016). Deep residual learning for image recognition. <em>CVPR</em>.</li>
+        <li>Dosovitskiy, A., et al. (2021). An image is worth 16x16 words: Transformers for image recognition. <em>ICLR</em>.</li>
+        <li>Radford, A., et al. (2021). Learning transferable visual models from natural language supervision. <em>ICML</em>.</li>
+        <li>Ronneberger, O., et al. (2015). U-Net: Convolutional networks for biomedical image segmentation. <em>MICCAI</em>.</li>
+        <li>Redmon, J., et al. (2016). You only look once: Unified, real-time object detection. <em>CVPR</em>.</li>
+    </ul>
 </article>
