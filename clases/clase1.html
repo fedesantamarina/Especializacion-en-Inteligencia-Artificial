@@ -125,6 +125,99 @@
         La formación de profesionales en IA, objetivo central de esta especialización, trasciende la mera adquisición de competencias técnicas. Los especialistas en IA deben cultivar una comprensión profunda de las implicaciones éticas, sociales y políticas de su trabajo, así como la capacidad de comunicarse efectivamente con stakeholders diversos. La interdisciplinariedad emerge como un imperativo, requiriendo diálogo continuo entre científicos computacionales, especialistas en dominio, filósofos, juristas y representantes de comunidades afectadas. Solo mediante este enfoque holístico podemos aspirar a desarrollar sistemas de IA que verdaderamente sirvan al bienestar humano y la justicia social.
     </p>
 
+    <h2>1.7 Agentes Inteligentes: Fundamentos Teóricos</h2>
+    <p>
+        El concepto de agente inteligente proporciona un marco unificador fundamental para comprender y diseñar sistemas de inteligencia artificial. Un agente se define formalmente como cualquier entidad que percibe su entorno mediante sensores y actúa sobre ese entorno a través de actuadores. Esta abstracción aplica ampliamente: desde un robot móvil equipado con cámaras y motores, hasta un agente de software que monitoriza flujos de información en Internet y ejecuta transacciones financieras. La función de agente mapea secuencias perceptuales (historias completas de percepciones) a acciones, encapsulando el comportamiento del agente.
+    </p>
+    <p>
+        Los agentes racionales constituyen el ideal normativo en IA: un agente racional selecciona acciones que maximizan una medida de desempeño o función de utilidad, dado su conocimiento perceptual y conocimiento integrado. La racionalidad no implica omnisciencia ni perfección; un agente racional toma las mejores decisiones posibles dada la información disponible y sus limitaciones computacionales. Esta caracterización permite formalizar el problema de diseño de IA: especificar el entorno de tarea mediante el framework PEAS (Performance, Environment, Actuators, Sensors), que define la medida de desempeño, el entorno en el que opera el agente, los actuadores disponibles para modificar el entorno, y los sensores para percibir el estado ambiental.
+    </p>
+    <p>
+        Los entornos de tarea se caracterizan mediante múltiples dimensiones críticas: completamente observable versus parcialmente observable (si los sensores proporcionan acceso completo al estado ambiental); determinista versus estocástico (si el estado siguiente está completamente determinado por el estado actual y la acción); episódico versus secuencial (si experiencias se dividen en episodios atómicos o decisiones actuales afectan futuro); estático versus dinámico (si el entorno cambia mientras el agente delibera); discreto versus continuo (en estados, tiempo y acciones); y agente único versus multi-agente (si otros agentes están presentes). Estas propiedades influyen profundamente en la complejidad y las arquitecturas apropiadas de agentes.
+    </p>
+    <p>
+        Las arquitecturas de agentes especifican el programa que implementa la función de agente. Los agentes reactivos simples seleccionan acciones basándose únicamente en la percepción actual mediante reglas condición-acción, apropiados para entornos completamente observables. Los agentes basados en modelos mantienen estado interno que rastrea aspectos no directamente observables del entorno. Los agentes basados en objetivos seleccionan acciones que maximizan probabilidad de alcanzar estados meta, requiriendo capacidad de búsqueda y planificación. Los agentes basados en utilidad maximizan funciones de utilidad esperada, permitiendo balancear múltiples objetivos conflictivos y manejar incertidumbre. Los agentes que aprenden mejoran su desempeño a través de experiencia, adaptándose a entornos desconocidos o cambiantes.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Agente Inteligente] --> B[Sensores]
+        A --> C[Función de Agente]
+        A --> D[Actuadores]
+        B --> E[Percepción del Entorno]
+        E --> C
+        C --> F[Selección de Acción]
+        F --> D
+        D --> G[Modificación del Entorno]
+        G --> B
+        C --> H{Arquitectura}
+        H --> I[Reactiva Simple]
+        H --> J[Basada en Modelos]
+        H --> K[Basada en Objetivos]
+        H --> L[Basada en Utilidad]
+        H --> M[Que Aprende]
+        style A fill:#8B1538,stroke:#333,stroke-width:4px,color:#fff
+        style C fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>1.8 Test de Turing y Evaluación de Inteligencia Artificial</h2>
+    <p>
+        El Test de Turing, propuesto por Alan Turing en su seminal artículo de 1950 "Computing Machinery and Intelligence", constituye uno de los marcos más influyentes para conceptualizar y evaluar inteligencia en máquinas. Turing reformuló la pregunta metafísica "¿Pueden las máquinas pensar?" en una prueba operacional: si un interrogador humano, a través de conversación en lenguaje natural sin contacto visual o auditivo, no puede distinguir confiablemente entre un humano y una máquina, entonces la máquina debe considerarse inteligente. Esta formulación evita debates filosóficos sobre consciencia enfocándose en comportamiento observable funcionalmente equivalente a inteligencia humana.
+    </p>
+    <p>
+        Las críticas al Test de Turing son numerosas y substanciales. El argumento de la Habitación China de John Searle sostiene que la manipulación sintáctica de símbolos (pasar el test) no implica comprensión semántica genuina: un sistema podría seguir reglas mecánicamente sin "entender" el lenguaje. Otros argumentan que el test privilegia capacidades lingüísticas sobre otras formas de inteligencia (espacial, kinestésica, emocional), y que algunos aspectos de inteligencia humana (creatividad, consciencia, emociones genuinas) podrían no manifestarse en conversación textual. Además, el test no evalúa racionalidad o competencia en dominios específicos, meramente antropomorfismo conversacional.
+    </p>
+    <p>
+        Pruebas alternativas y complementarias han emergido para evaluar aspectos específicos de inteligencia artificial. El Test de Lovelace revisado evalúa creatividad: un sistema debe producir algo que sus creadores no puedan explicar mediante conocimiento de sus algoritmos y datos de entrenamiento. Los benchmarks de visión por computadora (ImageNet, COCO) miden capacidad de reconocimiento y segmentación de objetos. Los benchmarks de comprensión de lenguaje natural (GLUE, SuperGLUE, SQuAD) evalúan comprensión lectora, inferencia y razonamiento de sentido común. Más recientemente, benchmarks de razonamiento multi-modal y tareas de mundo abierto buscan evaluar capacidades más generales y robustas.
+    </p>
+    <p>
+        La evaluación de sistemas de IA en contextos aplicados requiere métricas específicas de dominio que balancea múltiples objetivos: precisión (exactitud en predicciones), interpretabilidad (comprensibilidad de decisiones), equidad (ausencia de discriminación sistemática), robustez (desempeño bajo perturbaciones), eficiencia computacional, y adaptabilidad. El desarrollo de marcos de evaluación comprehensivos, transparentes y estandarizados constituye un desafío continuo esencial para el progreso responsable de la IA. La comunidad científica ha establecido competiciones regulares (ILSVRC para visión, WMT para traducción, TREC para recuperación de información) que impulsan innovación mediante benchmarking comparativo riguroso.
+    </p>
+
+    <h2>1.9 Representación del Conocimiento y Razonamiento</h2>
+    <p>
+        La representación del conocimiento constituye un problema central en inteligencia artificial: cómo codificar información sobre el mundo de manera que sistemas computacionales puedan razonar efectivamente. Las lógicas formales proporcionan fundamentos rigurosos para representación y razonamiento. La lógica proposicional representa hechos mediante proposiciones atómicas y conectivos lógicos, permitiendo inferencia deductiva mediante reglas como modus ponens. Sin embargo, su expresividad limitada restringe aplicabilidad: no puede expresar generalidades sobre categorías de objetos.
+    </p>
+    <p>
+        La lógica de primer orden (FOL) extiende expresividad mediante variables, cuantificadores y predicados, habilitando afirmaciones universales y existenciales sobre objetos. Por ejemplo, "∀x (Humano(x) → Mortal(x))" expresa que todos los humanos son mortales. Los sistemas de demostración automática de teoremas implementan inferencia en FOL mediante técnicas como resolución con unificación. No obstante, FOL enfrenta limitaciones: es indecidible (no existe algoritmo que determine en tiempo finito si una fórmula arbitraria es válida), y no maneja naturalmente incertidumbre, razonamiento temporal, o conocimiento por defecto.
+    </p>
+    <p>
+        Las representaciones estructuradas organizan conocimiento jerárquicamente. Las redes semánticas utilizan grafos donde nodos representan conceptos y aristas relaciones entre ellos, capturando conocimiento taxonómico (relaciones "es-un") y mereológico (relaciones "parte-de"). Los frames, desarrollados por Marvin Minsky, encapsulan conocimiento sobre prototipos estereotípicos mediante estructuras de datos con slots (atributos), valores por defecto, y procedimientos asociados. Las ontologías formales especifican conceptualizaciones compartidas de dominios, facilitando interoperabilidad entre sistemas heterogéneos. OWL (Web Ontology Language), basado en lógicas de descripción, permite expresar relaciones complejas, restricciones y axiomas.
+    </p>
+    <p>
+        El razonamiento probabilístico formaliza inferencia bajo incertidumbre mediante teoría de probabilidades. Las redes bayesianas representan dependencias entre variables mediante grafos acíclicos dirigidos donde nodos son variables y aristas dependencias directas, con distribuciones de probabilidad condicional especificando P(Variable|Padres). Las independencias condicionales codificadas en la estructura del grafo permiten representación compacta y razonamiento eficiente. La inferencia bayesiana actualiza creencias mediante el teorema de Bayes al observar evidencia. Los modelos gráficos probabilísticos, incluyendo redes bayesianas, campos aleatorios de Markov y modelos ocultos de Markov, unificican representación y razonamiento probabilístico con estructura.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Representación del Conocimiento] --> B[Lógicas Formales]
+        A --> C[Representaciones Estructuradas]
+        A --> D[Modelos Probabilísticos]
+        B --> E[Proposicional]
+        B --> F[Primer Orden]
+        B --> G[Descripción]
+        C --> H[Redes Semánticas]
+        C --> I[Frames]
+        C --> J[Ontologías]
+        D --> K[Redes Bayesianas]
+        D --> L[Modelos Gráficos]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>1.10 Perspectivas Multidisciplinarias en el Estudio de la IA</h2>
+    <p>
+        La inteligencia artificial, aunque arraigada en ciencias de la computación, constituye inherentemente una empresa multidisciplinaria que se nutre de y contribuye a múltiples campos del conocimiento humano. La filosofía ha proporcionado fundamentos conceptuales críticos: desde la lógica formal de Aristóteles hasta debates contemporáneos sobre consciencia, intencionalidad y la naturaleza de la mente. La filosofía de la mente interroga preguntas fundamentales como el problema mente-cuerpo, el funcionalismo (la idea de que estados mentales son funcionales independientes de su implementación física), y la posibilidad de consciencia en sistemas artificiales.
+    </p>
+    <p>
+        La psicología cognitiva estudia procesos mentales humanos como percepción, memoria, aprendizaje, razonamiento y lenguaje, proporcionando modelos de procesamiento de información que inspiran arquitecturas de IA. La psicología del desarrollo investiga cómo niños adquieren conocimiento, relevante para aprendizaje por refuerzo y aprendizaje activo. Las neurociencias ofrecen comprensión sobre arquitectura y funcionamiento del cerebro biológico, inspirando redes neuronales artificiales, aunque la correspondencia entre redes artificiales y biológicas permanece limitada. La neurociencia computacional busca modelos matemáticos de procesamiento neural biológico.
+    </p>
+    <p>
+        La lingüística computacional intersecta IA con estudio científico del lenguaje natural. La sintaxis formal de Chomsky influyó en primeros parsers de lenguaje natural. La semántica formal estudia significado composicional. La pragmática investiga uso contextual del lenguaje. Los avances recientes en modelos de lenguaje basados en transformadores (BERT, GPT) han revolucionado procesamiento de lenguaje natural, aunque persisten debates sobre si estos modelos genuinamente "comprenden" lenguaje o meramente capturan correlaciones estadísticas sofisticadas.
+    </p>
+    <p>
+        Las matemáticas proporcionan el lenguaje formal y herramientas analíticas esenciales para IA: álgebra lineal para representaciones vectoriales y operaciones en redes neuronales; cálculo para optimización mediante descenso de gradiente; teoría de probabilidades para razonamiento bajo incertidumbre; teoría de grafos para algoritmos de búsqueda y redes neuronales de grafos; lógica para representación de conocimiento y razonamiento simbólico; y estadística para aprendizaje de patrones de datos. La teoría de la complejidad computacional establece límites fundamentales sobre qué problemas son tratables. La teoría de la información cuantifica información y entropía. Esta confluencia de disciplinas enriquece la IA mientras que avances en IA retroalimentan campos contribuyentes, ejemplificando la naturaleza sinérgica de la investigación científica contemporánea.
+    </p>
+
     <div class="info-box">
         <h3>Puntos Clave de la Clase</h3>
         <ul>
@@ -134,6 +227,10 @@
             <li>Aplicaciones clave en medicina, finanzas, transporte y manufactura</li>
             <li>Desafíos principales: explicabilidad, robustez, sesgo algorítmico y regulación</li>
             <li>El futuro de la IA requiere enfoque interdisciplinario y consideración ética</li>
+            <li>Los agentes inteligentes proporcionan un marco unificador para diseño de sistemas de IA</li>
+            <li>El Test de Turing y benchmarks modernos evalúan diferentes aspectos de inteligencia artificial</li>
+            <li>La representación del conocimiento abarca lógicas formales, estructuras jerárquicas y modelos probabilísticos</li>
+            <li>La IA es inherentemente multidisciplinaria, integrando filosofía, psicología, neurociencia, lingüística y matemáticas</li>
         </ul>
     </div>
 
