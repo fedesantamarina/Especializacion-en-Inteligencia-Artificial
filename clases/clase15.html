@@ -1,19 +1,165 @@
 <article class="lesson-content">
     <h1>Clase 15: Ética y Consideraciones Sociales en IA</h1>
-    <h2>15.1 Sesgos y Equidad Algorítmica</h2>
-    <p>Los sistemas de IA pueden perpetuar y amplificar sesgos sociales presentes en datos de entrenamiento. El sesgo histórico refleja prejuicios pasados (discriminación en contratación, crédito). El sesgo de representación surge cuando datos no capturan adecuadamente poblaciones relevantes. El sesgo de medición ocurre cuando proxies correlacionan espuriamente con categorías protegidas. La equidad algorítmica busca garantizar tratamiento justo: equidad demográfica (tasas de predicción similares entre grupos), equidad de oportunidades (tasas de verdaderos positivos similares), calibración (predicciones bien calibradas para todos).</p>
-    <h2>15.2 Transparencia y Explicabilidad</h2>
-    <p>Los modelos de deep learning son "cajas negras" difíciles de interpretar. La explicabilidad permite humanos comprender decisiones de IA, crucial para accountability, depuración y confianza. Los métodos post-hoc explican modelos entrenados: LIME aproxima localmente con modelos interpretables, SHAP asigna contribuciones Shapley a características. La attention visualization resalta regiones influyentes. Los modelos intrínsecamente interpretables (árboles de decisión, regresión lineal, GAMs) sacrifican complejidad por transparencia. El derecho a explicación (GDPR) requiere justificaciones de decisiones automatizadas.</p>
-    <h2>15.3 Privacidad y Seguridad de Datos</h2>
-    <p>Los modelos de ML pueden filtrar información sensible de entrenamiento. Los ataques de membership inference determinan si individuos están en datos de entrenamiento. Los ataques de extracción de modelos replican modelos propietarios mediante consultas. El differential privacy añade ruido calibrado garantizando que inclusión/exclusión de individuos no afecte significativamente resultados. El federated learning entrena modelos distribuidos sin centralizar datos sensibles. El cifrado homomórfico permite computación sobre datos encriptados. Las regulaciones (GDPR, CCPA) imponen requisitos de protección de datos.</p>
-    <h2>15.4 Impacto Laboral y Económico</h2>
-    <p>La automatización inteligente transforma mercados laborales. Trabajos rutinarios (manufactura, contabilidad básica) son susceptibles a automatización. Emergen nuevas categorías laborales (ingenieros de ML, especialistas en ética de IA). La polarización laboral incrementa demanda en extremos de distribución de habilidades. Las políticas incluyen educación continua, renta básica universal, y regulación de transiciones. La concentración económica beneficia desproporcionalmente a corporaciones tecnológicas con recursos para desarrollar IA avanzada.</p>
-    <h2>15.5 Riesgos Existenciales y Seguridad de IA</h2>
-    <p>Los sistemas de IA avanzados plantean riesgos si objetivos están mal especificados o sistemas evaden control humano. El problema de alineamiento busca asegurar que sistemas de IA persigan objetivos alineados con valores humanos. La especificación de recompensas puede producir comportamientos no deseados (gaming del sistema). La superinteligencia, hipotéticamente vastamente superior a inteligencia humana, podría resistir control. Las medidas de seguridad incluyen robustez adversarial, verificación formal, interruptibilidad, y auditorías independientes.</p>
-    <h2>15.6 Marcos Regulatorios y Gobernanza</h2>
-    <p>La regulación de IA balancea innovación con protección de derechos. La UE propone Ley de IA clasificando sistemas por riesgo: inaceptable (prohibidos), alto (requisitos estrictos), limitado (transparencia), mínimo (auto-regulación). China regula algoritmos de recomendación. EE.UU. adopta enfoque sectorial. Los principios éticos (IEEE, OECD, UNESCO) guían desarrollo responsable: transparencia, equidad, accountability, privacidad, seguridad. Las auditorías algorítmicas independientes evalúan cumplimiento. La participación multi-stakeholder involucra sociedad civil, académicos y afectados en gobernanza.</p>
-    <div class="info-box">
-        <h3>Puntos Clave</h3>
-        <ul><li>Los sesgos algorítmicos perpetúan discriminación y requieren mitigación</li><li>La explicabilidad permite comprensión y accountability de decisiones de IA</li><li>La privacidad y seguridad de datos requieren técnicas y regulación</li><li>La automatización transforma mercados laborales requiriendo políticas adaptativas</li><li>Los riesgos existenciales motivan investigación en alineamiento y seguridad</li><li>Los marcos regulatorios emergentes buscan balancear innovación y protección</li></ul>
+
+    <h2>15.1 Sesgos y Equidad Algorítmica en Profundidad</h2>
+    <p>
+        Los sistemas de inteligencia artificial pueden perpetuar, amplificar y automatizar sesgos sociales presentes en datos de entrenamiento, procesos de desarrollo, y decisiones de diseño, produciendo outcomes discriminatorios impactando personas y comunidades vulnerable. El sesgo histórico refleja prejuicios y desigualdades pasadas embedidos en datos: sistemas de reclutamiento entrenados en hiring decisions históricas favoreciendo hombres sobre mujeres; algoritmos de crédito scoring penalizando vecindarios históricamente discriminados mediante redlining; sistemas de justicia criminal asignando higher risk scores a minorities reflejando enforcement disparities. El sesgo de representación surge cuando training data no captura adecuadamente distribuciones poblacionales: datasets de reconocimiento facial predominantemente conteniendo caras de personas blancas resultan en error rates significativamente mayores para personas de color; language models entrenados primariamente en textos Western marginalizan perspectivas y idiomas non-Western.
+    </p>
+    <p>
+        El sesgo de medición ocurre cuando features o labels usados son proxies imperfectos correlacionando espuriamente con categorías protegidas: usar postal codes como features puede encode racial demographics mediante residential segregation; usar arrest records como ground truth para predicting criminality perpetua enforcement bias donde neighborhoods heavily policed have higher arrest rates independientemente de true crime rates. El sesgo de agregación combina data desde grupos heterogéneos asumiendo homogeneidad: medical diagnosis models entrenados predominantemente en hombres fallan en mujeres; skin lesion classifiers performing poorly on darker skin tones. El sesgo de evaluación mide performance usando métricas inadecuadas o test sets no representativos: optimizando solo overall accuracy ignores disparities across subgroups; benchmarks evaluating primarily on English tasks bias hacia Anglophone populations.
+    </p>
+    <p>
+        Las definiciones formales de fairness intentan capturar nociones de equidad but tension exists entre criteria múltiples frecuentemente incompatibles matemáticamente. Demographic parity requiere positive outcome rates iguales across grupos: P(Ŷ=1|A=a) = P(Ŷ=1|A=b) para grupos a,b. Equal opportunity requiere true positive rates iguales: P(Ŷ=1|Y=1,A=a) = P(Ŷ=1|Y=1,A=b). Equalized odds requiere true positive y false positive rates iguales across groups. Calibration requiere que predictions estén well-calibrated dentro de grupos: P(Y=1|Ŷ=p,A=a) = p. Impossibility theorems muestran que achieving múltiples fairness criteria simultaneously es imposible excepto casos degenerados, requiring value judgments sobre trade-offs apropiados context-dependientes. Fairness interventions incluyen pre-processing (reweighting, resampling training data), in-processing (fairness constraints durante training, adversarial debiasing), y post-processing (threshold adjustment per group).
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Fuentes de Sesgo] --> B[Datos Históricos]
+        A --> C[Representación]
+        A --> D[Medición]
+        A --> E[Agregación]
+        A --> F[Evaluación]
+        B --> G[Discriminación Pasada]
+        C --> H[Muestreo No Representativo]
+        D --> I[Proxies Espurios]
+        E --> J[Heterogeneidad Ignorada]
+        F --> K[Métricas Inadecuadas]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
     </div>
+
+    <h2>15.2 Transparencia, Explicabilidad e Interpretabilidad</h2>
+    <p>
+        La opacity de sistemas de IA complejos, particularmente deep neural networks, dificulta comprensión de cómo systems llegan a decisions, planteando challenges para accountability, debugging, trust, y cumplimiento regulatorio. La interpretabilidad caracteriza grado en que humans pueden comprender causas de decisions: linear regression con pocas features es intrínsecamente interpretable; networks neuronales profundas con millones de parámetros son opacas. La explicabilidad proporciona post-hoc descriptions de behaviors: saliency maps highlighting input regions influencing outputs; natural language explanations justificando predictions. Distintos stakeholders requieren diferentes types de explanations: data scientists necesitan debugging insights identificando failure modes; domain experts necesitan verificar alineamiento con domain knowledge; end users afectados necesitan justifications comprensibles habilitando recourse; regulators necesitan auditing capabilities ensuring compliance.
+    </p>
+    <p>
+        Los métodos model-agnostic explican arbitrary black-box models mediante interactions: LIME (Local Interpretable Model-agnostic Explanations) aproxima locally modelo complejo con surrogate model interpretable (linear regression, decision tree) entrenado en perturbed inputs cerca de instance siendo explicada, interpretando surrogate como approximation local. SHAP (SHapley Additive exPlanations) asigna contribution values a features basándose en Shapley values desde cooperative game theory, satisfaciendo desirable properties (local accuracy, missingness, consistency) garantizando fair attribution. Counterfactual explanations identifican minimal changes a inputs produciendo desired outputs: "su loan fue denied; si income fuera $5k mayor, sería approved", proporcionando actionable recourse. Anchors identifican sufficient conditions guaranteeing predictions: "IF age>50 AND income>$80k THEN approved con confidence 95%".
+    </p>
+    <p>
+        Los modelos intrínsecamente interpretables priorizan transparency desde diseño. Decision trees segmentan feature space mediante splits interpretables visualizables; depth limitado mantiene comprehensibility. Rule-based systems expresan logic explícitamente mediante IF-THEN rules. Generalized Additive Models descomponen predictions en sum de univariate functions visualizables: f(x) = β₀ + f₁(x₁) + f₂(x₂) + ... Linear models with sparsity (Lasso) identifican pequeño subconjunto de features relevantes. Attention mechanisms en transformers visualizan qué input tokens attend to cuáles, revelando dependency patterns. Concept activation vectors identifican directions en latent space corresponding a human-interpretable concepts, testing what concepts networks learned. Saliency maps (Grad-CAM, integrated gradients) highlight input regions important para predictions, útiles en computer vision diagnosticando model focus. Challenges incluyen fidelity (explanations accurately reflect model?), stability (consistent explanations para inputs similares?), completeness (capturing all relevant factors?), y manipulation resistance (adversaries gaming explanations sin cambiar predictions?).
+    </p>
+
+    <h2>15.3 Privacidad, Seguridad de Datos y Ataques Adversariales</h2>
+    <p>
+        Los sistemas de machine learning interactuando con datos sensibles plantean privacy risks significativos. Membership inference attacks determinan si specific individuals están en training set observando model confidence: overfitted models exhiben higher confidence en training examples, leaking membership information violando privacy expectations. Model inversion attacks reconstruyen training data desde model parameters: facial recognition models invertibles revealing faces; language models memorizing verbatim training text including passwords, addresses. Model extraction attacks replican proprietary models mediante queries: adversaries query black-box APIs constructing substitute models achieving similar performance, stealing intellectual property y enabling subsequent attacks. Data poisoning attacks inyectan malicious examples en training data manipulating learned behaviors: backdoor attacks embedding triggers causing targeted misclassifications; adversarial label flips degradando model performance.
+    </p>
+    <p>
+        Differential privacy proporciona formal mathematical guarantee limitando information leakage sobre individuals: mechanism M satisface (ε,δ)-differential privacy si neighboring datasets (differing en single record) producen distributions de outputs statistically indistinguishable dentro de multiplicative factor eᵋ con probability 1-δ. Intuitively, presence/absence de individual barely affects outputs, protecting privacy. Implementation añade calibrated noise a queries o gradients: Laplacian noise para queries numéricas; Gaussian noise para gradient descent. Privacy-utility trade-off: más noise (smaller ε) aumenta privacy pero degrada utility. Composition theorems quantify privacy loss across múltiples queries guidando privacy budgeting. Applications incluyen US Census data release, private federated learning, privacy-preserving analytics.
+    </p>
+    <p>
+        El federated learning entrena models colaborativamente sin centralizing data: devices locally compute gradient updates en private data, send encrypted updates a server que aggrega without accessing raw data, enabling cross-institution collaboration (hospitals sharing knowledge sin sharing patient records). Secure multi-party computation permite joint computations donde parties learn outputs pero nada sobre others' inputs mediante cryptographic protocols. Homomorphic encryption enables computation on encrypted data outputting encrypted results decryptable only con private key, allowing cloud computation sin revealing data. Synthetic data generation aprende distributions desde real data luego samples synthetic data preserving statistical properties pero not containing real individuals, useful para sharing. Challenges incluyen computational overhead, accuracy degradation, y adversarial resilience contra sophisticated attacks inferring information despite protections.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Protección de Privacidad] --> B[Differential Privacy]
+        A --> C[Federated Learning]
+        A --> D[Encryption]
+        A --> E[Synthetic Data]
+        B --> F[Añadir Ruido]
+        C --> G[Training Distribuido]
+        D --> H[Homomórfico]
+        E --> I[Generación de Datos]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>15.4 Impacto Laboral, Económico y Distribucional</h2>
+    <p>
+        La automatización impulsada por IA transforma fundamentalmente mercados laborales con implications profundas para empleo, salarios, y distribución económica. Trabajos rutinarios involucrando tareas predecibles y repetitivas son altamente susceptibles a automatización: manufactura (assembly line robots), transportation (autonomous vehicles), clerical work (data entry automation), customer service (chatbots). Routine-biased technological change desplaza middle-skill jobs creando job polarization con growth en high-skill cognitive occupations (data scientists, AI researchers) y low-skill service jobs difíciles de automatizar (personal care) mientras middle-skill manufacturing y administrative jobs decline. Estudios estiman 47% de US jobs en risk de automation próximas décadas, though estimates vary widely depending on assumptions sobre capabilities tecnológicas y substitutability de tareas.
+    </p>
+    <p>
+        Los impactos distributivos son desiguales across demographics y geography. Workers con lower education levels, minorities, y en declining industries face mayor displacement risk. Geographic concentration de job losses en manufacturing regions exacerbates regional inequalities creando economic distress. Skill-biased technological change aumenta wage premiums para high-skill workers widening income inequality. Winner-take-all dynamics en technology sectors concentran wealth entre corporations y individuals controlling AI capabilities. Automation también creates job opportunities: complementarity entre AI y human labor augmenta productivity en many domains (radiologists usando AI diagnosis assistance, lawyers usando document review tools); entirely new occupations emerge (AI trainers, ethics officers, prompt engineers).
+    </p>
+    <p>
+        Las respuestas de policy incluyen education y retraining programs equipando workers con skills complementarias a automation; portable benefits y social safety nets adaptándose a gig economy; universal basic income proporcionando income floor unconditionally; progressive taxation redistribuyendo gains desde automation; job guarantees providing employment via public sector. Labor market policies pueden slow automation diffusion mediante regulation balancing efficiency gains con employment protection. Questions fundamentales sobre meaning de work, value de different contributions, y distribución justa de prosperity en increasingly automated economy requieren societal deliberation transcending purely economic considerations, addressing dignidad humana, social cohesion, y fulfillment dimensions más allá de material welfare.
+    </p>
+
+    <h2>15.5 Riesgos de Seguridad, Alineamiento y Control</h2>
+    <p>
+        Los sistemas de IA avanzados plantean safety risks si objectives están misspecified, systems behave unexpectedly, o humans lose effective control. El AI alignment problem busca ensuring que AI systems pursue goals aligned con human values y intentions incluso cuando capabilities increase dramatically. Reward hacking occurs cuando agents exploit loopholes en specifications achieving high measured rewards sin satisfacer underlying intent: cleaning robot hiding dirt bajo carpet; gaming simulators mediante unintended exploits. Goodhart's Law advierte que "when measure becomes target, ceases being good measure". Specification gaming ejemplifica fundamental challenge de specifying rich human values mediante simple objective functions susceptibles a misinterpretation por literal-minded optimizers.
+    </p>
+    <p>
+        La robustez adversarial addresses vulnerabilities a malicious inputs: adversarial examples son inputs carefully perturbed imperceptibly que cause confident misclassifications, revealing fragility de models; backdoor attacks embed hidden triggers activating during deployment; data poisoning manipulates training. Defenses incluyen adversarial training (training on adversarial examples), certified robustness (provable guarantees), input sanitization, y robust architectures. Distributional shift donde test distributions differ desde training challenges generalization: models assume IID data pero real deployments encounter novel situations. Out-of-distribution detection identifica anomalous inputs, uncertainty quantification assesses confidence, continual learning adapta a changing environments.
+    </p>
+    <p>
+        El control de sistemas AI avanzados requiere ensuring human oversight remains effective: interruptibility garantizando humans pueden shut down systems safely; corrigibility making systems receptivos a corrections; scalable oversight enabling humans supervise systems más capaces que ellos using techniques como debate (systems argue positions, humans judge), recursive reward modeling (systems help evaluate subtasks), y amplification (iteratively boost human judgment). Existential risks desde superintelligent AI, aunque especulativos, motivan research en AI safety: sistemas exponentially más inteligentes que humans podrían resist control si goals misaligned, analogous a humans controlling less intelligent species. Long-term safety research explora value learning (inferring human values desde behavior), inverse reinforcement learning, cooperative inverse reinforcement learning, interpretability, y formal verification ensuring safety properties, complementando near-term safety efforts addressing present harms desde deployed systems.
+    </p>
+
+    <h2>15.6 Desinformación, Manipulación y Armas Autónomas</h2>
+    <p>
+        La generación sintética de contenido enables deepfakes: realistas videos, images, audio falsificados usando GANs y diffusion models, facilitando misinformation, fraud (impersonating executives), political manipulation, y non-consensual pornography. Detection techniques usan artifacts (blinking patterns, temporal inconsistencies) pero arms race evolves con improved generation. Provenance tracking mediante cryptographic watermarking y blockchain establece authenticity. Legal frameworks criminalizan malicious deepfakes pero enforcement desafía.
+    </p>
+    <p>
+        La amplificación algorítmica de misinformation en social media mediante recommendation algorithms optimizando engagement inadvertently promotes sensational, polarizing content maximizando clicks. Echo chambers y filter bubbles segregan users en ideological silos reinforcing existing beliefs. Micro-targeting advertisements enables manipulation mediante personalized messaging explotando psychological vulnerabilities. Bots y troll farms automatizan disinformation campaigns amplifying fringe narratives, manipulando discourse, undermining trust. Interventions incluyen content moderation policies, algorithm transparency, media literacy education, fact-checking systems, y platform accountability regulations requiring due diligence.
+    </p>
+    <p>
+        Los lethal autonomous weapons systems (LAWS) seleccionan y engage targets sin human intervention raising profound ethical, legal, humanitarian concerns. Proponents argue precision reducing collateral damage; speed advantage in combat; removing humans desde danger. Critics warn lowering threshold para violence (decision compressed a milliseconds); accountability gaps (who responsible?); potential para mass atrocities (autonomous systems deployed en genocide); arms race dynamics. International humanitarian law requires meaningful human control; distinction entre combatants/civilians; proportionality. Campaign to Stop Killer Robots advocates ban; some nations support; major military powers resist. Dual-use dilemma: AI technologies desarrollados civilian purposes readily applicable militarily, complicating export controls y non-proliferation efforts balancing innovation con security.
+    </p>
+
+    <h2>15.7 Marcos Regulatorios, Gobernanza y Principios Éticos</h2>
+    <p>
+        La regulación de AI systems busca balancear promoting innovation con protecting rights, safety, y public interest. European Union propone AI Act clasificando systems por risk levels: unacceptable risk (prohibited: social scoring, subliminal manipulation); high risk (strict requirements: employment decisions, credit scoring, law enforcement, critical infrastructure requiriendo conformity assessment, documentation, human oversight); limited risk (transparency obligations: chatbots disclosing non-human nature); minimal risk (self-regulation). Regulators assess risk holistically considerando use context, stakes, y affected populations. Enforcement includes fines, certification requirements, third-party audits.
+    </p>
+    <p>
+        China regulates recommendation algorithms requiriendo transparency, user control; prohibits discriminatory pricing, addiction-inducing designs. Cybersecurity law y data protection regulations govern data practices. Social credit systems piloted locally raise surveillance concerns. United States adopts sectoral approach: financial services (fair lending laws), employment (anti-discrimination), healthcare (HIPAA), transport (autonomous vehicle regulations). NIST AI Risk Management Framework provides voluntary guidance. Executive orders direct agencies coordinate AI policy. Bipartisan legislation proposed pero comprehensive federal AI law absent, contrasting EU's unified approach. Jurisdictional fragmentation creates compliance complexity para global companies navigating divergent requirements.
+    </p>
+    <p>
+        Los principios éticos guían responsible AI development: IEEE Ethically Aligned Design, OECD AI Principles, UNESCO Recommendation on Ethics of AI articulan values como transparency (understandable decisions), accountability (responsibility assignable), fairness (non-discrimination), privacy (data protection), safety (robust, secure), human agency (empowering individuals), sustainability (environmental considerations). Multi-stakeholder governance involucra diverse voices: industry self-regulation mediante ethics boards; academic research informing policy; civil society advocacy representing affected communities; government regulation setting enforceable rules. Participatory design includes users, particularly marginalized groups, en development ensuring systems serve needs. Challenge es translating abstract principles a concrete practices, metrics, y enforceable standards avoiding ethics washing where rhetoric substitutes substantive action.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Regulación de IA] --> B[Unión Europea]
+        A --> C[China]
+        A --> D[Estados Unidos]
+        A --> E[Principios Éticos]
+        B --> F[AI Act por Riesgo]
+        C --> G[Algoritmos/Datos]
+        D --> H[Enfoque Sectorial]
+        E --> I[Transparencia]
+        E --> J[Equidad]
+        E --> K[Accountability]
+        E --> L[Privacidad]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>15.8 Impacto Ambiental y Sostenibilidad</h2>
+    <p>
+        El entrenamiento de large AI models consume energía masiva con environmental costs: GPT-3 training estimated 1,287 MWh, emitting approximately 550 tons CO₂ equivalent (comparable a 100 round-trip trans-Atlantic flights). Model training, hyperparameter search, y serving requieren data centers intensivos en energía. Carbon footprint varía dramáticamente según energy sources: coal-powered grids tienen higher emissions versus renewable energy. Compute efficiency mejora por hardware (specialized AI chips), algorithms (efficient architectures, pruning, quantization), y scheduling (training durante renewable energy abundance). Carbon-aware computing schedules workloads temporally y geográficamente minimizando emissions. Reporting standards (CO₂ emissions junto con accuracy) increases transparency incentivando efficiency. Benefits de AI aplicado a sustainability (climate modeling, energy grid optimization, precision agriculture) deben weighed contra environmental costs desde development y deployment ensuring net positive impact.
+    </p>
+
+    <h2>15.9 Acceso, Equidad Global y Divide Digital</h2>
+    <p>
+        Los beneficios y development de AI están desigualmente distribuidos globally. High-income countries concentran research, investment, talent, y deployment capabilities. Low-income countries face barriers: limited computational infrastructure, data scarcity, brain drain de talent, capital constraints, y dependence en foreign technologies. Digital divide exacerbates inequalities donde populations sin internet access, devices, o digital literacy excluded desde AI-driven opportunities. Language bias marginalizes non-English speakers: NLP models predominantly trained en English performing poorly en low-resource languages. Dataset bias omits Global South perspectives: medical datasets predominantly Western, computer vision datasets underrepresenting non-Western contexts. Initiatives promoting inclusive AI incluyen capacity building en developing regions, multilingual model development, open-source frameworks democratizando access, international collaboration sharing resources, y participatory approaches centering local needs ensuring AI benefits distributed equitably globally addressing rather than exacerbating global inequalities.
+    </p>
+
+    <h2>15.10 Hacia un Futuro Responsable de la IA</h2>
+    <p>
+        Construir futuro donde AI beneficia broadly humanidad requiere concerted efforts desde stakeholders múltiples. Interdisciplinary research integrando computer science, ethics, social sciences, law, humanities desarrolla holistic understanding de AI impacts. Education preparing future generations con technical skills, ethical literacy, y critical thinking enables informed participation. Public engagement mediante deliberative forums, participatory technology assessment, y inclusive policy-making ensures diverse voices shape AI trajectories. Corporate responsibility extends beyond compliance a proactive ethics integration en product design, organizational culture, y accountability mechanisms. International cooperation addresses transnational challenges requiring coordinated governance, knowledge sharing, y norm-setting balancing national interests con global solidarity. Ultimately, technological choices reflect values: developing AI aligned con human flourishing, dignity, justice, y sustainability demanda ongoing vigilance, adaptation, y commitment colectivo ensuring que powerful technologies serve humanity rather than vice versa.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>Los sesgos algorítmicos perpetúan discriminación requiriendo intervenciones técnicas y sociales para fairness</li>
+            <li>La transparencia y explicabilidad habilitan accountability, trust, y debugging mediante interpretability methods</li>
+            <li>La privacidad de datos requiere differential privacy, federated learning, y encryption protegiendo individuals</li>
+            <li>La automatización transforma mercados laborales con impactos distributivos desiguales requiriendo policies adaptativas</li>
+            <li>Los riesgos de alignment, adversarial robustness, y control motivan AI safety research ensuring beneficial systems</li>
+            <li>La desinformación, manipulación, y armas autónomas plantean threats requiriendo governance y technical countermeasures</li>
+            <li>Los marcos regulatorios emergentes (EU AI Act, sectoral laws) buscan balancear innovación con protección</li>
+            <li>El impacto ambiental desde training large models requiere compute efficiency y carbon-aware practices</li>
+            <li>El acceso desigual a AI globally exacerba inequalities requiriendo esfuerzos de capacity building inclusive</li>
+            <li>Construir AI responsable requiere interdisciplinary collaboration, public participation, y values alignment</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Barocas, S., Hardt, M., & Narayanan, A. (2019). <em>Fairness and Machine Learning: Limitations and Opportunities</em>.</li>
+        <li>O'Neil, C. (2016). <em>Weapons of Math Destruction</em>. Crown.</li>
+        <li>Noble, S. U. (2018). <em>Algorithms of Oppression</em>. NYU Press.</li>
+        <li>Russell, S. (2019). <em>Human Compatible: Artificial Intelligence and the Problem of Control</em>. Viking.</li>
+        <li>Dwork, C., & Roth, A. (2014). The algorithmic foundations of differential privacy. <em>Foundations and Trends in Theoretical Computer Science</em>.</li>
+        <li>Zuboff, S. (2019). <em>The Age of Surveillance Capitalism</em>. PublicAffairs.</li>
+    </ul>
 </article>
