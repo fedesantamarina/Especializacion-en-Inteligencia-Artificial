@@ -117,6 +117,99 @@
         La revisión de creencias formaliza cómo agentes racionales deben modificar sus sistemas de creencias al recibir información nueva potencialmente contradictoria. Los postulados AGM de Alchourrón, Gärdenfors y Makinson especifican criterios normativos: la expansión añade nueva información; la contracción elimina una creencia preservando máxima información; la revisión incorpora nueva información posiblemente contradictoria, eliminando creencias mínimamente. Operadores de revisión concretos, como el de Grove basado en sistemas de esferas, implementan estos postulados mediante órdenes de plausibilidad sobre mundos posibles.
     </p>
 
+    <h2>6.7 SAT Solvers y Verificación Formal</h2>
+    <p>
+        El problema de satisfacibilidad booleana (SAT) determina si existe una asignación de valores de verdad a variables que satisface una fórmula proposicional dada en forma normal conjuntiva (conjunción de disyunciones de literales). Aunque SAT es NP-completo, el primer problema probado NP-completo por el teorema de Cook-Levin, los SAT solvers modernos resuelven eficientemente instancias prácticas con millones de variables mediante algoritmos sofisticados y heurísticas. DPLL (Davis-Putnam-Logemann-Loveland), algoritmo fundacional, combina búsqueda sistemática con propagación de restricciones: asigna valores a variables, propaga consecuencias lógicas, y retrocede cuando deriva contradicciones.
+    </p>
+    <p>
+        Los SAT solvers CDCL (Conflict-Driven Clause Learning) extienden DPLL aprendiendo cláusulas que explican conflictos durante búsqueda, evitando exploración repetida de regiones infructuosas del espacio de búsqueda. Cuando se detecta un conflicto (asignación parcial que viola alguna cláusula), el análisis de conflicto identifica un conjunto de decisiones responsables, añadiendo una cláusula aprendida que previene esta combinación de asignaciones en búsqueda futura. El restart periódico de la búsqueda, combinado con decaimiento de actividad de cláusulas aprendidas, mantiene balance entre exploración y explotación. Heurísticas como VSIDS (Variable State Independent Decaying Sum) priorizan variables frecuentemente involucradas en conflictos recientes.
+    </p>
+    <p>
+        La verificación formal de hardware y software explota SAT solvers para verificar que diseños satisfacen especificaciones. El model checking verifica propiedades expresadas en lógicas temporales explorando sistemáticamente el espacio de estados de sistemas: dado un modelo de transiciones de sistema y una especificación temporal, el verificador determina si todos los comportamientos posibles satisfacen la especificación. Bounded Model Checking (BMC) reduce verificación a SAT: desenrolla transiciones hasta profundidad k, codifica la negación de la propiedad como fórmula SAT, y consulta SAT solver. Si es satisfacible, provee contraejemplo; si insatisfacible para k suficientemente grande, verifica corrección.
+    </p>
+    <p>
+        SMT (Satisfiability Modulo Theories) solvers extienden SAT combinando razonamiento proposicional con teorías de primer orden específicas (aritmética lineal, arrays, bit-vectors, tipos de datos algebraicos). Un SMT solver integra un SAT solver central con solucionadores especializados para teorías: el SAT solver genera asignaciones de verdad a fórmulas atómicas, y los theory solvers verifican consistencia respecto a teorías. Esta arquitectura permite razonamiento eficiente sobre dominios combinando decisión booleana con razonamiento cuantitativo y estructural. Aplicaciones incluyen verificación de programas, generación de test cases, síntesis de programas, y análisis estático.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[SAT Problem] --> B[DPLL]
+        B --> C[CDCL]
+        C --> D[Propagación]
+        C --> E[Conflicto]
+        E --> F[Análisis]
+        F --> G[Clause Learning]
+        G --> D
+        D --> H{Satisfacible?}
+        H -->|Sí| I[Modelo]
+        H -->|No| J[UNSAT]
+        K[SMT] --> L[SAT Solver]
+        K --> M[Theory Solvers]
+        L --> M
+        M --> N[Verificación Formal]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style I fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>6.8 Razonamiento Basado en Casos y Analogías</h2>
+    <p>
+        El razonamiento basado en casos (Case-Based Reasoning, CBR) resuelve problemas nuevos adaptando soluciones de problemas similares previamente resueltos. Este paradigma refleja el razonamiento humano cotidiano: médicos diagnostican enfermedades recordando casos clínicos similares; juristas argumentan citando precedentes legales análogos. Un sistema CBR opera mediante ciclo iterativo: recuperar casos similares de una biblioteca mediante medidas de similitud; reutilizar soluciones adaptándolas al problema actual; revisar soluciones propuestas mediante evaluación o simulación; y retener casos útiles expandiendo la biblioteca.
+    </p>
+    <p>
+        La recuperación de casos similares requiere métricas de similitud apropiadas al dominio. Para representaciones basadas en atributos, la similitud puede computarse mediante distancias ponderadas: sim(x,y) = Σᵢ wᵢ simᵢ(xᵢ,yᵢ), donde wᵢ son pesos de importancia y simᵢ funciones de similitud por atributo. Los atributos simbólicos pueden usar similitud binaria (idénticos o diferentes) o taxonomías que gradúan similitud semántica. Para representaciones estructuradas (grafos, árboles), algoritmos de graph matching evalúan isomorfismos estructurales. El indexado eficiente mediante técnicas como árboles KD, hashing sensible a localidad, o redes de discriminación acelera recuperación en bibliotecas grandes.
+    </p>
+    <p>
+        La adaptación transforma soluciones recuperadas para ajustarse al problema actual. La adaptación transformacional aplica reglas que modifican soluciones basándose en diferencias entre caso recuperado y problema actual. La adaptación derivacional replica el razonamiento que generó la solución original, ajustando para el nuevo contexto. La adaptación compositiva combina fragmentos de múltiples casos. La dificultad de adaptación varía enormemente entre dominios: en algunos, soluciones se transfieren directamente; en otros, requieren modificación substancial que puede ser tan difícil como resolver desde cero.
+    </p>
+    <p>
+        El razonamiento analógico, relacionado pero más general, identifica correspondencias estructurales entre dominios diferentes (dominio fuente y dominio objetivo) para transferir conocimiento. La analogía estructura-mapping de Gentner propone que analogías alinean sistemas de relaciones preservando estructura mientras ignoran atributos superficiales. El mapeo sistemático identifica correspondencias entre objetos y relaciones que maximizan coherencia estructural. Las analogías fundamentan creatividad científica (analogía entre sistema solar y átomo), resolución de problemas (transferir estrategias entre problemas isomórficos), y aprendizaje (comprender conceptos abstractos mediante analogías concretas).
+    </p>
+
+    <h2>6.9 Answer Set Programming (ASP)</h2>
+    <p>
+        Answer Set Programming representa un paradigma de programación declarativa basado en lógica no-monótona y programación lógica con negación estable. Un programa ASP consiste en reglas lógicas que especifican restricciones sobre conjuntos de átomos; un answer set es un conjunto de átomos que satisface todas las reglas del programa de manera coherente. ASP permite expresar naturalmente conocimiento con excepciones, razonamiento por defecto, y restricciones complejas, haciéndolo apropiado para problemas combinatorios de búsqueda, planificación, configuración, y diagnóstico.
+    </p>
+    <p>
+        La sintaxis de ASP extiende lógica de Horn con negación fuerte (¬p: p es definitivamente falso) y negación por fallo (not p: no hay evidencia de p). Las reglas tienen forma: h₁ | ... | hₘ :- b₁, ..., bₙ, not bₙ₊₁, ..., not bₖ, donde hᵢ son átomos head (disyunción de posibles conclusiones) y bⱼ son literales body. Las restricciones, reglas sin head (:- b₁, ..., bₙ), eliminan answer sets que satisfacen el body. Los choice rules {h₁; ...; hₘ} :- body permiten seleccionar subconjuntos de átomos, generando espacios de búsqueda.
+    </p>
+    <p>
+        Los ASP solvers modernos como Clingo, DLV, y WASP implementan algoritmos sofisticados basados en CDCL adaptado para lógica no-monótona. El grounding transforma programas con variables en programas proposicionales equivalentes, eliminando variables mediante sustituciones sistemáticas. El solving busca answer sets mediante propagación booleana, aprende nogood constraints (combinaciones de literales que violan reglas), y explora sistemáticamente con backtracking. Optimizaciones incluyen detección de equivalencias, simplificaciones mediante unfounded sets, y heurísticas domain-specific.
+    </p>
+    <p>
+        Las aplicaciones de ASP abarcan dominios diversos: planificación clásica codificando estados, acciones y restricciones temporales; problemas de asignación y scheduling expresando recursos, tareas y restricciones; configuración de productos especificando componentes compatibles y requisitos; diagnóstico basado en modelos identificando componentes fallidos que explican observaciones anómalas; y razonamiento de sentido común formalizando conocimiento con excepciones. La combinación de expresividad declarativa, eficiencia de solvers, y disponibilidad de herramientas robustas ha establecido ASP como tecnología práctica para problemas de conocimiento intensivo y combinatorialmente desafiantes.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Programa ASP] --> B[Grounding]
+        B --> C[Programa Proposicional]
+        C --> D[ASP Solver]
+        D --> E[Propagación]
+        E --> F{Conflicto?}
+        F -->|Sí| G[Aprender Nogood]
+        F -->|No| H{Completo?}
+        G --> E
+        H -->|No| I[Decidir]
+        I --> E
+        H -->|Sí| J[Answer Set]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style J fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>6.10 Integración de Razonamiento Simbólico y Subsimbólico</h2>
+    <p>
+        La dicotomía entre razonamiento simbólico (manipulación de representaciones explícitas mediante lógica) y subsimbólico (procesamiento distribuido en redes neuronales) ha caracterizado debates en IA desde sus inicios. Los enfoques simbólicos excelen en razonamiento composicional, explicabilidad y garantías lógicas, pero enfrentan dificultades con percepción ruidosa, aprendizaje de datos, y escalabilidad. Los enfoques subsimbólicos manejan robustamente incertidumbre y aprenden representaciones de extremo a extremo, pero carecen de interpretabilidad, generalización sistemática y capacidades de razonamiento abstracto. La integración neurosimbólica busca sinergias combinando fortalezas complementarias.
+    </p>
+    <p>
+        Los sistemas de razonamiento guiado por conocimiento enriquecen redes neuronales con conocimiento simbólico mediante restricciones lógicas durante entrenamiento o inferencia. Semantic Loss añade términos de pérdida que penalizan violaciones de restricciones lógicas expresadas en lógica de primer orden o lógicas descripción, guiando el aprendizaje hacia regiones del espacio de parámetros consistentes con conocimiento de dominio. Los métodos de inferencia estructurada incorporan razonamiento lógico en la capa de salida, asegurando que predicciones satisfagan restricciones declaradas. Por ejemplo, en reconocimiento de escenas, restricciones geométricas garantizan consistencia espacial entre objetos detectados.
+    </p>
+    <p>
+        Los Neural-Symbolic Systems combinan módulos simbólicos y neuronales mediante arquitecturas híbridas. Neural Theorem Provers aprenden estrategias de demostración de teoremas mediante aprendizaje por refuerzo, guiando búsqueda en espacios de demostraciones con redes neuronales que estiman valor de estados y políticas de selección de tácticas. Los Graph Neural Networks razonan sobre representaciones estructuradas (grafos de conocimiento, parse trees, escenas visuales) mediante propagación de mensajes que respeta estructura, uniendo procesamiento subsimbólico con representaciones explícitamente estructuradas.
+    </p>
+    <p>
+        La compilación de conocimiento simbólico en redes neuronales traduce bases de conocimiento lógicas en pesos de redes que implementan el razonamiento correspondiente. Las Logic Tensor Networks integran lógica y aprendizaje mediante groundings de fórmulas lógicas en tensores reales: predicados se interpretan como funciones neuronales, conectivos lógicos como operaciones diferenciables, y cuantificadores como agregaciones. Esta formulación permite aprendizaje de parámetros maximizando satisfacción de axiomas lógicos mediante descenso de gradiente. La extracción de reglas desde redes neuronales entrenadas destila conocimiento aprendido en formas interpretables, facilitando explicabilidad y transferencia. La investigación neurosimbólica contemporánea promete sistemas que razonan robustamente bajo incertidumbre preservando estructura y garantías lógicas.
+    </p>
+
     <div class="info-box">
         <h3>Puntos Clave de la Clase</h3>
         <ul>
@@ -126,6 +219,10 @@
             <li>El razonamiento probabilístico formaliza incertidumbre, con redes bayesianas como representación estructurada</li>
             <li>Las lógicas modales y temporales extienden expresividad para conocimiento, tiempo y modalidades</li>
             <li>El razonamiento no-monótono captura aspectos del sentido común que elude lógica clásica</li>
+            <li>Los SAT solvers modernos resuelven eficientemente problemas NP-completos mediante CDCL y clause learning</li>
+            <li>El razonamiento basado en casos adapta soluciones de problemas similares previos</li>
+            <li>Answer Set Programming ofrece programación declarativa para problemas combinatorios con restricciones</li>
+            <li>La integración neurosimbólica combina razonamiento lógico con aprendizaje de redes neuronales</li>
         </ul>
     </div>
 
