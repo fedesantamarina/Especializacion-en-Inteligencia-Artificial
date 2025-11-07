@@ -1,19 +1,277 @@
 <article class="lesson-content">
     <h1>Clase 11: Deep Learning y Redes Neuronales</h1>
-    <h2>11.1 Arquitectura de Redes Neuronales</h2>
-    <p>Las redes neuronales artificiales se inspiran en neuronas biológicas. Una neurona artificial computa suma ponderada de entradas más bias, aplicando función de activación no lineal: a = σ(Σwᵢxᵢ + b). Las redes feedforward apilan capas: entrada → ocultas → salida. La profundidad (múltiples capas ocultas) permite aprender jerarquías de abstracciones: características simples en capas tempranas, conceptos complejos en profundas.</p>
-    <h2>11.2 Backpropagation y Optimización</h2>
-    <p>Backpropagation calcula eficientemente gradientes de función de pérdida respecto a pesos mediante regla de la cadena, propagando errores desde salida hacia entrada. Los optimizadores modernos (Adam, RMSprop, AdaGrad) adaptan tasas de aprendizaje por parámetro. Las técnicas de regularización (dropout, batch normalization, weight decay) previenen overfitting y estabilizan entrenamiento.</p>
-    <h2>11.3 Redes Convolucionales (CNN)</h2>
-    <p>Las CNN explotan estructura espacial en imágenes mediante capas convolucionales que aplican filtros aprendidos detectando características locales. Pooling reduce dimensionalidad preservando características salientes. Arquitecturas icónicas: LeNet (reconocimiento de dígitos), AlexNet (ImageNet 2012), VGG (profundidad con filtros pequeños), ResNet (conexiones residuales permitiendo redes muy profundas), y Transformers de visión.</p>
-    <h2>11.4 Redes Recurrentes (RNN) y LSTM</h2>
-    <p>Las RNN procesan secuencias manteniendo estado oculto que captura contexto temporal: hₜ = σ(Wₕhₜ₋₁ + Wₓxₜ + b). Las LSTM (Long Short-Term Memory) mitigan vanishing gradients mediante puertas que controlan flujo de información, recordando dependencias a largo plazo. Las GRU simplifican LSTM con menos parámetros. Bidirectional RNNs procesan secuencias en ambas direcciones.</p>
-    <h2>11.5 Transformers y Attention</h2>
-    <p>Los mecanismos de atención permiten que modelos enfoquen dinámicamente partes relevantes de entrada. Self-attention computa representaciones pesando importancia de cada posición respecto a todas las demás. Los Transformers, basados enteramente en attention sin recurrencia, procesan secuencias en paralelo. BERT usa transformers bidireccionales para comprensión; GPT usa transformers autoregresivos para generación.</p>
-    <h2>11.6 Modelos Generativos: GANs y Diffusion</h2>
-    <p>Las GANs (Generative Adversarial Networks) entrenan simultáneamente generador (crea muestras sintéticas) y discriminador (distingue reales de sintéticas) en juego adversarial. El generador aprende la distribución de datos reales. StyleGAN genera imágenes fotorealistas. Los modelos de difusión aprenden invertir proceso de corrupción gradual, generando muestras mediante denoising iterativo. Stable Diffusion permite generación de imágenes desde texto.</p>
-    <div class="info-box">
-        <h3>Puntos Clave</h3>
-        <ul><li>Las redes neuronales profundas aprenden jerarquías de representaciones</li><li>Backpropagation y optimizadores adaptativos entrenan redes eficientemente</li><li>Las CNN explotan estructura espacial para visión computacional</li><li>Las RNN y LSTM procesan secuencias capturando dependencias temporales</li><li>Los Transformers dominan NLP mediante mecanismos de atención</li><li>Los modelos generativos crean datos sintéticos realistas</li></ul>
+
+    <h2>11.1 Arquitectura de Redes Neuronales Profundas</h2>
+    <p>
+        Las redes neuronales artificiales profundas constituyen el fundamento del aprendizaje profundo moderno, inspiradas en la estructura y funcionamiento del cerebro humano. Una neurona artificial, unidad básica de computación, recibe múltiples entradas ponderadas, las suma junto con un término de sesgo, y aplica una función de activación no lineal para producir su salida: a = σ(Σᵢwᵢxᵢ + b). La función de activación introduce no linealidad esencial que permite a redes neuronales aproximar funciones arbitrariamente complejas, según el teorema de aproximación universal que establece que una red con una capa oculta de suficientes neuronas puede aproximar cualquier función continua.
+    </p>
+    <p>
+        Las arquitecturas feedforward organizan neuronas en capas: la capa de entrada recibe datos crudos, capas ocultas intermedias extraen representaciones jerárquicas progresivamente más abstractas, y la capa de salida produce predicciones finales. La profundidad, número de capas ocultas, permite aprender jerarquías de características: en visión computacional, capas tempranas detectan bordes y texturas simples, capas intermedias reconocen partes de objetos (ojos, ruedas), y capas profundas identifican objetos completos (rostros, automóviles). Esta organización jerárquica refleja procesamiento visual cortical en mamíferos, donde información fluye de áreas primarias a asociativas de orden superior.
+    </p>
+    <p>
+        Las funciones de activación determinan capacidad expresiva de redes neuronales. La sigmoidea σ(x) = 1/(1+e⁻ˣ) comprime salidas a rango [0,1], interpretable como probabilidad, pero sufre vanishing gradients en valores extremos. La tangente hiperbólica tanh(x) = (eˣ-e⁻ˣ)/(eˣ+e⁻ˣ) proporciona rango [-1,1] centrado en cero, facilitando entrenamiento. La Rectified Linear Unit (ReLU) f(x) = max(0,x) ha emergido como activación dominante en redes profundas por su simplicidad computacional, gradientes constantes en región positiva evitando vanishing, y sparsity inducida al zeroing activaciones negativas. Variantes como Leaky ReLU, Parametric ReLU, y ELU address limitaciones de ReLU estándar.
+    </p>
+    <p>
+        La inicialización de pesos influencia críticamente entrenamiento y convergencia. Inicialización aleatoria uniforme simple puede causar exploding o vanishing activations en redes profundas. La inicialización Xavier/Glorot establece varianza de pesos proporcional a 1/(fan_in + fan_out), manteniendo varianza de activaciones constante a través de capas para activaciones sigmoideas/tanh. La inicialización He adapta Xavier para ReLU escalando por √(2/fan_in), accountando para zeroing de la mitad de activaciones. Estas inicializaciones facilitan flujo de gradientes, acelerando convergencia y mejorando desempeño final.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Input Layer] --> B[Hidden Layer 1]
+        B --> C[Hidden Layer 2]
+        C --> D[Hidden Layer 3]
+        D --> E[Output Layer]
+        F[Características Simples] --> B
+        G[Características Intermedias] --> C
+        H[Características Complejas] --> D
+        I[Predicción Final] --> E
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style E fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
     </div>
+
+    <h2>11.2 Backpropagation y Optimización</h2>
+    <p>
+        El algoritmo de backpropagation constituye el método fundamental para entrenar redes neuronales mediante descenso por gradiente. Backpropagation calcula eficientemente gradientes de función de pérdida respecto a todos los pesos aplicando repetidamente la regla de la cadena del cálculo, propagando errores desde salida hacia capas anteriores. Para una red con L capas, la fase forward computa activaciones a⁽ˡ⁾ = σ(W⁽ˡ⁾a⁽ˡ⁻¹⁾ + b⁽ˡ⁾) secuencialmente desde entrada a salida. La fase backward calcula gradientes δ⁽ˡ⁾ = ∂L/∂z⁽ˡ⁾ desde salida hacia entrada, con gradientes de pesos ∂L/∂W⁽ˡ⁾ = δ⁽ˡ⁾(a⁽ˡ⁻¹⁾)ᵀ.
+    </p>
+    <p>
+        El entrenamiento procede mediante mini-batch gradient descent, procesando subconjuntos de datos aleatoriamente seleccionados en cada iteración. Los mini-batches balancean eficiencia computacional de batch gradient descent (procesar todos los datos, convergencia suave pero lenta) con stocasticidad de stochastic gradient descent (procesar ejemplos individuales, updates frecuentes pero ruidosos). Tamaños típicos de mini-batch (32-256) aprovechan paralelización en GPUs mientras mantienen varianza de gradientes controlada. El learning rate α controla magnitud de updates θ ← θ - α∇L(θ), requiriendo tuning cuidadoso: valores grandes convergen rápido pero pueden divergir; valores pequeños convergen lentamente y pueden atascarse en mínimos locales.
+    </p>
+    <p>
+        Los optimizadores adaptativos mejoran convergencia ajustando learning rates automáticamente. Momentum acumula gradientes exponencialmente v_t = βv_{t-1} + ∇L, acelerando en direcciones consistentes y amortiguando oscilaciones: θ_t = θ_{t-1} - αv_t. Nesterov accelerated gradient evalúa gradientes en posición "lookahead", mejorando updates. AdaGrad adapta learning rates por parámetro basado en historial de gradientes, reduciendo rates para parámetros frecuentemente actualizados. RMSprop normaliza learning rates por media móvil exponencial de gradientes cuadrados, estabilizando entrenamiento.
+    </p>
+    <p>
+        Adam (Adaptive Moment Estimation) combina momentum y RMSprop, manteniendo medias móviles exponenciales de gradientes (primer momento) y gradientes cuadrados (segundo momento), con corrección de bias para estimaciones iniciales. La actualización es θ_t = θ_{t-1} - α·m̂_t/(√v̂_t + ε), donde m̂_t y v̂_t son momentos bias-corrected. Adam ha emergido como optimizador default para deep learning por robustez a hiperparámetros y convergencia rápida. AdamW añade weight decay correctamente implementado, mejorando generalización. Optimizadores recientes como Ranger, Lookahead, y LAMB refinan further estas ideas.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Forward Pass] --> B[Calcular Activaciones]
+        B --> C[Calcular Pérdida L]
+        C --> D[Backward Pass]
+        D --> E[Calcular Gradientes ∂L/∂W]
+        E --> F[Actualizar Pesos W -= α∇L]
+        F --> G{Convergencia?}
+        G -->|No| A
+        G -->|Sí| H[Modelo Entrenado]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style H fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>11.3 Regularización y Prevención de Overfitting</h2>
+    <p>
+        La regularización constituye un conjunto de técnicas esenciales para prevenir overfitting en redes neuronales profundas con millones de parámetros. El overfitting ocurre cuando modelos memorizan datos de entrenamiento en lugar de aprender patrones generalizables, exhibiendo excelente desempeño en entrenamiento pero pobre en validación. La regularización restringe complejidad del modelo o inyecta ruido durante entrenamiento, mejorando generalización mediante diversos mecanismos.
+    </p>
+    <p>
+        La regularización L2 (weight decay) añade penalización λ||W||² a función de pérdida, incentivando pesos pequeños y suaves. Esto equivale a prior gaussiano sobre pesos en interpretación bayesiana. La regularización L1 añade λ||W||₁, promoviendo sparsity mediante zeroing de pesos. El coeficiente λ controla strength de regularización: valores grandes restringen fuertemente complejidad, potentially underfitting; valores pequeños permiten mayor flexibilidad, risking overfitting. La selección de λ típicamente procede mediante validación cruzada sobre grid o búsqueda aleatoria.
+    </p>
+    <p>
+        Dropout, introducido por Hinton et al., desactiva aleatoriamente fracciones de neuronas durante cada mini-batch de entrenamiento, forzando red a aprender representaciones redundantes y robustas. Durante inferencia, todas neuronas se activan pero sus salidas escalan por probabilidad de retención, approximando ensemble de redes entrenadas en subconjuntos de neuronas. Dropout típicamente se aplica con probabilidad 0.5 en capas fully-connected y 0.1-0.2 en capas convolucionales. DropConnect generaliza dropout desactivando conexiones en lugar de neuronas. Alpha dropout adapta dropout para redes SELU, preservando propiedades self-normalizing.
+    </p>
+    <p>
+        Batch normalization normaliza activaciones de cada mini-batch a media cero y varianza uno, luego escala y shift mediante parámetros aprendibles. Esto estabiliza distribuciones de activaciones durante entrenamiento (reduciendo internal covariate shift), permite learning rates mayores, reduce dependencia de inicialización cuidadosa, y actúa como regularizador mediante ruido introducido por estadísticas de mini-batch. Batch norm típicamente se aplica después de capas lineales pero antes de activaciones. Layer normalization, group normalization, e instance normalization adaptan normalización para escenarios donde batch norm es problemático (RNNs, batch sizes pequeños, inferencia online).
+    </p>
+    <p>
+        Early stopping monitorea pérdida de validación durante entrenamiento, deteniendo cuando comienza incrementar aunque pérdida de entrenamiento continúe disminuyendo. Esto previene overfitting implícitamente limitando número de epochs. Data augmentation genera variaciones de datos de entrenamiento mediante transformaciones (rotaciones, crops, flips en imágenes; paraphraseo en texto), incrementando efectivamente tamaño de dataset y forzando invariance a transformaciones. El ensemble learning combina predicciones de múltiples modelos entrenados con diferentes inicializaciones o arquitecturas, promediando outputs para robustez.
+    </p>
+
+    <h2>11.4 Redes Convolucionales (CNNs)</h2>
+    <p>
+        Las Convolutional Neural Networks (CNNs) explotan estructura espacial de imágenes mediante tres principios arquitectónicos clave: conectividad local (neuronas se conectan solo a regiones locales de entrada), compartición de pesos (mismos pesos se aplican a toda la imagen), y pooling (downsampling espacial). Estos principios reducen dramáticamente número de parámetros comparado con fully-connected layers, habilitando aprendizaje de features visuales jerárquicas escalablemente.
+    </p>
+    <p>
+        Las capas convolucionales aplican filtros aprendidos deslizándolos sobre entrada, computando productos punto entre filtro y cada parche local. Un filtro de tamaño k×k×c (donde c es número de canales de entrada) produce feature map 2D detectando presencia de patrón específico en cada posición espacial. Múltiples filtros aprenden detectar diferentes features (bordes horizontales, verticales, diagonales; texturas; esquinas). Los hiperparámetros clave incluyen número de filtros (controlling dimensionalidad de salida), tamaño de kernel (receptive field), stride (step size de deslizamiento), y padding (añadir bordes para controlar dimensiones de salida).
+    </p>
+    <p>
+        Las capas de pooling downsample feature maps reduciendo resolución espacial mientras preservan información saliente. Max pooling toma máximo valor en cada ventana, capturando activación más fuerte (presencia de feature). Average pooling promedia valores. Pooling introduce invariance a traducciones pequeñas y reduce costo computacional en capas subsecuentes. La combinación repetida de convolution-activation-pooling construye jerarquías de features: capas tempranas detectan edges y texturas de bajo nivel, capas intermedias reconocen partes y motifs, capas profundas identifican objetos completos.
+    </p>
+    <p>
+        Arquitecturas icónicas marcaron hitos en CNN development. LeNet-5 (LeCun, 1998) pioneered CNNs para reconocimiento de dígitos. AlexNet (Krizhevsky et al., 2012) achieved breakthrough en ImageNet usando GPUs, ReLU, y dropout. VGG (Simonyan & Zisserman, 2014) demostró que redes muy profundas (16-19 capas) con filtros pequeños (3×3) superan redes shallower con filtros grandes. GoogLeNet/Inception (Szegedy et al., 2015) introduced módulos inception con convoluciones paralelas de diferentes tamaños. ResNet (He et al., 2015) introduced skip connections permitiendo entrenar redes extremadamente profundas (50-152 capas) sin degradación, winning ImageNet 2015 y superando desempeño humano.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Input Image] --> B[Conv + ReLU]
+        B --> C[Conv + ReLU]
+        C --> D[Max Pooling]
+        D --> E[Conv + ReLU]
+        E --> F[Conv + ReLU]
+        F --> G[Max Pooling]
+        G --> H[Fully Connected]
+        H --> I[Output]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style I fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>11.5 Redes Recurrentes (RNNs) y LSTM</h2>
+    <p>
+        Las Recurrent Neural Networks (RNNs) procesan secuencias de longitud variable manteniendo estado oculto que captura información de pasos temporales previos. A cada timestep t, una RNN computa h_t = σ(W_h·h_{t-1} + W_x·x_t + b), donde h_t es estado oculto, x_t es entrada actual, y W_h, W_x son matrices de pesos compartidas a través de toda la secuencia. Esta recurrencia permite procesar secuencias de longitud arbitraria con número fijo de parámetros, modeling dependencias temporales en texto, habla, series temporales, y video.
+    </p>
+    <p>
+        El entrenamiento de RNNs procede mediante Backpropagation Through Time (BPTT), que desdobla RNN en red feedforward equivalente con una capa por timestep, aplica backpropagation estándar, y suma gradientes de pesos compartidos. Sin embargo, BPTT sufre vanishing/exploding gradients: al propagar gradientes hacia atrás a través de muchos timesteps, pueden decrecer exponencialmente (vanishing) o crecer exponencialmente (exploding). Gradients exploding se mitigan mediante gradient clipping. Gradients vanishing son problemáticos para aprender dependencias a largo plazo.
+    </p>
+    <p>
+        Long Short-Term Memory (LSTM) networks, introduced por Hochreiter & Schmidhuber (1997), address vanishing gradients mediante arquitectura con cell state y puertas. El cell state C_t fluye a través de tiempo con modificaciones mínimas, actuando como "highway" para gradients. Tres puertas controlan flujo de información: forget gate decide qué information descartar de cell state; input gate decide qué nueva información agregar; output gate decide qué output producir. Las ecuaciones son: f_t = σ(W_f·[h_{t-1},x_t]), i_t = σ(W_i·[h_{t-1},x_t]), C̃_t = tanh(W_C·[h_{t-1},x_t]), C_t = f_t⊙C_{t-1} + i_t⊙C̃_t, o_t = σ(W_o·[h_{t-1},x_t]), h_t = o_t⊙tanh(C_t).
+    </p>
+    <p>
+        Las Gated Recurrent Units (GRUs), proposed por Cho et al. (2014), simplifican LSTMs combinando cell state y hidden state, y usando solo dos puertas (reset y update). GRUs tienen menos parámetros que LSTMs, entrenan más rápido, y frequently achieve desempeño comparable. Las Bidirectional RNNs procesan secuencias en ambas direcciones (forward y backward) concatenando estados ocultos, capturando contexto completo alrededor de cada posición. Esto es valioso para tareas donde contexto futuro es relevante (NER, POS tagging), pero imposibilita procesamiento online.
+    </p>
+
+    <h2>11.6 Transformers y Mecanismos de Atención</h2>
+    <p>
+        Los mecanismos de atención permiten a modelos enfocarse adaptativamente en partes relevantes de entrada, ponderando diferentes posiciones dinámicamente. En seq2seq con atención, el decoder no solo recibe contexto fijo del encoder sino que computa ponderaciones de atención sobre todos los estados del encoder en cada paso de generación. Los attention weights α_t,i indican importancia relativa de encoder state i para generar output en timestep t, computados típicamente mediante softmax de scores de compatibilidad. El context vector es suma ponderada: c_t = Σᵢα_t,i·h_i.
+    </p>
+    <p>
+        Self-attention, piedra angular de Transformers, computa representaciones de secuencia donde cada posición atiende a todas las demás posiciones. La formulación multi-head self-attention proyecta entrada en queries Q, keys K, y values V múltiples veces con diferentes matrices aprendidas, computa attention scores mediante dot-product escalado, y concatena resultados: Attention(Q,K,V) = softmax(QKᵀ/√d_k)V. Multiple heads permiten atender diferentes aspectos simultaneously (sintaxis, semántica, co-referencias).
+    </p>
+    <p>
+        Los Transformers (Vaswani et al., 2017) construyen arquitecturas enteramente basadas en self-attention, prescindiendo de recurrencia y convolution. El encoder stack capas de multi-head attention seguidas por feedforward networks, con residual connections y layer normalization. El decoder añade masked self-attention (preventing attending to future positions) y encoder-decoder attention. Positional encodings inyectan información de orden de secuencia. Transformers paraleliza completamente procesamiento de secuencias (a diferencia de RNNs secuenciales), escalando eficientemente a secuencias largas y datasets masivos con hardware moderno.
+    </p>
+    <p>
+        Los modelos Transformer pre-entrenados han revolucionado NLP. BERT (Bidirectional Encoder Representations from Transformers) pre-entrena encoders bidireccionales en tareas de masked language modeling y next sentence prediction, luego fine-tuning para tareas downstream. GPT (Generative Pre-trained Transformer) pre-entrena decoders autoregresivos en language modeling, demostrando few-shot learning capacities con escala. T5 (Text-to-Text Transfer Transformer) unifica tareas como text-to-text transformation. Los modelos han escalado a cientos de billones de parámetros (GPT-3: 175B, GPT-4: >1T estimado), exhibiendo capacidades emergentes de razonamiento, knowledge retrieval, y code generation.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Input Embeddings] --> B[Positional Encoding]
+        B --> C[Multi-Head Self-Attention]
+        C --> D[Add & Norm]
+        D --> E[Feed Forward]
+        E --> F[Add & Norm]
+        F --> G[Stack N Times]
+        G --> H[Output]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style H fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>11.7 Modelos Generativos: GANs y Diffusion</h2>
+    <p>
+        Las Generative Adversarial Networks (GANs), introduced por Goodfellow et al. (2014), aprenden generar datos sintéticos mediante juego adversarial entre dos redes neuronales. El generator G mapea noise vector z~p_z a muestra sintética G(z), intentando engañar al discriminator. El discriminator D distingue muestras reales de sintéticas. El entrenamiento procede alternando: actualizar D para maximizar probabilidad de clasificar correctamente reales vs generadas; actualizar G para minimizar probabilidad de D detectando sus outputs como fake. En equilibrio (Nash equilibrium), G aprende distribución de datos reales p_data y D no puede discriminar.
+    </p>
+    <p>
+        El entrenamiento de GANs presenta desafíos significativos. Mode collapse ocurre cuando G genera solo subset de distribución de datos, ignorando diversidad. Training instability surge de dynamics no-convergent del juego adversarial. Vanishing gradients para G ocurren cuando D clasifica perfectamente. Las soluciones incluyen architecture modifications (DCGAN usa convolutional layers y batch norm), loss function variants (Wasserstein GAN usa Earth Mover distance, LSGAN usa least-squares loss), regularization techniques (spectral normalization, gradient penalties), y training tricks (two time-scale update rule, experience replay).
+    </p>
+    <p>
+        Las arquitecturas GAN avanzadas han alcanzado photorealism impresionante. StyleGAN (Karras et al., 2019) controls generation mediante style vectors inyectados en múltiples escalas, enabling control fino de atributos. BigGAN escala a ImageNet con batch sizes enormes y arquitectura optimizada. Conditional GANs condicionan generación en información adicional (class labels, text descriptions). CycleGAN aprende traducciones entre dominios sin pares supervisados mediante cycle consistency. Pix2pix traduce paired images (sketch to photo, semantic map to scene).
+    </p>
+    <p>
+        Los modelos de difusión han emergido como alternativa poderosa a GANs. Denoising Diffusion Probabilistic Models (DDPMs) aprenden invertir proceso gradual de corrupción de datos con ruido gaussiano. El entrenamiento enseña al modelo a predecir y remover ruido en cada paso. La generación procede mediante denoising iterativo desde noise puro. Los diffusion models evitan training instabilities de GANs, generan diversidad superior, y escalan well. DALL-E 2, Imagen, y Stable Diffusion generan imágenes de alta calidad desde text prompts usando diffusion, enabling creative applications en art, design, y content creation.
+    </p>
+
+    <h2>11.8 Transfer Learning y Fine-Tuning</h2>
+    <p>
+        Transfer learning aprovecha conocimiento aprendido en una tarea (source) para mejorar aprendizaje en otra tarea relacionada (target), particularmente cuando datos target son limitados. En visión, modelos pre-entrenados en ImageNet (millones de imágenes de 1000 clases) aprenden features visuales generales útiles para diversas tareas downstream. El approach típico: tomar CNN pre-entrenado, freezear capas tempranas (features de bajo nivel), reemplazar y entrenar capas finales en target task. Alternativamente, fine-tuning entrena entire network en target data con learning rate pequeño, ajustando features pre-trained sutilmente.
+    </p>
+    <p>
+        La efectividad de transfer learning depende de similitud entre source y target. Cuando dominios son muy relacionados, frozen features pueden bastar. Para dominios divergentes, fine-tuning extensive puede ser necesario. La cantidad de target data también influencia strategy: con datos abundantes, entrenar from scratch puede ser óptimo; con datos escasos, transfer learning crucial. Domain adaptation enfrenta distributional shift entre source y target mediante técnicas como adversarial training, maximum mean discrepancy, y correlation alignment.
+    </p>
+    <p>
+        En NLP, pre-entrenamiento sobre vastísimos córpora de texto unlabeled aprende representaciones lingüísticas generales. Los pre-trained language models (BERT, GPT, T5) se fine-tune en tareas específicas (sentiment analysis, NER, QA) con datasets pequeños, alcanzando state-of-the-art. Prompt engineering y few-shot learning con modelos muy grandes (GPT-3) habilitan solving tasks con mínimos ejemplos, sin fine-tuning. Adapter modules y parameter-efficient fine-tuning methods (LoRA) modifican subset pequeño de parámetros, reduciendo recursos computacionales.
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>Las redes neuronales profundas aprenden jerarquías de representaciones mediante capas no lineales</li>
+            <li>Backpropagation calcula gradientes eficientemente; optimizadores adaptativos mejoran convergencia</li>
+            <li>La regularización (dropout, batch norm, weight decay) previene overfitting</li>
+            <li>Las CNNs explotan estructura espacial mediante convolution, pooling, y compartición de pesos</li>
+            <li>Las RNNs y LSTMs procesan secuencias capturando dependencias temporales</li>
+            <li>Los Transformers usan self-attention para procesamiento paralelo de secuencias</li>
+            <li>Las GANs y diffusion models generan datos sintéticos realistas</li>
+            <li>Transfer learning aprovecha pre-training para mejorar tareas downstream</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning</em>. MIT Press.</li>
+        <li>LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. <em>Nature</em>, 521(7553), 436-444.</li>
+        <li>He, K., et al. (2016). Deep residual learning for image recognition. <em>CVPR</em>.</li>
+        <li>Vaswani, A., et al. (2017). Attention is all you need. <em>NeurIPS</em>.</li>
+        <li>Goodfellow, I., et al. (2014). Generative adversarial nets. <em>NeurIPS</em>.</li>
+        <li>Hochreiter, S., & Schmidhuber, J. (1997). Long short-term memory. <em>Neural Computation</em>, 9(8), 1735-1780.</li>
+    </ul>
+</article>
+
+    <h2>11.9 Arquitecturas Especializadas y Aplicaciones</h2>
+    <p>
+        Las arquitecturas especializadas adaptan deep learning a dominios específicos. Autoencoder Variational (VAE) combina autoencoders con inferencia variacional, aprendiendo representaciones latentes probabilísticas para generación. Graph Neural Networks (GNNs) procesan datos estructurados en grafos, agregando información de vecinos iterativamente para aprender embeddings de nodos y grafos. Capsule Networks intentan superar limitaciones de CNNs preservando relaciones jerárquicas espaciales mediante grupos de neuronas (capsules) que votan por detecciones de nivel superior.
+    </p>
+    <p>
+        En procesamiento de señales, WaveNet modela audio crudo mediante convoluciones causales dilatadas, generando speech y música de alta calidad. En reinforcement learning, Deep Q-Networks (DQN) aproximan Q-functions con redes neuronales, achieving human-level performance en juegos Atari. AlphaGo combina CNNs para evaluación de posiciones y policy networks con Monte Carlo Tree Search. En biología computacional, AlphaFold predice estructuras de proteínas con precisión atómica usando Transformers y attention mechanisms.
+    </p>
+    <p>
+        Las aplicaciones médicas incluyen diagnóstico asistido por AI en radiología (detección de nódulos pulmonares, tumores cerebrales), patología digital (clasificación de slides histológicos), y oftalmología (retinopatía diabética). En drug discovery, modelos generativos diseñan moléculas candidatas, mientras que modelos de predicción estiman propiedades farmacológicas. En genómica, redes profundas predicen efectos de variantes genéticas, identifican enhancers regulatorios, y analizan single-cell sequencing data.
+    </p>
+
+    <h2>11.10 Desafíos y Futuro del Deep Learning</h2>
+    <p>
+        A pesar del éxito extraordinario, deep learning enfrenta limitaciones fundamentales. La dependencia de datos masivos etiquetados limita aplicabilidad en dominios con escasez de labels. La fragilidad a adversarial examples (perturbaciones imperceptibles que causan misclassifications) cuestiona robustez y seguridad. La opacidad interpretativa dificulta understanding de decisiones, problemática en aplicaciones críticas requiriendo explicabilidad y accountability. El costo computacional y energético de entrenar modelos gigantes plantea concerns de sostenibilidad y equidad.
+    </p>
+    <p>
+        Las direcciones futuras incluyen few-shot y zero-shot learning para reducir dependencia de datos, meta-learning para aprender a aprender eficientemente, neural architecture search para automatizar diseño de arquitecturas, continual learning para aprender secuencialmente sin forgetting catastrófico, y neuro-symbolic integration combinando razonamiento simbólico con pattern recognition neuronal. Quantum machine learning explora algoritmos cuánticos para aceleración. Neuromorphic computing desarrolla hardware inspirado en cerebro para eficiencia energética.
+    </p>
+    <p>
+        La democratización mediante frameworks de alto nivel (TensorFlow, PyTorch, JAX) y cloud platforms (Google Cloud AI, AWS SageMaker, Azure ML) ha acelerado adopción. AutoML automatiza feature engineering, architecture search, y hyperparameter tuning, haciendo deep learning accesible a no-expertos. Model compression (pruning, quantization, knowledge distillation) permite deployment en edge devices con recursos limitados. Federated learning entrena modelos colaborativamente sin centralizar datos sensibles, preservando privacy.
+    </p>
+</article>
+
+    <h2>11.11 Implementación Práctica y Mejores Prácticas</h2>
+    <p>
+        La implementación exitosa de deep learning requiere consideración cuidadosa de múltiples aspectos prácticos. La preparación de datos incluye normalización (scaling features a rangos comparables), augmentation (generating variaciones artificiales), y balancing de clases en datasets desbalanceados mediante oversampling minoritarias, undersampling mayoritarias, o generación sintética (SMOTE). El splitting apropiado en train/validation/test sets, típicamente 70-15-15%, asegura evaluación no sesgada. Cross-validation proporciona estimaciones más robustas pero es costosa para redes grandes.
+    </p>
+    <p>
+        El hyperparameter tuning explora configuraciones de learning rate, batch size, número de capas, unidades por capa, dropout rate, y weight decay. Grid search evalúa exhaustivamente combinaciones predefinidas. Random search samplea aleatoriamente, frecuentemente más eficiente. Bayesian optimization modela superficie de performance, proponiendo configuraciones prometedoras iterativamente. Learning rate scheduling ajusta rate durante entrenamiento: step decay reduce cada N epochs, exponential decay decae continuamente, cosine annealing oscila siguiendo coseno.
+    </p>
+    <p>
+        El debugging de redes profundas requiere técnicas especializadas. Verificar shapes de tensores en cada capa previene dimension mismatches. Monitorear estadísticas de gradientes (mean, variance, norms) detecta vanishing/exploding. Visualizar activations revela dead neurons o saturation. Overfitting en pequeño subset de datos verifica capacidad del modelo de memorizar. Sanity checks incluyen verificar pérdida inicial cerca de -log(1/num_classes) para classification, y que modelo con weights random no supere baselines triviales.
+    </p>
+    <p>
+        Las consideraciones de producción incluyen model serving mediante APIs REST/gRPC, batch prediction para throughput, y streaming inference para baja latency. Model versioning rastrea evolución de modelos. A/B testing compara versiones en producción. Monitoring detecta data drift (cambios en distribución de inputs) y model decay (degradación de performance). Retraining periódico mantiene modelos actualizados. Explainability tools (LIME, SHAP) proporcionan interpretaciones locales de predicciones. Fairness audits verifican ausencia de sesgos discriminatorios en subgrupos protegidos.
+    </p>
+
+
+    <div class="mermaid">
+    mindmap
+        root((Deep Learning Ecosystem))
+            Frameworks
+                TensorFlow/Keras
+                PyTorch
+                JAX
+                MXNet
+            Hardware
+                GPUs NVIDIA
+                TPUs Google
+                AWS Inferentia
+                Edge Devices
+            Applications
+                Computer Vision
+                NLP
+                Speech
+                Generative AI
+            Techniques
+                Supervised
+                Self-Supervised
+                Reinforcement
+                Few-Shot
+    </div>
+
+    <h2>11.12 Estado del Arte y Tendencias Emergentes</h2>
+    <p>
+        Los modelos foundation pre-entrenados a escala masiva (GPT-4, PaLM, LLaMA) exhiben capacidades emergentes no presentes en modelos más pequeños: reasoning multi-step, instruction following, code generation, y multimodal understanding. Chain-of-thought prompting elicita razonamiento explícito mejorando performance en tareas complejas. In-context learning permite adaptar modelos a nuevas tareas mediante ejemplos en prompt sin fine-tuning. Retrieval-augmented generation combina language models con bases de conocimiento externas para factuali
+
+dad mejorada.
+    </p>
+    <p>
+        La multimodalidad integra visión, lenguaje, y audio en modelos unificados (CLIP, Flamingo, GPT-4V). Embodied AI conecta perception con action en agentes robóticos. World models aprenden representaciones predictivas de dinámica de entornos. Neural rendering (NeRF, gaussian splatting) sintetiza vistas fotorealistas de escenas 3D. Diffusion models dominan generación de imágenes y video. AlphaFold revoluciona biología estructural. El futuro promete sistemas cada vez más capaces, generales, y impactantes.
+    </p>
+</article>
+
+    <h2>11.13 Recursos y Herramientas para Práctica</h2>
+    <p>
+        El ecosistema de deep learning ofrece abundantes recursos educativos y herramientas prácticas. Los cursos online incluyen Deep Learning Specialization de Andrew Ng (Coursera), fast.ai de Jeremy Howard focusing en practical implementation, y CS231n de Stanford para convolutional networks. Los frameworks principales TensorFlow/Keras ofrecen APIs de alto nivel user-friendly, mientras PyTorch proporciona flexibilidad mediante eager execution y dynamic computation graphs preferido en research. JAX combina transformaciones funcionales con aceleración XLA.
+    </p>
+    <p>
+        Las plataformas cloud democratizan acceso a GPUs potentes: Google Colab proporciona notebooks gratuitos con GPU/TPU, Kaggle Kernels ofrece entorno similar más competitions data, Paperspace Gradient y AWS SageMaker soportan workflows productivos. Los datasets públicos facilitan experimentación: ImageNet para visión, COCO para object detection, GLUE/SuperGLUE para NLP, Kinetics para video, LibriSpeech para speech. Pretrained models via Hugging Face transformers, TensorFlow Hub, y PyTorch Hub aceleran desarrollo mediante transfer learning.
+    </p>
 </article>
