@@ -1,19 +1,273 @@
 <article class="lesson-content">
     <h1>Clase 10: Aprendizaje No Supervisado</h1>
-    <h2>10.1 Clustering: K-Means y Jerárquico</h2>
-    <p>El clustering agrupa datos en conjuntos de objetos similares sin etiquetas previas. K-means particiona datos en k clusters minimizando varianza intra-cluster, iterando entre asignación de puntos a centroides más cercanos y actualización de centroides como medias de clusters. DBSCAN identifica clusters de densidad arbitraria, resistente a ruido y outliers. Clustering jerárquico construye dendrogramas mediante aglomeración bottom-up o división top-down.</p>
-    <h2>10.2 Reducción de Dimensionalidad: PCA</h2>
-    <p>Principal Component Analysis (PCA) proyecta datos en direcciones de máxima varianza mediante descomposición espectral de matriz de covarianza. Los componentes principales son combinaciones lineales ortogonales de variables originales que capturan varianza decreciente. PCA facilita visualización, reduce ruido, y acelera algoritmos al trabajar en espacios de menor dimensión preservando información relevante.</p>
-    <h2>10.3 Aprendizaje de Manifolds</h2>
-    <p>Los métodos de aprendizaje de manifolds asumen que datos de alta dimensión residen en manifolds de baja dimensión incrustados. t-SNE (t-Distributed Stochastic Neighbor Embedding) preserva similaridades locales, popular para visualización. UMAP (Uniform Manifold Approximation and Projection) preserva estructura global y local, escalando mejor que t-SNE. Isomap y LLE capturan geometría geodésica de manifolds.</p>
-    <h2>10.4 Autoencoders</h2>
-    <p>Los autoencoders son redes neuronales entrenadas para reconstruir su entrada, con capa intermedia de menor dimensión forzando compresión. El encoder mapea entrada a representación latente; el decoder reconstruye desde representación. Los autoencoders variacionales (VAE) aprenden distribuciones probabilísticas en espacio latente, generando nuevas muestras mediante muestreo y decodificación.</p>
-    <h2>10.5 Detección de Anomalías</h2>
-    <p>La detección de anomalías identifica patrones que se desvían significativamente de la norma. Los métodos estadísticos modelan distribución normal, identificando outliers con baja probabilidad. Isolation Forest aísla anomalías mediante particiones aleatorias recursivas. One-Class SVM aprende frontera que engloba datos normales. Autoencoders detectan anomalías mediante alto error de reconstrucción.</p>
-    <h2>10.6 Aprendizaje de Asociaciones</h2>
-    <p>El aprendizaje de reglas de asociación descubre relaciones interesantes en transacciones. El algoritmo Apriori identifica conjuntos frecuentes de ítems eficientemente, generando reglas con soporte y confianza satisfactorios. FP-Growth mejora eficiencia usando estructuras de árbol compactas. Las aplicaciones incluyen análisis de canasta de mercado, recomendaciones y descubrimiento de patrones en bases de datos.</p>
-    <div class="info-box">
-        <h3>Puntos Clave</h3>
-        <ul><li>El clustering agrupa datos por similitud sin supervisión explícita</li><li>PCA reduce dimensionalidad preservando máxima varianza</li><li>Los manifolds capturan estructura geométrica de datos complejos</li><li>Los autoencoders aprenden representaciones comprimidas mediante reconstrucción</li><li>La detección de anomalías identifica patrones atípicos</li><li>Las reglas de asociación descubren relaciones en datos transaccionales</li></ul>
+
+    <h2>10.1 Fundamentos del Aprendizaje No Supervisado</h2>
+    <p>
+        El aprendizaje no supervisado constituye un paradigma fundamental del machine learning donde los algoritmos descubren patrones y estructuras latentes en datos sin etiquetas explícitas. A diferencia del aprendizaje supervisado, que requiere pares entrada-salida etiquetados costosos de obtener, el aprendizaje no supervisado explota la abundancia de datos sin anotar para revelar organización inherente, similitudes, anomalías y representaciones comprimidas. Esta capacidad resulta invaluable en escenarios donde etiquetar datos es prohibitivamente costoso, subjetivo, o simplemente imposible porque no se conocen de antemano las categorías relevantes.
+    </p>
+    <p>
+        Los objetivos del aprendizaje no supervisado son múltiples y complementarios. El clustering o agrupamiento busca particionar datos en conjuntos de objetos similares, revelando taxonomías naturales sin conocimiento previo de categorías. La reducción de dimensionalidad comprime datos de alta dimensión en espacios de menor dimensión preservando estructura relevante, facilitando visualización, eliminando ruido, y acelerando algoritmos downstream. La detección de anomalías identifica observaciones que se desvían significativamente de patrones mayoritarios, crucial para fraude, fallos de sistemas, y descubrimiento científico. El aprendizaje de asociaciones descubre relaciones interesantes entre variables, revelando co-ocurrencias y dependencias en datos transaccionales y temporales.
+    </p>
+    <p>
+        La evaluación de modelos no supervisados presenta desafíos únicos comparado con aprendizaje supervisado. Sin ground truth explícito, las métricas intrínsecas evalúan coherencia interna: compacidad de clusters, separación entre clusters, varianza explicada en reducción de dimensionalidad. Las métricas extrínsecas comparan resultados con categorías conocidas cuando existen, aunque esto contradice parcialmente la premisa no supervisada. La validación cualitativa mediante visualización y interpretación de expertos frecuentemente complementa métricas cuantitativas, reconociendo que utilidad de estructuras descubiertas depende de contexto de aplicación.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Aprendizaje No Supervisado] --> B[Clustering]
+        A --> C[Reducción de Dimensionalidad]
+        A --> D[Detección de Anomalías]
+        A --> E[Aprendizaje de Asociaciones]
+        B --> F[K-Means]
+        B --> G[DBSCAN]
+        B --> H[Jerárquico]
+        C --> I[PCA]
+        C --> J[t-SNE]
+        C --> K[UMAP]
+        D --> L[Isolation Forest]
+        D --> M[One-Class SVM]
+        E --> N[Apriori]
+        E --> O[FP-Growth]
+        style A fill:#8B1538,stroke:#333,stroke-width:4px,color:#fff
     </div>
+
+    <h2>10.2 Clustering: Algoritmos y Aplicaciones</h2>
+    <p>
+        El clustering o agrupamiento constituye una de las tareas centrales del aprendizaje no supervisado, buscando descubrir estructura de grupo natural en datos. El algoritmo K-means, quizás el más utilizado, particiona datos en K clusters minimizando varianza intra-cluster mediante iteración entre dos pasos: asignación de puntos al centroide más cercano, y actualización de centroides como medias de clusters. La simplicidad y eficiencia de K-means (complejidad lineal en número de puntos y dimensionalidad) lo hacen practicable para datasets masivos, aunque requiere especificar K a priori y es sensible a inicialización y outliers.
+    </p>
+    <p>
+        K-means asume clusters esféricos y de tamaño similar, limitaciones que restringen aplicabilidad. Las variantes K-means++ mejoran inicialización seleccionando centroides iniciales proporcional a su distancia cuadrada de centroides ya seleccionados, acelerando convergencia. K-medoids usa puntos de datos reales como centroides en lugar de medias, robustificando contra outliers. Mini-batch K-means procesa subconjuntos aleatorios de datos en cada iteración, escalando a millones de muestras. La selección de K óptimo emplea métodos como elbow method (identificar punto de inflexión en curva de varianza vs K) o silhouette analysis (medir qué tan similares son objetos a su propio cluster vs otros).
+    </p>
+    <p>
+        DBSCAN (Density-Based Spatial Clustering of Applications with Noise) adopta enfoque radicalmente distinto basado en densidad, identificando regiones densas separadas por regiones de baja densidad. DBSCAN agrupa puntos que están cerca uno del otro (dentro de radio ε) con suficientes vecinos (minPts), expandiendo clusters transitivamente. Esta formulación permite descubrir clusters de forma arbitraria, maneja ruido explícitamente clasificando puntos como core, border, o noise, y no requiere especificar número de clusters a priori. Sin embargo, DBSCAN enfrenta dificultades con clusters de densidad variable y requiere tuning cuidadoso de hiperparámetros ε y minPts. HDBSCAN extiende DBSCAN usando jerarquías de densidad, robustificando selección de parámetros.
+    </p>
+    <p>
+        El clustering jerárquico construye jerarquías de clusters mediante aglomeración bottom-up o división top-down. El clustering aglomerativo comienza con cada punto como cluster singleton, iterativamente fusionando los pares más similares hasta tener un único cluster conteniendo todos los puntos. El dendrograma resultante visualiza historia completa de fusiones, permitiendo cortar a diferentes alturas para obtener número variable de clusters. Las linkage methods determinan distancia entre clusters: single linkage (mínima distancia entre pares), complete linkage (máxima distancia), average linkage (promedio de distancias), Ward linkage (minimizar incremento de varianza intra-cluster). El clustering jerárquico proporciona visualización interpretable y no requiere especificar K, aunque complejidad cuadrática o cúbica limita escalabilidad.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[K-Means] --> B[Inicialización]
+        B --> C[Asignación]
+        C --> D[Actualización]
+        D --> E{Convergencia?}
+        E -->|No| C
+        E -->|Sí| F[Clusters Finales]
+        G[Parámetros] --> H[K: número de clusters]
+        G --> I[max_iter: iteraciones máximas]
+        G --> J[tol: tolerancia]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style F fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>10.3 Reducción de Dimensionalidad: PCA y Métodos Lineales</h2>
+    <p>
+        Principal Component Analysis (PCA) constituye la técnica de reducción de dimensionalidad lineal más fundamental y ampliamente utilizada. PCA identifica direcciones de máxima varianza en datos mediante descomposición espectral de la matriz de covarianza o SVD de la matriz de datos. Los componentes principales resultantes son combinaciones lineales ortogonales de variables originales que capturan varianza decreciente. Proyectar datos en los primeros k componentes principales proporciona aproximación óptima de rango k en sentido de minimizar error cuadrático de reconstrucción.
+    </p>
+    <p>
+        La interpretación dual de PCA revela conexiones profundas. Desde perspectiva de varianza máxima, el primer componente principal es la dirección en que datos exhiben mayor dispersión; componentes subsiguientes maximizan varianza sujeto a ortogonalidad con anteriores. Desde perspectiva de error de reconstrucción mínimo, PCA identifica el subespacio k-dimensional que minimiza distancia cuadrada promedio entre puntos originales y sus proyecciones. Esta equivalencia se formaliza mediante el teorema de Eckart-Young: la aproximación de rango k obtenida por SVD truncado minimiza norma de Frobenius del error de reconstrucción.
+    </p>
+    <p>
+        Las aplicaciones de PCA span múltiples dominios. En preprocesamiento, PCA elimina multicolinealidad decorrelacionando variables, reduce ruido proyectando en subespacio de señal, y normaliza varianzas whitening datos. En visualización, proyección en 2-3 dimensiones permite plotting de datos originalmente de alta dimensión, revelando clusters, outliers, y tendencias. En compresión, retener componentes principales que explican 95-99% de varianza reduce dramáticamente dimensionalidad mientras preserva información. En face recognition (eigenfaces), PCA descubre bases de imágenes faciales, proyectando nuevas caras en face space para clasificación.
+    </p>
+    <p>
+        Las limitaciones de PCA motivan extensiones y alternativas. PCA es lineal, incapaz de descubrir manifolds no lineales en datos. Es sensible a escala de variables, requiriendo estandarización previa. Outliers influencian desproporcionadamente componentes principales debido a criterio de varianza máxima. Robust PCA mitiga influencia de outliers mediante normas robustas. Kernel PCA aplica kernel trick para PCA no lineal, mapeando implícitamente a espacios de características de alta dimensión. Independent Component Analysis (ICA) busca componentes estadísticamente independientes en lugar de decorrelacionados, apropiado para separación de señales (blind source separation). Sparse PCA impone esparsidad en loadings, mejorando interpretabilidad identificando subconjuntos de variables relevantes.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Datos X: n×d] --> B[Centrar Datos]
+        B --> C[Calcular Matriz de Covarianza]
+        C --> D[Descomposición Espectral]
+        D --> E[Eigenvalores λ]
+        D --> F[Eigenvectores V]
+        E --> G[Ordenar por λ Decreciente]
+        F --> G
+        G --> H[Seleccionar k Componentes]
+        H --> I[Proyectar X en PC]
+        I --> J[Datos Reducidos: n×k]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style J fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>10.4 Manifold Learning: t-SNE, UMAP y Métodos No Lineales</h2>
+    <p>
+        Los métodos de manifold learning parten de la hipótesis que datos de alta dimensión frecuentemente residen en manifolds de baja dimensión incrustados en el espacio ambiente. A diferencia de PCA que busca proyecciones lineales globalmente óptimas, manifold learning descubre estructura no lineal preservando propiedades geométricas locales o globales. Esta perspectiva resulta particularmente pertinente para datos como imágenes, donde píxeles individuales son de alta dimensión pero estructura subyacente (orientación, iluminación, expresión facial) es de baja dimensión intrínseca.
+    </p>
+    <p>
+        t-Distributed Stochastic Neighbor Embedding (t-SNE), desarrollado por Laurens van der Maaten y Geoffrey Hinton, ha emergido como el método de visualización dominante para datos complejos. t-SNE modela similaridades entre pares de puntos en espacio original usando distribuciones gaussianas, y en espacio embedding usando distribuciones t de Student con un grado de libertad. La divergencia KL entre estas distribuciones se minimiza mediante descenso por gradiente, posicionando puntos en embedding de manera que vecindarios locales se preserven. El uso de distribución t en embedding alivia el crowding problem, permitiendo que clusters moderadamente separados en alta dimensión se separen claramente en visualización 2D.
+    </p>
+    <p>
+        Los parámetros clave de t-SNE incluyen perplexity (relacionada con número de vecinos considerados), número de iteraciones, y learning rate. Perplexity típicamente se establece entre 5 y 50, con valores más altos enfocándose en estructura global. t-SNE es estocástico, produciendo visualizaciones potencialmente diferentes en ejecuciones distintas, aunque estructura cualitativa suele ser consistente. Las limitaciones de t-SNE incluyen costo computacional cuadrático en número de puntos, dificultad preservando estructura global y distancias, e incapacidad de proyectar puntos nuevos sin reentrenar (aunque existen extensiones como parametric t-SNE).
+    </p>
+    <p>
+        Uniform Manifold Approximation and Projection (UMAP), desarrollado por McInnes, Healy y Melville, representa un avance significativo en manifold learning. UMAP construye representación topológica de datos mediante grafos fuzzy simplicial sets, preservando estructura topológica mediante optimización de cross-entropy. Comparado con t-SNE, UMAP escala mejor (casi lineal), preserva mejor estructura global, y permite proyección de datos nuevos. UMAP expone más parámetros configurables: número de vecinos controla balance local-global, distancia métrica afecta cálculo de similaridad, número de componentes permite embeddings en dimensiones arbitrarias. UMAP ha ganado adopción rápida en bioinformática para visualización de single-cell RNA sequencing.
+    </p>
+
+    <div class="mermaid">
+    mindmap
+        root((Manifold Learning))
+            Lineales
+                PCA
+                MDS Clásico
+                Factor Analysis
+            No Lineales Locales
+                LLE
+                Laplacian Eigenmaps
+                Hessian LLE
+            No Lineales Globales
+                Isomap
+                MDS No Métrico
+            Probabilísticos
+                t-SNE
+                UMAP
+                Autoencoders Variacionales
+    </div>
+
+    <h2>10.5 Autoencoders y Aprendizaje de Representaciones</h2>
+    <p>
+        Los autoencoders constituyen arquitecturas de redes neuronales entrenadas para reconstruir su entrada, con capa intermedia de menor dimensión forzando compresión. Esta estructura encoder-decoder aprende representaciones latentes que capturan características salientes de datos. El encoder mapea entrada x a representación latente z = f(x), típicamente de menor dimensión. El decoder reconstruye desde representación: x̂ = g(z). El entrenamiento minimiza error de reconstrucción ||x - x̂||², forzando al autoencoder a aprender manifold de datos eficientemente.
+    </p>
+    <p>
+        Las variantes de autoencoders implementan diferentes regularizaciones e inductive biases. Los undercomplete autoencoders simplemente imponen dimensión latente menor que entrada, forzando compresión. Los sparse autoencoders añaden penalización de esparsidad en activaciones latentes, aprendiendo representaciones dispersas interpretables. Los denoising autoencoders (DAE) corrompen entrada con ruido, entrenando para reconstruir entrada limpia, aprendiendo representaciones robustas a perturbaciones. Los contractive autoencoders penalizan sensibilidad de representación a perturbaciones infinitesimales, aprendiendo direcciones tangentes al manifold de datos.
+    </p>
+    <p>
+        Los Variational Autoencoders (VAE), desarrollados por Kingma y Welling, integran autoencoders con inferencia variacional bayesiana. En lugar de mapear cada entrada a punto único en espacio latente, VAEs mapean a distribución (típicamente gaussiana) parametrizada por media y varianza. El encoder estima parámetros de distribución latente q(z|x), aproximando verdadera posterior p(z|x). El decoder genera muestras desde distribución latente. La función objetivo combina reconstrucción con divergencia KL entre posterior aproximada y prior (típicamente gaussiana estándar), balanceando fidelidad de reconstrucción con regularización latente.
+    </p>
+    <p>
+        Los VAEs habilitan generación de muestras nuevas mediante muestreo desde prior latente y decodificación, interpolación suave en espacio latente, y representaciones disentangled donde dimensiones latentes capturan factores de variación independientes. Las aplicaciones incluyen síntesis de imágenes, super-resolución, inpainting, edición semántica (modificar atributos específicos preservando identidad), y modelado generativo de secuencias. β-VAE generaliza VAE con peso β en término KL, controlando tradeoff entre reconstrucción y disentanglement. Vector Quantized VAE (VQ-VAE) discretiza espacio latente, aprendiendo codebook de representaciones para generación de alta calidad.
+    </p>
+
+    <h2>10.6 Detección de Anomalías y Outliers</h2>
+    <p>
+        La detección de anomalías identifica observaciones que se desvían significativamente de patrones mayoritarios, crucial para detección de fraude, ciberseguridad, monitoreo de equipos, descubrimiento científico, y depuración de datos. Las anomalías pueden ser puntuales (valores extremos en distribución), contextuales (anormales en contexto específico), o colectivas (colección de instancias anormales juntas). El desafío fundamental radica en distinguir anomalías genuinas (eventos raros importantes) de ruido (variabilidad natural sin significado).
+    </p>
+    <p>
+        Los métodos estadísticos modelan distribución de datos normales, identificando observaciones con baja probabilidad. El enfoque más simple asume distribución gaussiana, marcando puntos más allá de cierto número de desviaciones estándar. La estimación de densidad kernel (KDE) modela distribución de manera no paramétrica, identificando regiones de baja densidad. Los modelos de mezcla gaussiana (GMM) aproximan distribución con múltiples gaussianas, permitiendo identificar anomalías que no pertenecen a ningún componente con alta probabilidad. El Mahalanobis distance generaliza distancia euclidiana considerando correlaciones entre variables, más robusto para datos multivariados.
+    </p>
+    <p>
+        Isolation Forest explota observación que anomalías son más fáciles de aislar que puntos normales. El algoritmo construye árboles de aislamiento mediante particiones aleatorias recursivas del espacio, midiendo profundidad promedio requerida para aislar cada punto. Anomalías, siendo raras y diferentes, requieren menos particiones para aislamiento, resultando en caminos más cortos en árboles. Isolation Forest escala bien a alta dimensión y grandes datasets, es parámetro-eficiente (solo requiere proporción de anomalías esperada), y maneja anomalías globales y locales. La intuición es elegante: lo que es diferente es fácil de separar.
+    </p>
+    <p>
+        One-Class SVM aprende frontera que engloba datos normales en espacio de características, típicamente mapeado a alta dimensión mediante kernels. Los puntos fuera de esta frontera se clasifican como anomalías. La formulación maximiza margen de la región conteniendo datos, balanceando volumen de región con fracción de puntos contenidos. One-Class SVM maneja no linealidades mediante kernel trick, pero requiere tuning cuidadoso de parámetros (kernel, penalización) y escala mal a grandes datasets. SVDD (Support Vector Data Description) formula problema similar buscando hipersfera de radio mínimo conteniendo datos.
+    </p>
+    <p>
+        Los autoencoders detectan anomalías mediante error de reconstrucción: entrenan en datos normales, puntos con alto error de reconstrucción se consideran anómalos porque el autoencoder no aprendió representarlos eficientemente. Este enfoque es particularmente efectivo para anomalías en imágenes, series temporales, y datos de alta dimensión. Los Long Short-Term Memory (LSTM) autoencoders manejan secuencias temporales, detectando anomalías en logs de sistemas, comportamiento de usuarios, y sensores IoT. La ventaja clave es capacidad de aprender representaciones complejas automáticamente sin ingeniería de características manual.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[Datos de Entrenamiento] --> B[Isolation Forest]
+        B --> C[Construir Árboles]
+        C --> D[Calcular Scores de Anomalía]
+        D --> E{Score > Umbral?}
+        E -->|Sí| F[Clasificar como Anomalía]
+        E -->|No| G[Clasificar como Normal]
+        H[Parámetros] --> I[n_estimators: número de árboles]
+        H --> J[contamination: proporción de anomalías]
+        H --> K[max_samples: tamaño de muestra]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style F fill:#E74C3C,stroke:#333,stroke-width:2px,color:#fff
+        style G fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>10.7 Aprendizaje de Asociaciones: Market Basket Analysis</h2>
+    <p>
+        El aprendizaje de reglas de asociación descubre relaciones interesantes entre variables en grandes bases de datos transaccionales. El problema clásico es market basket analysis: dado conjunto de transacciones de compra, encontrar productos frecuentemente comprados juntos. Una regla de asociación tiene forma X → Y, interpretada como "clientes que compran X tienden a comprar Y". El soporte de un itemset es su frecuencia en transacciones; la confianza de una regla es probabilidad condicional P(Y|X). El objetivo es encontrar reglas con soporte y confianza superiores a umbrales mínimos.
+    </p>
+    <p>
+        El algoritmo Apriori, propuesto por Agrawal y Srikant, explota la propiedad apriori: si un itemset es frecuente, todos sus subsets deben ser frecuentes. Esto permite podar masivamente el espacio de búsqueda: generar candidatos de tamaño k+1 solo desde itemsets frecuentes de tamaño k, filtrar candidatos contra transacciones para determinar soporte, retener solo frecuentes, repetir. Finalmente, de itemsets frecuentes se generan reglas candidatas, reteniendo aquellas con confianza suficiente. Apriori reduce complejidad de exponencial a manejable mediante poda, aunque múltiples escaneos de base de datos pueden ser costosos.
+    </p>
+    <p>
+        FP-Growth (Frequent Pattern Growth), desarrollado por Han, Pei y Yin, mejora eficiencia almacenando transacciones en estructura compacta llamada FP-tree (Frequent Pattern tree). El FP-tree comprime base de datos preservando información de itemsets frecuentes, permitiendo minería sin generación de candidatos. El algoritmo construye FP-tree en dos escaneos de datos, luego extrae patrones frecuentes mediante crecimiento recursivo de patrones. FP-Growth típicamente supera Apriori por orden de magnitud en eficiencia, especialmente con soporte mínimo bajo o datasets densos.
+    </p>
+    <p>
+        Las métricas adicionales refinan identificación de reglas interesantes. El lift de regla X → Y es P(Y|X)/P(Y), midiendo cuánto más probable es Y dado X comparado con Y en general. Lift > 1 indica asociación positiva, lift < 1 indica asociación negativa, lift = 1 indica independencia. El conviction mide desviación de independencia direccionalmente, igual a 1 para independencia, infinito para implicación perfecta. El leverage mide diferencia entre soporte observado y esperado bajo independencia. Estas métricas complementan confianza y soporte, identificando reglas genuinamente interesantes versus triviales.
+    </p>
+    <p>
+        Las aplicaciones de minería de asociaciones trascienden retail. En bioinformática, descubrir co-ocurrencias de genes en enfermedades o interacciones proteína-proteína. En web mining, identificar patrones de navegación y co-ocurrencias de páginas para recomendación. En detección de intrusiones, encontrar secuencias de eventos característicos de ataques. En análisis de logs, descubrir correlaciones entre eventos de sistema. Las reglas de asociación secuenciales extienden framework a secuencias ordenadas temporalmente, descubriendo patrones como "evento X es seguido por Y dentro de tiempo τ".
+    </p>
+
+    <div class="info-box">
+        <h3>Puntos Clave de la Clase</h3>
+        <ul>
+            <li>El aprendizaje no supervisado descubre patrones en datos sin etiquetas explícitas</li>
+            <li>K-means particiona en clusters esféricos; DBSCAN descubre formas arbitrarias basado en densidad</li>
+            <li>PCA reduce dimensionalidad mediante proyección lineal preservando máxima varianza</li>
+            <li>t-SNE y UMAP preservan estructura local/global mediante manifold learning no lineal</li>
+            <li>Los autoencoders aprenden representaciones comprimidas mediante reconstrucción</li>
+            <li>La detección de anomalías identifica desviaciones mediante métodos estadísticos, aislamiento, o reconstrucción</li>
+            <li>El aprendizaje de asociaciones descubre co-ocurrencias frecuentes en datos transaccionales</li>
+        </ul>
+    </div>
+
+    <h3>Referencias y Lecturas Recomendadas</h3>
+    <ul>
+        <li>Hastie, T., Tibshirani, R., & Friedman, J. (2009). <em>The Elements of Statistical Learning</em>. Springer. Capítulo 14.</li>
+        <li>MacKay, D. J. C. (2003). <em>Information Theory, Inference, and Learning Algorithms</em>. Cambridge University Press. Capítulo 20.</li>
+        <li>Van der Maaten, L., & Hinton, G. (2008). Visualizing data using t-SNE. <em>Journal of Machine Learning Research</em>, 9, 2579-2605.</li>
+        <li>McInnes, L., Healy, J., & Melville, J. (2018). UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction. <em>arXiv preprint arXiv:1802.03426</em>.</li>
+        <li>Kingma, D. P., & Welling, M. (2013). Auto-Encoding Variational Bayes. <em>arXiv preprint arXiv:1312.6114</em>.</li>
+        <li>Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008). Isolation forest. In <em>2008 Eighth IEEE International Conference on Data Mining</em> (pp. 413-422). IEEE.</li>
+        <li>Agrawal, R., & Srikant, R. (1994). Fast algorithms for mining association rules. In <em>Proceedings of the 20th VLDB Conference</em> (pp. 487-499).</li>
+    </ul>
+</article>
+
+    <h2>10.8 Aplicaciones Prácticas y Casos de Estudio</h2>
+    <p>
+        El clustering encuentra aplicaciones extensivas en segmentación de clientes, donde empresas agrupan consumidores por comportamiento de compra, demografía, o engagement. Los clusters resultantes informan estrategias de marketing personalizadas, desarrollo de productos dirigidos, y optimización de inventario. En bioinformática, el clustering agrupa genes con expresión similar a través de condiciones, revelando módulos funcionales y redes regulatorias. En compresión de imágenes, k-means reduce paleta de colores agrupando píxeles similares, representando cada cluster por su centroide.
+    </p>
+    <p>
+        La reducción de dimensionalidad preprocessing acelera algoritmos downstream eliminando features redundantes y reduce overfitting en modelos supervisados. En sistemas de recomendación, PCA o matrix factorization comprimen matrices usuario-ítem, revelando factores latentes como géneros o temas. En neurociencia, PCA y ICA descomponen señales cerebrales en componentes interpretables. En finanzas, PCA identifica factores de riesgo principales explicando correlaciones entre activos.
+    </p>
+    <p>
+        La detección de anomalías protege transacciones financieras identificando fraude en tiempo real, analiza logs de sistemas para detectar intrusiones cibernéticas, monitorea sensores industriales anticipando fallos de equipos, y filtra spam identificando emails anómalos. En salud, detecta patologías raras en imágenes médicas y pacientes en riesgo de deterioro. En ciencia, descubre eventos astrofísicos inusuales, detecta errores en experimentos, y identifica compuestos químicos prometedores.
+    </p>
+    <p>
+        El market basket analysis optimiza layout de tiendas colocando productos frecuentemente comprados juntos cerca, diseña promociones bundle incentivando compras complementarias, y alimenta sistemas de recomendación sugiriendo productos basados en carrito actual. En plataformas web, identifica secuencias de navegación comunes para optimizar UX, descubre correlaciones entre features de usuarios para targeting publicitario, y detecta bots mediante patrones anómalos de actividad.
+    </p>
+
+    <div class="mermaid">
+    graph LR
+        A[Aprendizaje No Supervisado] --> B[Exploración de Datos]
+        A --> C[Preprocessing]
+        A --> D[Feature Engineering]
+        B --> E[Descubrir Estructura]
+        B --> F[Identificar Outliers]
+        C --> G[Reducir Dimensión]
+        C --> H[Eliminar Ruido]
+        D --> I[Extraer Representaciones]
+        E --> J[Informar Supervisado]
+        F --> J
+        G --> J
+        H --> J
+        I --> J
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+        style J fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>10.9 Evaluación y Validación de Modelos No Supervisados</h2>
+    <p>
+        La evaluación de clustering sin ground truth emplea métricas intrínsecas que cuantifican calidad basada solo en datos y asignaciones. El silhouette coefficient mide qué tan similar es cada punto a su propio cluster versus el cluster más cercano, promediando a través de todos los puntos. Valores cercanos a 1 indican clustering denso y bien separado; valores cercanos a 0 indican puntos en frontera entre clusters; valores negativos sugieren asignaciones incorrectas. El Davies-Bouldin index mide ratio promedio de dispersión intra-cluster versus separación entre clusters, con valores más bajos indicando mejor clustering.
+    </p>
+    <p>
+        Cuando existen labels de verdad aunque no se usen para clustering, métricas extrínsecas comparan asignaciones con ground truth. El Adjusted Rand Index (ARI) mide similitud entre clusterings, ajustado para chance, con ARI = 1 para acuerdo perfecto y ARI ≈ 0 para asignación aleatoria. El Normalized Mutual Information (NMI) cuantifica información compartida entre asignaciones, normalizada para comparabilidad. El V-measure combina homogeneity (cada cluster contiene solo miembros de una clase) y completeness (todos miembros de una clase asignados al mismo cluster).
+    </p>
+    <p>
+        Para reducción de dimensionalidad, métricas evalúan preservación de estructura. La varianza explicada en PCA cuantifica proporción de varianza total capturada por componentes retenidos, típicamente graficada como scree plot. El reconstruction error mide discrepancia entre datos originales y reconstruidos desde representación reducida. Para manifold learning, métricas comparan distancias o rankings de vecinos antes y después de reducción, como trustworthiness (vecinos en embedding son verdaderos vecinos) y continuity (verdaderos vecinos permanecen cercanos en embedding).
+    </p>
+    <p>
+        La validación de estabilidad evalúa reproducibilidad mediante perturbaciones. El bootstrap clustering reentrena en muestras bootstrap, midiendo consistencia de asignaciones mediante Adjusted Rand Index promedio. El consensus clustering agrupa múltiples clusterings, identificando estructura robusta consistente a través de parámetros o algoritmos. La validación externa compara resultados con información auxiliar cuando disponible, como literatura científica en clustering de genes o taxonomías conocidas en clustering de documentos, aunque cuidando no circularizar evaluación.
+    </p>
+
+    <h2>10.10 Conclusiones y Direcciones Futuras</h2>
+    <p>
+        El aprendizaje no supervisado continúa evolucionando con desarrollos en deep unsupervised learning, donde arquitecturas neuronales profundas aprenden representaciones jerárquicas automáticamente. Los Generative Adversarial Networks (GANs), aunque típicamente considerados generativos, incorporan componentes no supervisados al aprender distribuciones de datos. Self-supervised learning blurs líneas entre supervisado y no supervisado, formulando tareas de supervisión pseudo desde datos mismos (predecir rotación de imagen, contexto de palabra). La combinación de métodos no supervisados con supervisados en semi-supervised learning aprovecha datos etiquetados escasos junto con abundantes no etiquetados.
+    </p>
+    <p>
+        Los desafíos persistentes incluyen escalabilidad a datasets masivos de alta dimensión, selección automática de hiperparámetros (número de clusters, dimensión de embedding), interpretabilidad de estructuras descubiertas, y robustez a ruido y outliers. El aprendizaje no supervisado en streaming data donde distribuciones evolucionan requiere algoritmos adaptativos que detecten concept drift y actualicen modelos incrementalmente. La integración de conocimiento de dominio mediante constraints y semi-supervision guía discovery hacia estructuras relevantes para aplicación específica.
+    </p>
+    <p>
+        El futuro del aprendizaje no supervisado likely enfatizará métodos que combinen fortalezas de enfoques clásicos y deep learning, aprendan de múltiples modalidades simultáneamente, y proporcionen uncertainty quantification en descubrimientos. La democratización mediante AutoML no supervisado automatizará selección de algoritmos y tuning de parámetros, mientras que visualizaciones interactivas facilitarán exploración y refinamiento iterativo. El aprendizaje no supervisado permanece como frontera vibrante de ML, desbloqueando insights en vastas cantidades de datos no etiquetados disponibles.
+    </p>
 </article>
