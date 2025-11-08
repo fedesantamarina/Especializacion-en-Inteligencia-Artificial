@@ -139,6 +139,47 @@ ation game conversacional. Turing argumentó provocativamente que la pregunta "�
         AlphaGo (2016) combinó deep RL con Monte Carlo Tree Search defeating world champion Lee Sedol en Go, game con state space 10^170 requiring intuition. AlphaGo Zero (2017) learned purely desde self-play tabula rasa defeating AlphaGo 100-0. IA generativa democratizó creation: GANs generate photorealistic images, Diffusion models (Stable Diffusion, DALL-E 2) synthesize images desde text, applications span art, design, entertainment. Challenges incluyen deepfakes enabling misinformation, copyright issues training on protected content, job displacement automating creative work. Future directions pursue AGI (systems rivaling human intelligence across domains), addressing challenges: sample efficiency, interpretability, robustness, grounding, continual learning, ethical alignment. Opportunities abound: AI-assisted scientific discovery, personalized education, healthcare diagnostics, climate modeling. Responsible development requires ensuring benefits distributed equitably, risks mitigated, systems aligned con human values.
     </p>
 
+    <h2>2.9 IA Multimodal y Modelos Fundacionales</h2>
+    <p>
+        La evolución reciente de la inteligencia artificial ha presenciado convergencia de capacidades across modalidades: visión, lenguaje, audio, sensorimotor control. Los modelos multimodales integran información desde inputs heterogéneos aprendiendo representaciones compartidas capturando correspondencias cross-modal. CLIP (Contrastive Language-Image Pre-training, OpenAI 2021) aligns image y text embeddings jointly training en 400M image-text pairs desde internet, enabling zero-shot classification, image retrieval via natural language, y creative applications. Flamingo, DALL-E 2, Stable Diffusion generan images desde text descriptions, while Whisper transcribe speech across 99 languages robustly. Modelos generalist como Gato (DeepMind) perform 600+ diverse tasks: playing games, controlling robots, image captioning, dialogue—single network con unified architecture demonstrating versatility.
+    </p>
+    <p>
+        Los foundation models constituyen paradigm shift: large-scale models pre-trained en massive unlabeled data across domains, subsequently fine-tuned para downstream tasks con minimal data. GPT, BERT, CLIP, SAM exemplify este approach. Foundation models exhibit emergent properties: capabilities not explicitly programmed pero arising desde scale y data diversity—few-shot learning, chain-of-thought reasoning, instruction following. Advantages incluyen transfer learning efficiency, democratizing access (fine-tuning requires less compute que training desde scratch), unified architectures replacing specialized models. Challenges incluyen enormous training costs concentrating capabilities entre organizations con vast recursos, environmental impact (massive energy consumption), potential para harm (misuse, amplifying biases), y questions sobre control y alignment en increasingly capable systems. El desarrollo de foundation models raise strategic questions sobre research priorities, resource allocation, governance, y distribution de AI benefits globally.
+    </p>
+
+    <h2>2.10 IA en Robótica y Sistemas Físicos Autónomos</h2>
+    <p>
+        Aunque progress en IA digital (vision, NLP) ha sido spectacular, embodied AI navigating physical world presenta challenges distintivos. Robots deben perceive dynamic environments via noisy sensors, plan actions respecting physics, execute controls robust a uncertainties, y learn desde limited experience interacting con real world. Historical approaches combined classical planning, control theory, y hand-engineered perception pipelines. Contemporary methods increasingly apply learning: end-to-end policies mapping observations a actions learned via reinforcement learning, imitation learning desde demonstrations, self-supervised learning desde robot interaction experience. DeepMind's AlphaGo approach—combining learned components con search—extends a manipulation: learned models predict outcomes de actions, planners search action sequences optimizing objectives.
+    </p>
+    <p>
+        Los vehículos autónomos exemplify embodied AI integration: perception (LiDAR, cameras, radar detecting objects, lanes, traffic signals), localization (GPS, SLAM mapping position), prediction (forecasting behavior de pedestrians, vehicles), planning (route planning, trajectory optimization avoiding collisions), y control (steering, acceleration executing plans smoothly). Waymo, Cruise, Tesla deploy systems carrying passengers, though challenges persist: handling edge cases (construction zones, adverse weather), guaranteeing safety across distributions, y establishing liability frameworks. Beyond driving, robots increasingly deployed en warehouses (Amazon picking robots), agriculture (autonomous tractors, drones monitoring crops), healthcare (surgical assistants, elder care), y exploration (Mars rovers, underwater vehicles). Future envisions robots collaborating naturally con humans, adaptable via demonstration rather que programming, capable generalizing across tasks exhibiting common sense reasoning sobre physical world—goals motivating research en sim-to-real transfer, meta-learning, causal models, y robot foundation models trained en diverse embodiment experiences.
+    </p>
+
+    <div class="mermaid">
+    graph TD
+        A[IA Física/Embodied] --> B[Percepción]
+        A --> C[Planificación]
+        A --> D[Control]
+        B --> E[Visión por Computadora]
+        B --> F[SLAM]
+        C --> G[Path Planning]
+        C --> H[Motion Planning]
+        D --> I[Control Adaptativo]
+        D --> J[RL para Control]
+        K[Aplicaciones] --> L[Vehículos Autónomos]
+        K --> M[Robótica Industrial]
+        K --> N[Asistencia Médica]
+        style A fill:#8B1538,stroke:#333,stroke-width:2px,color:#fff
+    </div>
+
+    <h2>2.11 Neurociencia Computacional y AI Inspirada en el Cerebro</h2>
+    <p>
+        Las redes neuronales artificiales, aunque inspiradas vagamente en neurobiología, divergen substancialmente desde cerebros biológicos: neuronas artificiales simples versus biological complexity (dendritic computation, diverse neuron types, neuromodulation); backpropagation vs. biologically implausible credit assignment; supervised learning dominance vs. unsupervised, self-supervised natural learning. Neuroscience-inspired AI pursues incorporating biological principles achieving brain-like capabilities: sample efficiency (humans learn desde few examples), continual learning (acquiring new knowledge sin catastrophic forgetting), robustness a distribution shift, energy efficiency (brain operates ~20W), y common sense reasoning. Spiking neural networks model temporal dynamics de neuronal firing potentially enabling energy-efficient neuromorphic hardware. Predictive coding frameworks postulate brain as prediction machine minimizing prediction errors hierarchically, inspiring algorithms combining top-down predictions con bottom-up sensory input.
+    </p>
+    <p>
+        La memoria mechanisms biologically inspire architectures: hippocampal representations motivate episodic memory systems; working memory inspires attention mechanisms; memory consolidation durante sleep parallels offline replay en RL improving sample efficiency. Neuroscience discoveries inform AI: grid cells spatial navigation inspire path integration models; dopamine reward prediction errors foundational para temporal difference learning; prefrontal cortex executive functions motivate meta-learning y hierarchical RL. Conversely, AI tools illuminate neuroscience: deep networks analyzing neural recordings, computational models testing hypotheses, AI-generated stimuli probing neural representations. Symbiotic relationship promises convergence: AI achieving brain-like intelligence, neuroscience understanding intelligence computationally. Brain-computer interfaces (BCIs) directly connecting neural activity a devices enable communication para paralyzed individuals, control de prosthetics, y potentially augmenting cognition merging biological y artificial intelligence raising profound implications sobre human enhancement, identity, y future de intelligence.
+    </p>
+
     <div class="info-box">
         <h3>Puntos Clave de la Clase</h3>
         <ul>
@@ -150,7 +191,9 @@ ation game conversacional. Turing argumentó provocativamente que la pregunta "�
             <li>La revolución del deep learning desde 2012 transformó capacidades de IA en visión, lenguaje y control mediante redes profundas</li>
             <li>Transformers y large language models revolucionaron NLP exhibiendo emergent capabilities y general-purpose utility</li>
             <li>La IA generativa actual democratiza creación de contenido planteando desafíos éticos sobre desinformación, copyright y empleo</li>
-            <li>Future pursues AGI addressing challenges en sample efficiency, interpretability, robustness, alignment con human values</li>
+            <li>Los modelos multimodales y fundacionales integran capacidades across modalidades exhibiendo versatilidad unprecedented</li>
+            <li>La IA embodied en robótica enfrenta desafíos únicos interactuando con mundo físico real</li>
+            <li>La neurociencia y la IA mantienen relación simbiótica inspiring architectures y understanding intelligence</li>
         </ul>
     </div>
 
